@@ -1,0 +1,93 @@
+/* The custom css for the DrJessie.life Site - !important calls to override css from the template css files.
+---------------------------------------------------------------------------------------------------------------------------- */
+/* *** this is for mobile or desktop - to show one or the other only *** */
+#content-desktop {display: block;}
+#content-mobile {display: none;}
+
+@media screen and (max-width: 768px) {
+
+#content-desktop {display: none;}
+#content-mobile {display: block;} }
+
+/* ***=======@@@@@@@~~~|||||||>>> CUSTOM MISC ELEMENTS <<<|||||||~~~@@@@@@@=======*** */
+
+
+.center {
+  text-align: center;
+}
+
+.center_block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+	
+/* ***=======@@@@@@@~~~|||||||>>> Typography Elements <<<|||||||~~~@@@@@@@=======*** */
+
+/* *** this makes an img float r and the text wrap *** */
+div.img_margin_copy_float_r {
+	margin: 10px 0px 10px 20px !important;
+	float: right !important; }
+
+/* *** this makes an img float l and the text wrap *** */
+div.img_margin_copy_float_l {
+	margin: 10px 20px 10px 0px !important;
+	float: left !important; }
+
+/* *** this makes text black & bold *** */
+.font-header-black {
+	color: #000000; 
+	font-weight: bold;
+	font-size: 100%; }
+	
+/* *** this makes text black & bold *** */
+.font-header-black125 {
+	color: #000000; 
+	font-weight: bold;
+	font-size: 125%; }
+	
+/* *** this makes text black & bold *** */
+.font-header-black150 {
+	color: #000000; 
+	font-weight: bold;
+	font-size: 150%; }
+	
+/* *** this makes text white & bold *** */
+.font-header-white {
+	color: #ffffff; 
+	font-weight: bold;
+	font-size: 100%; }
+	
+/* *** this makes text dark gold & bold *** */
+.font-header-dkgld {
+	color: #322011; 
+	font-weight: bold;
+	font-size: 100%; }
+
+/* ***=======@@@@@@@~~~|||||||>>> Font Color Utilities (replaces deprecated <font> tags) <<<|||||||~~~@@@@@@@=======*** */
+.fc-blue      { color: #0096de; }
+.fc-sky       { color: #50c6ff; }
+.fc-white     { color: #ffffff; }
+.fc-cyan      { color: #00d8ff; }
+.fc-gold      { color: #ffd304; }
+.fc-ltsky     { color: #7ed6ff; }
+.fc-dkgold    { color: #d2ca76; }
+
+/* ***=======@@@@@@@~~~|||||||>>> Fix for it not displaying <<<|||||||~~~@@@@@@@=======*** */
+hr.sep{
+  display: block;
+  width: 100%;
+  height: 0;
+  border: 0;
+  border-top: 1px solid rgba(255,255,255,0.22);
+  margin: 26px 0;
+  clear: both;              /* <-- key */
+  position: relative;
+  z-index: 2;               /* <-- prevents being “under” the banner */
+}
+
+.ki-banner{
+  position: relative;
+  z-index: 1;               /* <-- ensure HR can sit above it if needed */
+  margin-top: 26px;         /* <-- prevents overlap if banner was pulling up */
+}
