@@ -11,6 +11,8 @@
 *.broke
 *.orig
 *.tmp
+.htaccess.bak-*
+.htaccess.old*
 
 # ============================================================
 # OS FILES
