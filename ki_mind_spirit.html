@@ -17,14 +17,14 @@
 <title>Mind / Spirit - Jessie Keener N.D., Human Design Specialist</title>
 <meta name="description" content="Holistic naturopathic care, nutrition, botanical medicine, breath work, and lifestyle programs for true healing and vitality.">
 <meta name="keywords" content="Naturopathic Doctor, Holistic Medicine, Integrative Health, Breath Work, Natural Healing, Longevity, Functional Medicine, Texas Naturopath">
-<link rel="canonical" href="https://www.drjessie.life/">
+<link rel="canonical" href="https://www.drjessie.life/ki_mind_spirit.html">
 
 <!-- Open Graph (Facebook & LinkedIn) -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Jessie Keener N.D.">
 <meta property="og:title" content="Jessie Keener N.D. | Human Longevity Specialist">
 <meta property="og:description" content="Explore holistic and naturopathic medicine for body, mind, and spirit. Discover health that lasts a lifetime.">
-<meta property="og:url" content="https://www.drjessie.life/">
+<meta property="og:url" content="https://www.drjessie.life/ki_mind_spirit.html">
 <meta property="og:image" content="https://www.drjessie.life/images/social-preview.jpg">
 <meta property="og:image:alt" content="Jessie Keener N.D. — Human Longevity Specialist">
 
@@ -41,89 +41,338 @@
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 
-<!-- Prefetch / Preload -->
+<!-- Stylesheets -->
 <link rel="preload" href="css/style.css" as="style">
 <link rel="stylesheet" href="css/style.css" type="text/css">
-
 <link rel="preload" href="css/custom.css" as="style">
-
-
-<style>
-  /* =========================
-     Body Mastery — Article Jump Links
-     ========================= */
-  .ki-article-nav{
-    width: 100%;
-    margin: 6px 0 18px;
-  }
-  .ki-article-nav-inner{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
-  }
-  .ki-article-chip{
-    display: inline-flex;
-    align-items: center;
-    padding: 8px 12px;
-    border-radius: 999px;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 0.95rem;
-    line-height: 1;
-    border: 1px solid rgba(210, 202, 118, 0.35);
-    color: rgba(255,255,255,0.90);
-    background: rgba(0,0,0,0.25);
-    transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
-    white-space: nowrap;
-  }
-  .ki-article-chip:hover{
-    transform: translateY(-1px);
-    background: rgba(0,0,0,0.35);
-    border-color: rgba(210, 202, 118, 0.60);
-  }
-  .ki-article-chip:focus-visible{
-    outline: 3px solid rgba(210, 202, 118, 0.35);
-    outline-offset: 2px;
-  }
-
-  /* Prevent fixed header from covering anchor targets */
-  h1[id]{
-    scroll-margin-top: calc(var(--header-offset, 92px) + 18px);
-  }
-</style>
-
 <link rel="stylesheet" href="css/custom.css" type="text/css">
-<style>
-.article-nav{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:14px;
-  margin:40px auto 20px;
-  max-width:1100px;
-}
-.article-nav .article-chip{
-  padding:8px 14px;
-  border-radius:999px;
-  font-size:0.95rem;
-  text-decoration:none;
-  font-weight:600;
-  color:#ffffff;
-  background:rgba(255,255,255,0.08);
-  border:1px solid rgba(255,255,255,0.18);
-  transition:all .15s ease;
-}
-.article-nav .article-chip:hover{
-  background:rgba(255,255,255,0.18);
-  transform:translateY(-1px);
-}
-</style>
 
+<!-- =====================================================
+     KI Article Pages — Unified Layout System v2
+     Shared structure: ki_body_mastery.html & ki_mind_spirit.html
+     All page-specific styles use the .ki2- prefix.
+     NO inline styles anywhere on this page.
+     ===================================================== -->
+<style>
+  /* --- Tokens --- */
+  :root {
+    --ki2-gold:        #D2CA76;
+    --ki2-gold-dim:    rgba(210, 202, 118, 0.18);
+    --ki2-gold-faint:  rgba(210, 202, 118, 0.07);
+    --ki2-border:      rgba(255, 255, 255, 0.08);
+    --ki2-text:        rgba(255, 255, 255, 0.82);
+    --ki2-text-dim:    rgba(255, 255, 255, 0.55);
+    --ki2-text-faint:  rgba(255, 255, 255, 0.38);
+    --ki2-radius:      8px;
+    --ki2-sidebar-w:   248px;
+    --ki2-header-h:    96px;
+  }
+
+  /* --- Reading progress bar --- */
+  .ki2-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 0%;
+    background: var(--ki2-gold);
+    z-index: 9999;
+    transition: width 80ms linear;
+    pointer-events: none;
+  }
+
+  /* --- Page wrapper: sidebar + content --- */
+  .ki2-page-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 2.5rem;
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 2rem 1.75rem 4rem;
+  }
+
+  /* ===========================
+     SIDEBAR
+     =========================== */
+  .ki2-sidebar {
+    width: var(--ki2-sidebar-w);
+    flex-shrink: 0;
+    /* position: sticky is killed by any overflow:hidden/auto on ancestor elements
+       in the site's existing CSS — JS scroll listener handles float instead */
+  }
+  .ki2-sidebar.is-fixed {
+    position: fixed;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--ki2-gold-dim) transparent;
+  }
+  .ki2-sidebar.is-fixed::-webkit-scrollbar { width: 4px; }
+  .ki2-sidebar.is-fixed::-webkit-scrollbar-track { background: transparent; }
+  .ki2-sidebar.is-fixed::-webkit-scrollbar-thumb { background: var(--ki2-gold-dim); border-radius: 4px; }
+
+  .ki2-sidebar-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ki2-gold);
+    margin-bottom: 0.85rem;
+    padding-left: 0.75rem;
+  }
+
+  .ki2-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ki2-sidebar-nav a {
+    display: block;
+    font-size: 0.83rem;
+    line-height: 1.35;
+    color: var(--ki2-text-dim);
+    text-decoration: none;
+    padding: 0.45rem 0.75rem;
+    border-radius: 6px;
+    border-left: 2px solid transparent;
+    transition: color 140ms ease, background 140ms ease, border-color 140ms ease;
+  }
+  .ki2-sidebar-nav a:hover {
+    color: var(--ki2-gold);
+    background: var(--ki2-gold-faint);
+    border-left-color: var(--ki2-gold-dim);
+  }
+  .ki2-sidebar-nav a.ki2-active {
+    color: var(--ki2-gold);
+    background: var(--ki2-gold-faint);
+    border-left-color: var(--ki2-gold);
+  }
+
+  /* ===========================
+     MAIN CONTENT COLUMN
+     =========================== */
+  .ki2-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Page intro block */
+  .ki2-page-intro {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--ki2-border);
+  }
+  .ki2-page-title {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: var(--ki2-gold);
+    margin: 0 0 1.1rem;
+    line-height: 1.2;
+  }
+  .ki2-page-lead {
+    font-size: 1.04rem;
+    line-height: 1.82;
+    color: var(--ki2-text);
+    margin: 0 0 1.25rem;
+  }
+
+  /* Callout / highlight box */
+  .ki2-callout {
+    border: 1px solid var(--ki2-gold-dim);
+    background: var(--ki2-gold-faint);
+    border-radius: var(--ki2-radius);
+    padding: 1.1rem 1.4rem;
+  }
+  .ki2-callout p {
+    margin: 0;
+    font-size: 0.97rem;
+    line-height: 1.75;
+    color: var(--ki2-text);
+  }
+  .ki2-callout strong {
+    color: var(--ki2-gold);
+  }
+
+  /* ===========================
+     ARTICLE CARDS
+     =========================== */
+  .ki2-article {
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid var(--ki2-border);
+    border-top: 3px solid var(--ki2-gold);
+    border-radius: var(--ki2-radius);
+    padding: 2.25rem 2.5rem;
+    margin-bottom: 2.25rem;
+    scroll-margin-top: calc(var(--ki2-header-h) + 1.5rem);
+  }
+
+  .ki2-article-title {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--ki2-gold);
+    margin: 0 0 1.5rem;
+    line-height: 1.25;
+  }
+
+  /* Article figure / hero image */
+  .ki2-article-figure {
+    margin: 0 0 1.75rem;
+    border-radius: 6px;
+    overflow: hidden;
+    line-height: 0;
+  }
+  .ki2-article-figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: opacity 300ms ease;
+    opacity: 0.92;
+  }
+  .ki2-article-figure img:hover { opacity: 1; }
+
+  /* Body text */
+  .ki2-article-body p {
+    font-size: 1rem;
+    line-height: 1.82;
+    color: var(--ki2-text);
+    margin: 0 0 1.2rem;
+  }
+  .ki2-article-body p:last-child { margin-bottom: 0; }
+  .ki2-article-body strong { color: rgba(255,255,255,0.95); }
+  .ki2-article-body a { color: var(--ki2-gold); }
+  .ki2-article-body a:hover { text-decoration: underline; }
+
+  /* Lists */
+  .ki2-article-body ul {
+    margin: 0.5rem 0 1.4rem 1.4rem;
+    padding: 0;
+  }
+  .ki2-article-body li {
+    font-size: 0.96rem;
+    line-height: 1.72;
+    color: var(--ki2-text-dim);
+    margin-bottom: 0.35rem;
+  }
+
+  /* Divider */
+  .ki2-divider {
+    border: none;
+    border-top: 1px solid var(--ki2-border);
+    margin: 1.75rem 0;
+  }
+
+  /* Quote / fact bars */
+  .ki2-quote {
+    border-left: 3px solid var(--ki2-gold);
+    background: var(--ki2-gold-faint);
+    border-radius: 0 6px 6px 0;
+    padding: 0.9rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--ki2-text);
+  }
+  .ki2-quote strong { color: var(--ki2-gold); }
+
+  /* Article footer: share + back to top */
+  .ki2-article-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--ki2-border);
+  }
+  .ki2-share-note {
+    font-size: 0.85rem;
+    color: var(--ki2-text-dim);
+  }
+  .ki2-share-note a {
+    color: var(--ki2-gold);
+    text-decoration: none;
+  }
+  .ki2-share-note a:hover { text-decoration: underline; }
+
+  .ki2-back-top {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ki2-text-faint);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: color 140ms ease;
+  }
+  .ki2-back-top:hover { color: var(--ki2-gold); }
+
+  /* Page footer banner */
+  .ki2-page-banner {
+    margin-top: 2.5rem;
+    border-radius: var(--ki2-radius);
+    overflow: hidden;
+    line-height: 0;
+  }
+  .ki2-page-banner img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ===========================
+     RESPONSIVE — MOBILE
+     =========================== */
+  @media (max-width: 860px) {
+    .ki2-page-wrapper {
+      flex-direction: column;
+      gap: 0;
+      padding: 1.25rem 1rem 3rem;
+    }
+
+    .ki2-sidebar {
+      width: 100%;
+      position: static;
+      max-height: none;
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--ki2-border);
+    }
+
+    .ki2-sidebar-nav {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .ki2-sidebar-nav a {
+      border-left: none;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      font-size: 0.78rem;
+      padding: 5px 11px;
+    }
+    .ki2-sidebar-nav a:hover,
+    .ki2-sidebar-nav a.ki2-active {
+      background: var(--ki2-gold-dim);
+      border-left: none;
+      color: var(--ki2-gold);
+    }
+
+    .ki2-article {
+      padding: 1.5rem 1.25rem;
+    }
+
+    .ki2-page-title { font-size: 1.5rem; }
+    .ki2-article-title { font-size: 1.2rem; }
+  }
+</style>
 </head>
 
 <body>
+  <!-- Reading progress bar -->
+  <div class="ki2-progress" id="ki2Progress" role="presentation" aria-hidden="true"></div>
+
   <header>
     <div class="shell top-bar">
       <a href="https://drjessie.life/" class="brand" aria-label="Back to top">
@@ -134,130 +383,54 @@
         </div>
       </a>
 
-      <!-- Responsive menu bar -->
-<nav class="main-nav" aria-label="Main navigation">
-  <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation menu">
-  <label for="nav-toggle" class="nav-toggle-label">
-    <span></span>
-    <span></span>
-    <span></span>
-  </label>
-
-  <ul class="nav-list">
-    <!-- Home -->
-    <li class="nav-item dropdown">
-      <a href="https://drjessie.life/" class="nav-link">
-        Home
-        <!-- <span class="caret">▾</span> -->
-      </a>
-
-    </li>
-
-    <!-- Interviews (NEW) -->
-    <li class="nav-item dropdown">
-      <a href="ki_drjk_interviews.html" class="nav-link" title="Interviews">
-        Interviews <span class="caret">▾</span>
-      </a>
-      <ul class="dropdown-menu">
-        <li>
-          <a href="ki_drjk_interviews.html"
-             target="_blank" rel="noopener noreferrer"
-             title="Who Is Behind the Chemtrails?">
-            Who Is Behind the Chemtrails?
-          </a>
-        </li>
-        <li>
-          <a href="ki_drjk_interviews.html"
-             target="_blank" rel="noopener noreferrer"
-             title="The Jabs, Your Health, and Much More">
-            The Jabs, Your Health...
-          </a>
-        </li>
-      </ul>
-    </li>
-
-    <!-- Sign Up -->
-    <li class="nav-item dropdown">
-      <a href="#" class="nav-link">
-        Sign Up
-        <span class="caret">▾</span>
-      </a>
-      <ul class="dropdown-menu">
-        <li>
-          <a href="https://drjessie.life/newsletter.html" target="_blank" rel="noopener noreferrer" title="Sign Up For Dr. Jessie's Newsletter">
-            Dr. Jessie's Newsletter
-          </a>
-        </li>
-        <!-- <li>
-          <a href="https://preview.mailerlite.io/forms/1914177/170813236084475831/share" target="_blank" rel="noopener noreferrer" title="Book a new patient consultation">
-            Dr. Jessie's Newsletter
-          </a>
-        </li>
-        <li>
-          <a href="#worldbuilding-hub" title="General inquiries for the practice">
-            Book Waiting List
-          </a>
-        </li> -->
-      </ul>
-    </li>
-
-    <!-- Books - Courses - Downloads -->
-    <li class="nav-item dropdown">
-      <a href="#" class="nav-link">
-        Books - Courses - Downloads
-        <span class="caret">▾</span>
-      </a>
-      <ul class="dropdown-menu">
-        <li>
-          <a href="https://drjessie.life/books.html#top" title="Dr. Jessie's Books - Who Will Save Our Doctors & The Ascension Handbook">
-            Dr. Jessie's Books
-          </a>
-        </li>
-        <li>
-          <a href="courses.html#top" title="Dr. Jessie's Courses - PTSD - Neurodivergent Disorder - Detox & Cellular Repair">
-            Dr. Jessie's Courses
-          </a>
-        </li>
-        <li>
-          <a href="downloads.html#top" title="Dr. Jessie's Downloads - Breathwork - Longevity - Detox - Stress/PTSD">
-            Dr. Jessie's Downloads
-          </a>
-        </li>
-      </ul>
-    </li>
-
-    <!-- Blog & Articles -->
-    <li class="nav-item dropdown">
-      <a href="#" class="nav-link">
-        Articles
-        <span class="caret">▾</span>
-      </a>
-      <ul class="dropdown-menu">
-        <li>
-          <a href="ki_aq_initiative.html" title="Understanding the A.Q. Initiative">
-            Understanding the A.Q. Initiative
-          </a>
-        </li>
-        <li>
-          <a href="ki_mind_spirit.html" title="Keener Intelligence - Mind Spirit">
-            Keener Intelligence - Mind Spirit
-          </a>
-        </li>
-        <li>
-          <a href="ki_body_mastery.html" title="Keener Intelligence - Body Mastery">
-            Keener Intelligence - Body Mastery
-          </a>
-        </li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-<!-- End menu bar -->
+      <!-- Responsive navigation -->
+      <nav class="main-nav" aria-label="Main navigation">
+        <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle navigation menu">
+        <label for="nav-toggle" class="nav-toggle-label">
+          <span></span><span></span><span></span>
+        </label>
+        <ul class="nav-list">
+          <li class="nav-item dropdown">
+            <a href="https://drjessie.life/" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a href="ki_drjk_interviews.html" class="nav-link" title="Interviews">
+              Interviews <span class="caret">▾</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="ki_drjk_interviews.html" target="_blank" rel="noopener noreferrer" title="Who Is Behind the Chemtrails?">Who Is Behind the Chemtrails?</a></li>
+              <li><a href="ki_drjk_interviews.html" target="_blank" rel="noopener noreferrer" title="The Jabs, Your Health, and Much More">The Jabs, Your Health...</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link">Sign Up <span class="caret">▾</span></a>
+            <ul class="dropdown-menu">
+              <li><a href="https://drjessie.life/newsletter.html" target="_blank" rel="noopener noreferrer" title="Sign Up For Dr. Jessie's Newsletter">Dr. Jessie's Newsletter</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link">Books - Courses - Downloads <span class="caret">▾</span></a>
+            <ul class="dropdown-menu">
+              <li><a href="https://drjessie.life/books.html#top" title="Dr. Jessie's Books">Dr. Jessie's Books</a></li>
+              <li><a href="courses.html#top" title="Dr. Jessie's Courses">Dr. Jessie's Courses</a></li>
+              <li><a href="downloads.html#top" title="Dr. Jessie's Downloads">Dr. Jessie's Downloads</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link">Articles <span class="caret">▾</span></a>
+            <ul class="dropdown-menu">
+              <li><a href="ki_aq_initiative.html" title="Understanding the A.Q. Initiative">Understanding the A.Q. Initiative</a></li>
+              <li><a href="ki_mind_spirit.html" title="Keener Intelligence - Mind Spirit">Keener Intelligence - Mind Spirit</a></li>
+              <li><a href="ki_body_mastery.html" title="Keener Intelligence - Body Mastery">Keener Intelligence - Body Mastery</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
     </div>
   </header>
 
-<main>
-    <!-- STATIC HERO IMAGE (1200x600) -->
+  <main>
+    <!-- Hero image -->
     <section class="hero" aria-label="Dr. Jessie Keener naturopathic and ascension banner">
       <div class="hero-inner">
         <div class="hero-banner-frame">
@@ -268,600 +441,338 @@
         </div>
       </div>
     </section>
-	
-<!-- Link to bring people here to start and bypass the header image -->
-<a id="top"></a>
 
-<!-- BODY CONTENT -->
-	<section id="worldbuilding-hub" class="move_down_05">
-	
-<!-- Begin PAGE CONTENT -->
-<!-- ========================= Article Navigation ========================= -->
-      <!-- Article Jump Links -->
-      <nav class="ki-article-nav" aria-label="Jump to article">
-	  <h1 class="center"><strong><span class="fc-dkgold">Article In-Page Links</span></strong></h1>
-	  
-        <div class="ki-article-nav-inner">
-          <a class="ki-article-chip" href="#a-brief-history-of-human-intelligence">A Brief History Of Human Intelligence</a>
-          <a class="ki-article-chip" href="#keener-intelligence-knowing-the-aq-initiative-and-understanding-the-actualization-quotient">Keener Intelligence - Knowing the A.Q. Initiative &amp; Understanding the Actualization Quotient</a>
-          <a class="ki-article-chip" href="#how-to-stay-in-character-development">How To Stay In Character Development</a>
-          <a class="ki-article-chip" href="#how-to-evaluate-your-personal-aq">How To Evaluate Your Personal A.Q.</a>
-          <a class="ki-article-chip" href="#the-nature-of-applied-character-development">The Nature Of Applied Character Development</a>
+    <!-- Anchor: bypass header image -->
+    <a id="top"></a>
+
+    <!-- ===================== TWO-COLUMN LAYOUT ===================== -->
+    <div class="ki2-page-wrapper">
+
+      <!-- SIDEBAR: sticky article TOC -->
+      <aside class="ki2-sidebar" aria-label="Article navigation">
+        <p class="ki2-sidebar-label">Mind / Spirit Articles</p>
+        <ul class="ki2-sidebar-nav" role="list">
+          <li><a href="#a-brief-history-of-human-intelligence">A Brief History of Human Intelligence</a></li>
+          <li><a href="#knowing-the-aq-initiative">Knowing the A.Q. Initiative</a></li>
+          <li><a href="#how-to-stay-in-character-development">How To Stay In Character Development</a></li>
+          <li><a href="#how-to-evaluate-your-personal-aq">How To Evaluate Your Personal A.Q.</a></li>
+          <li><a href="#the-nature-of-applied-character-development">The Nature of Applied Character Development</a></li>
+        </ul>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <div class="ki2-content">
+
+        <!-- Page introduction -->
+        <div class="ki2-page-intro">
+          <h1 class="ki2-page-title">Keener Intelligence — Mind / Spirit</h1>
+          <p class="ki2-page-lead">If you came here expecting a polite, tidy "mind/spirit" pep talk, I have news: this page starts with a plot twist. Dr. Jessie Keener went from "super athletic, unstoppable, basically a human golden retriever with a trophy shelf" to college insomnia, low-back pain, and depression, while every test smugly insisted everything was "normal." Then a mentor cracked open an entire universe of possibility, rebuilding, detoxing, and a full-on Body Mastery journey that (spoiler) didn't require pretending everything was fine.</p>
+          <p class="ki2-page-lead">From there, we pivot from "Why is my life doing this?" to "What is my life trying to teach me?" — aka Keener Intelligence and the Actualization Quotient (A.Q.): measuring what you're <em>actually manifesting</em> moment to moment, especially under stress. The vibe is simple: life will apply pressure, and you either evolve or you start buffering like a broken Wi-Fi router. Along the way you'll meet brain training, self-love as fuel, and the radical idea that obstacles are secretly enrolling you in character development, without asking permission.</p>
+          <div class="ki2-callout">
+            <p><strong>Intelligence always forwards life!</strong> Intelligence always says YES to more aliveness. We need something more intelligent as a way of defining intelligence, so we can train and develop our future generations toward that.</p>
+          </div>
         </div>
-      </nav>
-	  
-	  <hr class="sep" />
-<!-- ========================= End Article Navigation ========================= -->
 
-<!-- ***<<< @@@~~~ Begin article Title Block ~~~@@@ >>>*** -->
-		<div class="container">
-
-			<!-- Article Title -->
-			<h1><strong><span class="fc-dkgold">Keener Intelligence - Mind / Spirit</span></strong></h1>
-			
-			<!-- Article Link to Forum -->
-			<!-- <span style="font-size: 12pt; line-height: 22px;"><strong>Read this article in the Forum and be a part of the discussion: <a href="https://drjessie.life/forum/viewtopic.php?t=11" target="_blank" rel="noopener noreferrer">Understanding the A.Q. Initiative</a></strong></span>
-			
-			<div style="clear: both;"><br /></div> -->
-			<!-- Article Intro -->
-			<span style="font-size: 14pt; line-height: 24px;">If you came here expecting a polite, tidy “mind/spirit” pep talk, I have news: this page starts with a plot twist. Dr. Jessie Keener went from “super athletic, unstoppable, basically a human golden retriever with a trophy shelf” to college insomnia, low-back pain, and depression, while every test smugly insisted everything was “normal.” Then a mentor cracked open an entire universe of possibility, rebuilding, detoxing, and a full-on **Body Mastery** journey that (spoiler) didn’t require pretending everything was fine.
-			
-			<div style="clear: both;"><br /></div>
-
-			From there, we pivot from “Why is my life doing this?” to “What is my life trying to teach me?”, aka **Keener Intelligence** and the **Actualization Quotient (A.Q.)**: measuring what you’re *actually manifesting* moment to moment, especially under stress. The vibe is simple: life will apply pressure, and you either evolve or you start buffering like a broken Wi-Fi router. Along the way you’ll meet brain training, self-love as fuel, and the radical idea that obstacles are secretly enrolling you in character development, without asking permission.</span>
-			
-			<!-- Begin KI Page Break -->
-			<!-- <div class="important-black">
-			<span class="important-title-black"><strong><span class="font-header-dkgld">Intelligence always forwards life!</span></strong></span>
-			<div style="clear: right;"></div>
-
-			<span class="font-header-black125">Intelligence always says YES to more aliveness.</span>
-
-			<div style="clear: right;"><br /></div>
-
-			We progress to the more recent evolution of Intelligence, to the "E.Q." or emotional Intelligence, which has great merits, and yet, have you ever met a person who was highly "E.Q'd" in areas of their life, such as a psychotherapist or healer, who was codependent as all get-out in their personal life? They occur as drained to themselves, have chronic fatigue, etc. (I used to be one!) Again, this does not actualize intelligence, doesn’t truly foster more aliveness for that person. <strong><span class="fc-dkgold">So we need something else frankly, something more intelligent as a way of defining intelligence, so we can train and develop our future generations toward that</span></strong>.
-			<div style="clear: both;"><br /></div>
-			</div> -->
-			<!-- End KI Page Break -->
-
-	  <!-- //////////////////////// ========================= \\\\\\\\\\\\\\\\\\\\\\\\ -->
-<!-- //////////////////////// A Brief History Of Human Intelligence \\\\\\\\\\\\\\\\\\\\\\\\ -->
-	  <!-- //////////////////////// ========================= \\\\\\\\\\\\\\\\\\\\\\\\ -->
-		
-<!-- Article Title -->
-<h1 id="a-brief-history-of-human-intelligence" class="center move_down_15"><strong><span class="fc-dkgold">A Brief History Of Human Intelligence</span></strong></h1>
-			
-<!-- Correct tags - Article Body -->
-<section id="parasite-info" class="move_down_15">
-  <article class="info-card no-lift">
-    <div class="ki-copy">
-	
-	<!-- Article image (soft → crisp on hover) -->
-<!-- <figure class="ki-article-hero ki-hero-800x200">
-  <img
-    src="images/articles/your-image.jpg"
-    alt="Describe the image"
-    loading="lazy"
-    decoding="async"
-  />
-</figure> -->
-<!-- Article image (soft → crisp on hover) -->
-
-        <p>In modern history, human Intelligence started to get ranked through the I.Q., or Intelligence Quotient, around the early 1900’s. At that time, science was interested in how to measure/test for I.Q.s, what caused higher I.Q.s and could higher I.Q.s be stimulated in children and other test subjects.</p>
-
-        <p>Here is the early Merriam-Webster Dictionary definition of <a href="https://www.merriam-webster.com/dictionary/IQ" target="_blank" rel="noopener noreferrer" rel="noopener"><strong>I.Q.</strong></a></p>
-
-        <hr class="sep" />
-
-        <p>A great deal of heads were literally opened up back in those days (upon their demise!) to examine the brain to look for clues as to where higher intelligence could be found. Shockingly, the brains were not much different from people with "ordinary intelligence." They never found a clue!</p>
-
-        <p>Much research was conducted into how to stimulate the brain’s development and lots of progress has been made. Too much to be listed, but everything thing from water births (significantly less compression on the brain!) to introducing multiple languages, music, swim and dance to very young babies are easy to see examples.</p>
-
-        <hr class="sep" />
-
-        <p>Decades later, through Sociological, Psychological studies and general societal advancement, the E.Q. or Emotional Quotient evolved (<a href="https://en.wikipedia.org/wiki/Emotional_intelligence" target="_blank" rel="noopener noreferrer" rel="noopener"><strong>Wikipedia says…</strong></a> "Refers to the ability to perceive, control, and evaluate emotions. Some researchers suggest that emotional intelligence can be learned...") and was generally considered a break-though as it addressed the very need for emotional intelligence.</p>
-
-        <p>Out of the E.Q. Movement, lots of emotional connections were formed and the notion of following your bliss, listening to your heart became main stream.</p>
-		
-<!-- Article Quote Bar -->
-	<div class="quote-bar">
-		<strong>Fact:</strong> Your Brain works better when your cortisol is in the Normal Range for your activity.
-	</div>
-
-<div style="clear: right;"><br /></div>
-<!-- Article Quote Bar -->
-
-        <p>Perhaps most importantly, though, was the emergence of teachers of E.Q. as this was a series of skills that could be taught, practiced and applied for more successful relationships. Couples counselors thrived, and communication skills were generally upgraded to acknowledge the other person’s point of view, from business board rooms to bedrooms.</p>
-
-        <hr class="sep" />
-
-        <p>At the time that I am writing this, fall of 2022, we find our humanity in a level of devolution and self-destruction in spite of these so-called advancements in human intelligence. Logically, we must deduce that how we measure, test for, acknowledge and teach intelligence is way off-course!</p>
-
-        <p>Even coupling I.Q. with E.Q. (which we have been doing since the 1990’s) is still generating a modern culture of chaos and destruction, from economies of entire countries to pandemics of chronic illnesses and obesity, etc.</p>
-
-        <p>So we have to question the very essence of what we think intelligence actually is and what it isn’t. Because, as they say, something is very rotten in the state of Denmark (Hamlet quote) and we need to collectively decide that the jig is up.</p>
-
-        <hr class="sep" />
-
-        <p>But first we must have a better filter for what is intelligence, what does it look like, feel like etc. and what IS A DECENT DEFINITION of intelligence, as I.Q. and E.Q. were simply building blocks along the way, not the final platform for advancing consciousness.</p>
-
-        <p>Here is the Miriam-Webster definition of <a href="https://www.merriam-webster.com/dictionary/intelligence" target="_blank" rel="noopener noreferrer" rel="noopener"><strong>Intelligence</strong></a></p>
-
-<!-- Article Quote Bar -->
-	<div class="quote-bar">
-		<strong>Fact:</strong> Standard I.Q. tests are flawed. There are more precise ways to measure the Intelligent Quotent!
-	</div>
-
-<div style="clear: right;"><br /></div>
-<!-- Article Quote Bar -->
-
-        <p>We buy into the cultural notion that "Under stress we regress," instead of the actual laws of Life which say, "Under stress you must progress or start to perish." Yes, it is true! Life has to evolve under stress.</p>
-
-        <p>In Nature, it is quite basic: either the being survives the challenge/crisis or is eaten, killed etc. If it survives, it has a new adaptability for its future.</p>
-
-        <hr class="sep" />
-
-        <p>A Human being, however, particularly adults, can survive something and NOT grow from it, not actually <strong>manifest</strong> the lessons learned. If their perspective doesn’t allow for a higher order interpretation, they will simply keep repeating patterns until death.</p>
-
-        <p>An example of this is how easily in this culture we place blame on others, and fail to see our part in how we manifest something or we co-manifested something.</p>
-
-        <p>Here is a quick story of mine: years ago, I was part of a team launching a very large Holistic Health Clinic in Austin, Texas. At that time, I was a newly separated single doctor Mom, under enormous pressure on every imaginable level.</p>
-
-        <p>I was driving in my car to a meeting about our launch, and noticed that I was running 3-5 minutes late. I felt a little guilty and anxious about that, and as I approached an intersection where I had the right of way, a car approaching from the left slowed down to honor their Stop sign (I was not speeding!). What I didn’t notice, because my mind was racing about being late and how stressed I was, was that he didn’t actually stop; he slowed and accelerated right into me! It was a major collision.</p>
-
-        <p>After the wreck was cleared and I checked out OK by the paramedics, a cop drove me home as my SUV was totaled. On the way home, it all came to me: this happened because I was anxious and fearful, and I would have to forgive myself for that mindset. It was a lesson that would take years to complete!</p>
-
-        <!-- <p>(Click here, for more information on <a href="https://drjessie.life/ki_brain_training.html" target="_blank" rel="noopener noreferrer" rel="noopener"><strong>Brain Training</strong></a>)</p> -->
-
-        <p>Not that the other driver wasn’t breaking a law, he was, and was found guilty of that in a court of law. However, his guilt did not alleviate me from my responsibility of my MIND SET.</p>
-
-        <p>This had been me, under stress and REGRESSED. A focused Jessie would have been able to avoid the incident or at least maneuver better than I had.</p>
-		
-<!-- Article Quote Bar -->
-	<div class="quote-bar">
-		<strong>Key:</strong> The real challenge becomes APPLYING intelligence on-the-go, in each moment.
-	</div>
-
-<div style="clear: right;"><br /></div>
-<!-- Article Quote Bar -->
-
-        <p>We know when our mind set is off. We know when we are in the Zone. We KNOW that drops in focus and/or energy will ruin our race or create potential injuries! The question is, how do we stay in the Zone?</p>
-
-        <hr class="sep" />
-
-        <p>How many of you would have had the mental edge to see what I am talking about? You see, my story underlies how HIDDEN the Actualization Quotient might be.</p>
-
-        <p>The obvious I.Q./E.Q. interpretations would be very different from the one I walked away with. They would include, "Poor me," and "What a jerk that guy was," etc. But how would this foster more aliveness? It would not. It would simply reinforce "Victim consciousness," a real death sentence over time.</p>
-
-<!-- Article Quote Bar -->
-	<div class="quote-bar">
-		<strong>A.Q. interpretation:</strong> “This happened for a reason and that reason is for my personal growth, my character development.”
-	</div>
-
-<div style="clear: right;"><br /></div>
-<!-- Article Quote Bar -->
-
-        <p>In other words, I ACTUALIZED (manifested) that accident so I could wake up further, and take more responsibility for my state of mind.</p>
-
-        <p>Fortunately, a couple of years after that, I met a master of human potential and character development, which really helped.</p>
-
-<!-- Article Dr Jessie X Message - Quote Bar -->
-	  <div class="quote-bar">
-        <strong>Question:</strong> What are your thoughts about this? Share through my X, ( <a href="https://qdls.io/jkndx" target="_blank" rel="noopener noreferrer" title="Jessie Keener N.D. On X.com">x.com/DrJessieKeener</a> ).
-      </div>
-
-<div style="clear: right;"><br /></div>
-<!-- Article Dr Jessie X Message - Quote Bar -->
-
-<!-- Back to Top r-aligned -->
-<div class="ki-article-backtop">
-  <a href="#top" class="ki-backtop-link" data-backtop aria-label="Back to top">
-    Back to Top ↑
-  </a>
-</div>
-<!-- Back to Top r-aligned -->
-
-    </div>
-  </article>
-</section>
-
-<hr class="sep" />
-
-			<!-- //////////////////////// ========================= \\\\\\\\\\\\\\\\\\\\\\\\ -->
-<!-- //////////////////////// Keener Intelligence - Knowing the A.Q. Initiative \\\\\\\\\\\\\\\\\\\\\\\\ -->
-			<!-- //////////////////////// ========================= \\\\\\\\\\\\\\\\\\\\\\\\ -->
-			
-<!-- Article Title -->
-<h1 id="keener-intelligence-knowing-the-aq-initiative-and-understanding-the-actualization-quotient" class="center move_down_35"><strong><span class="fc-dkgold">Keener Intelligence - Knowing the A.Q. Initiative &
-<br />
-Understanding the Actualization Quotient</span></strong></h1>
-			
-<!-- Correct tags - Article Body -->
-<section id="parasite-info" class="move_down_15">
-  <article class="info-card no-lift">
-    <div class="ki-copy">
-	
-	<!-- Article image (soft → crisp on hover) -->
-<!-- <figure class="ki-article-hero ki-hero-800x200">
-  <img
-    src="images/articles/your-image.jpg"
-    alt="Describe the image"
-    loading="lazy"
-    decoding="async"
-  />
-</figure> -->
-<!-- Article image (soft → crisp on hover) -->
-
-        <p>The only way to continue to increase your brain power and consciousness is through a steady approach to life as ALWAYS IN DEVELOPMENT. In other words, when life presents a challenge or a so-called obstacle, <strong>we have to train ourselves to see it as an opportunity for growth and increased adaptability.</strong></p>
-
-        <p>Then we can have a different perspective with the so-called problem, and use brain training to come up with our perfect, custom solution.</p>
-
-        <p>The fuel for this process is Self-Love. There must be an abundant supply of this Love, which includes Compassion for Self and Forgiveness of Self. However, sometimes we can begin the developmental process through a love for humanity, and develop the self-love along the way. I think this is how I began, way back in the early 1980's.</p>
-
-        <hr class="sep" />
-			
-<!-- Article Quote Bar -->
-	<div class="quote-bar">
-		<strong>Key:</strong> The real challenge becomes APPLYING intelligence on-the-go, in each moment.
-	</div>
-
-<div style="clear: right;"><br /></div>
-<!-- Article Quote Bar -->
-			
-		<!-- Article Body -->
-		<p><span style="font-size: 14pt; line-height: 24px;">Keener Intelligence is based on a theory I developed that I call the <strong><span class="fc-dkgold">"Actualization Quotient"</span></strong> of human intelligence.</p>
-			
-		<div style="clear: both;"><br /></div>
-			
-		<p>From over decades of applied character development, I have determined that our standards of human intelligence are failing us in fundamental ways. In fact, our current measurements of intelligence, the I.Q. and even the E.Q., are flawed and cannot carry the day.</p>
-			
-		<p><a href="ki_aq_initiative.html" target="_blank" rel="noopener noreferrer" rel="noopener"><strong>Read More...</strong></a></p>
-
-<!-- Article Dr Jessie X Message - Quote Bar -->
-	  <div class="quote-bar">
-        <strong>Question:</strong> What are your thoughts about this? Share through my X, ( <a href="https://qdls.io/jkndx" target="_blank" rel="noopener noreferrer" title="Jessie Keener N.D. On X.com">x.com/DrJessieKeener</a> ).
-      </div>
-
-<div style="clear: right;"><br /></div>
-<!-- Article Dr Jessie X Message - Quote Bar -->
-
-<!-- Back to Top r-aligned -->
-<div class="ki-article-backtop">
-  <a href="#top" class="ki-backtop-link" data-backtop aria-label="Back to top">
-    Back to Top ↑
-  </a>
-</div>
-<!-- Back to Top r-aligned -->
-
-    </div>
-  </article>
-</section>
-
-<hr class="sep" />
-
-	  <!-- //////////////////////// ========================= \\\\\\\\\\\\\\\\\\\\\\\\ -->
-<!-- //////////////////////// How To Stay In Character Development \\\\\\\\\\\\\\\\\\\\\\\\ -->
-	  <!-- //////////////////////// ========================= \\\\\\\\\\\\\\\\\\\\\\\\ -->
-			
-<!-- Article Title -->
-<h1 id="how-to-stay-in-character-development" class="center move_down_35"><strong><span class="fc-dkgold">How To Stay In Character Development</span></strong></h1>
-			
-<!-- Correct tags - Article Body -->
-<section id="parasite-info" class="move_down_15">
-  <article class="info-card no-lift">
-    <div class="ki-copy">
-	
-	<!-- Article image (soft → crisp on hover) -->
-<!-- <figure class="ki-article-hero ki-hero-800x200">
-  <img
-    src="images/articles/your-image.jpg"
-    alt="Describe the image"
-    loading="lazy"
-    decoding="async"
-  />
-</figure> -->
-<!-- Article image (soft → crisp on hover) -->
-
-        <p>The only way to continue to increase your brain power and consciousness is through a steady approach to life as ALWAYS IN DEVELOPMENT. In other words, when life presents a challenge or a so-called obstacle, <strong>we have to train ourselves to see it as an opportunity for growth and increased adaptability.</strong></p>
-
-        <p>Then we can have a different perspective with the so-called problem, and use brain training to come up with our perfect, custom solution.</p>
-
-        <p>The fuel for this process is Self-Love. There must be an abundant supply of this Love, which includes Compassion for Self and Forgiveness of Self. However, sometimes we can begin the developmental process through a love for humanity, and develop the self-love along the way. I think this is how I began, way back in the early 1980's.</p>
-
-        <hr class="sep" />
-
-        <p>I learned that we have to be willing to give up practically everything we think we know about ourselves in this process, as the bulk of our thoughts are products of a hive mind, or certainly products of our ego, which only traffics in duality and separation.</p>
-
-        <p>Hence, our belief systems will become suspect as we move ourselves along the continuum. "Why do I think this?" and "Who said so?" become more normal questions, as we discover that a great deal of who we think we are is simply trauma-based egoic constructs to keep the Status Quo.</p>
-	
-<!-- Article Quote Bar -->
-	<div class="quote-bar">
-		<strong>Key:</strong> The real challenge becomes APPLYING intelligence on-the-go, in each moment.
-	</div>
-
-<div style="clear: right;"><br /></div>
-<!-- Article Quote Bar -->
-
-        <p>Part of our evolution, then, is to identify old belief systems (note that Belief Systems is B.S.!) so we can move in a different direction, take a new action step.</p>
-
-        <p>This is how it works, simple and yet, not easy. Your Actualization Quotient depends on the discipline of Brain Training! The more you brain train, the higher your A.Q. becomes.</p>
-
-        <hr class="sep" />
-
-        <p>That is why I suggest you start with a few simple steps, brain training being the first, along with simple clean ups to your diet and personal care. As you increase your brain’s neuroplasticity other changes will be smoother and easier to stabilize.</p>
-
-<!-- Article Dr Jessie X Message - Quote Bar -->
-	  <div class="quote-bar">
-        <strong>Question:</strong> What are your thoughts about this? Share through my X, ( <a href="https://qdls.io/jkndx" target="_blank" rel="noopener noreferrer" title="Jessie Keener N.D. On X.com">x.com/DrJessieKeener</a> ).
-      </div>
-
-<div style="clear: right;"><br /></div>
-<!-- Article Dr Jessie X Message - Quote Bar -->
-
-<!-- Back to Top r-aligned -->
-<div class="ki-article-backtop">
-  <a href="#top" class="ki-backtop-link" data-backtop aria-label="Back to top">
-    Back to Top ↑
-  </a>
-</div>
-<!-- Back to Top r-aligned -->
-
-    </div>
-  </article>
-</section>
-
-<hr class="sep" />
-
-	  <!-- //////////////////////// ========================= \\\\\\\\\\\\\\\\\\\\\\\\ -->
-<!-- //////////////////////// How To Evaluate Your Personal A.Q. \\\\\\\\\\\\\\\\\\\\\\\\ -->
-	  <!-- //////////////////////// ========================= \\\\\\\\\\\\\\\\\\\\\\\\ -->
-			
-<!-- Article Title -->
-<h1 id="how-to-evaluate-your-personal-aq" class="center move_down_35"><strong><span class="fc-dkgold">How To Evaluate Your Personal A.Q.</span></strong></h1>
-			
-<!-- Correct tags - Article Body -->
-<section id="parasite-info" class="move_down_15">
-  <article class="info-card no-lift">
-    <div class="ki-copy">
-	
-	<!-- Article image (soft → crisp on hover) -->
-<!-- <figure class="ki-article-hero ki-hero-800x200">
-  <img
-    src="images/articles/your-image.jpg"
-    alt="Describe the image"
-    loading="lazy"
-    decoding="async"
-  />
-</figure> -->
-<!-- Article image (soft → crisp on hover) -->
-
-        <p>Keener Intelligence is based on a theory I developed that I call the <strong>"Actualization Quotient"</strong> of human intelligence.</p>
-
-        <p>From over decades of applied character development, I have determined that our standards of human intelligence are failing us in fundamental ways. In fact, our current measurements of intelligence, the I.Q. and even the E.Q., are flawed and cannot carry the day.</p>
-
-        <hr class="sep" />
-
-        <p>To wit, have you ever considered that some of our highest I.Q. peers can be geniuses yet are completely self-destructive in their actual lives? They smoke and drink excessive alcohol, shoot drugs, etc. What they were actualizing just didn’t work to sustain their life, to forward life. In other words, they took not very intelligent actions.</p>
-
-<!-- Article Quote Bar -->
-	<div class="quote-bar">
-		 <strong>Standard:</strong> Intelligence always forwards life! Intelligence always says YES to more aliveness.
-	</div>
-
-<div style="clear: right;"><br /></div>
-<!-- Article Quote Bar -->
-
-        <p>We progress to the more recent evolution of Intelligence, to the "E.Q." or emotional Intelligence, which has great merits, and yet, have you ever met a person who was highly "E.Q'd" in areas of their life, such as a psychotherapist or healer, who was codependent as all get-out in their personal life? They occur as drained to themselves, have chronic fatigue, etc. (I used to be one!) Again, this does not actualize intelligence, doesn’t truly foster more aliveness for that person.</p>
-
-        <p>So we need something else frankly, something <strong>more intelligent as a way of defining intelligence, so we can train and develop our future generations toward that.</strong></p>
-
-        <hr class="sep" />
-
-        <p>Enter the Actualization Quotient or "A.Q.", which relies on advanced brain training for constant integration, upgrading and renewal of the mind and consciousness.</p>
-
-        <p>How do we know it is the way to evaluate human intelligence? Because it measures what we are manifesting in any given moment: healthy, intelligent thoughts, or low energy, negative and draining thoughts.</p>
-
-        <p>Another way of looking at it is that since we create our reality though our consciousness, what level of consciousness are we in, from moment to moment? Fight or flight? Us versus Them? What are we actualizing, connection or separation?</p>
-
-        <hr class="sep" />
-
-        <p>The body is the direct feedback loop for our A.Q., and can never NOT be that feedback loop. As Deepa Chopra so elegantly stated, "The body is always eavesdropping to our consciousness." Therefore, if we are struggling with health or mental health issues, there will be an element of consciousness that is incongruent with Vitality, Aliveness and Development and which can only be resolved through conscious growth. THE BODY CANNOT LIE!</p>
-		
-<!-- Article Quote Bar -->
-	<div class="quote-bar">
-		 <strong>Standard:</strong> Intelligence always forwards life! Intelligence always says YES to more aliveness.
-	</div>
-
-<div style="clear: right;"><br /></div>
-<!-- Article Quote Bar -->
-
-        <p>We all want to have amazing bodies, without a doubt. Here you will find conscious choices to help your process.</p>
-
-        <p>This website is designed to be a place where Intelligence grows, yours and mine. The standard is clear: Fostering more Aliveness/Intelligence.</p>
-
-        <p>I will be adding audios and videos to keep us all engaged. Welcome!</p>
-
-<!-- Article Dr Jessie X Message - Quote Bar -->
-	  <div class="quote-bar">
-        <strong>Question:</strong> What are your thoughts about this? Share through my X, ( <a href="https://qdls.io/jkndx" target="_blank" rel="noopener noreferrer" title="Jessie Keener N.D. On X.com">x.com/DrJessieKeener</a> ).
-      </div>
-
-<div style="clear: right;"><br /></div>
-<!-- Article Dr Jessie X Message - Quote Bar -->
-
-<!-- Back to Top r-aligned -->
-<div class="ki-article-backtop">
-  <a href="#top" class="ki-backtop-link" data-backtop aria-label="Back to top">
-    Back to Top ↑
-  </a>
-</div>
-<!-- Back to Top r-aligned -->
-
-    </div>
-  </article>
-</section>
-
-<hr class="sep" />
-
-		  <!-- //////////////////////// ========================= \\\\\\\\\\\\\\\\\\\\\\\\ -->
-<!-- //////////////////////// The Nature Of Applied Character Development \\\\\\\\\\\\\\\\\\\\\\\\ -->
-		  <!-- //////////////////////// ========================= \\\\\\\\\\\\\\\\\\\\\\\\ -->
-			
-<!-- Article Title -->
-<h1 id="the-nature-of-applied-character-development" class="center move_down_35"><strong><span class="fc-dkgold">The Nature Of Applied Character Development</span></strong></h1>
-			
-<!-- Correct tags - Article Body -->
-<section id="parasite-info" class="move_down_15">
-  <article class="info-card no-lift">
-    <div class="ki-copy">
-	
-	<!-- Article image (soft → crisp on hover) -->
-<!-- <figure class="ki-article-hero ki-hero-800x200">
-  <img
-    src="images/articles/your-image.jpg"
-    alt="Describe the image"
-    loading="lazy"
-    decoding="async"
-  />
-</figure> -->
-<!-- Article image (soft → crisp on hover) -->
-
-
-        <p>One of the things that has helped me tremendously along the way over the past 25 years is a particular way of addressing character development.</p>
-
-<!-- Article Quote Bar -->
-	<div class="quote-bar">
-		 <strong>Applied character development:</strong> Know the traits required to accomplish the goal, not just the action steps.
-	</div>
-
-<div style="clear: right;"><br /></div>
-<!-- Article Quote Bar -->
-
-        <p>I have learned that in order to fulfill something worthwhile, such as a life goal, we must know WHAT particular character trait or traits are necessary for its accomplishment. This is so overlooked in business coaching, life coaching, etc.</p>
-
-        <p>These systems focus on the action steps required, which to me, is only half of the equation. The other half is to investigate what personality traits are necessary to implement the action steps.</p>
-
-        <hr class="sep" />
-
-        <p>For example, let's say you have a life goal to have a relationship. At the time, you are single, and feel out of shape. You decide to lose those 12 lbs you gained by working from home and being in lock down in a pandemic so you further decide you need to join a gym, get in shape so you can start dating.</p>
-
-        <p>Currently, you are not in shape. When you consider this goal, although it is real and important to you, it is also intimidating, and even overwhelming as far as how you are going to take those action steps. So here is where applied character development comes in.</p>
-
-        <p>(Remember this could be any important goal in any category, finances, health, etc.)</p>
-
-        <hr class="sep" />
-
-        <p>We have to look at the reality of where we ACTUALLY are, and ask ourselves what kind of personality traits we are deficient in, <strong>that we need more of in order to start taking action steps.</strong></p>
-
-        <p>The most frequent one, surprisingly, is compassion for Self! Our culture trains us to be very critical and hard on ourselves, which creates a lot of unhealthy thinking which will undermine our productivity.</p>
-
-        <p>To grow beyond this type of thinking is not easy, yet it is required in order to develop and grow at all, in the first place.</p>
-
-        <hr class="sep" />
-
-        <p>Notice that we are addressing this developmental aspect <strong>ahead of applying any other action steps.</strong></p>
-
-        <p>We have determined our goal, and the most powerful thing will be to determine what to be in development <strong>with while pursuing the goal/actions.</strong> That way we can stay out of overwhelm and create a clear pathway to achieve our goal.</p>
-		
-<!-- Article Quote Bar -->
-	<div class="quote-bar">
-		 <strong>Applied character development:</strong> Know the traits required to accomplish the goal, not just the action steps.
-	</div>
-
-<div style="clear: right;"><br /></div>
-<!-- Article Quote Bar -->
-
-        <p>If we are in development with having more compassion for ourselves, then we can literally imagine that we are in a simulation, and everything happening IN the simulation is to assist us in generating more compassion for ourselves.</p>
-
-        <p>What this accomplishes is that it gives us a platform from which we can brain train and address any obstacles that arise.</p>
-
-        <hr class="sep" />
-
-        <p>Of course obstacles are going to arise and when they do we can say, "Ah, let's have some more compassion for myself, this is disruptive, and a little scary. Let me do some brain training until I feel safe and secure within myself again."</p>
-
-        <p>We learn that we can be loving with ourselves, rather than harshly critical. As we continue to apply this exact character development exercise in our everyday lives, we start to become more capable and competent.</p>
-
-        <p>We make progress, accomplish mile stones and then the next action step presents: Time to start dating. Oh boy! Does that bring up a lot!!</p>
-
-        <p>Good thing we can brain train with Dr Jessie. It is also a great thing that <strong>we had been developing more compassion for ourselves</strong>, so we actually do the brain work, and discover that the next character trait required is more courage.</p>
-
-        <p>So off we go into the next simulation, witnessing how we must keep having more courage in all of these every day little things while continuing to brain train. This leads to being able to take the bigger action step, as we truly developed that courage through every day living and the awareness of what we were developing.</p>
-
-        <hr class="sep" />
-
-        <p>This is an infinite process, this applied character development, it never ends.</p>
-
-        <p>If faced with rejection, for instance more self-confidence is required developmentally in order not to take it personally.</p>
-
-        <p>The list of character developmental traits just goes on and on. As you fall in love, it might be learning how to receive your partner's love or learning how to pace yourself in the relationship and not go too fast.</p>
-
-        <p>Later, still you discover that you need to be in development with setting boundaries, so the relationship stays healthy.</p>
-
-        <p>I find applied character development one of the most exciting things about being human. It has powerful ramifications for increasing one's A.Q.(Actualization Quotient), which will be discussed more in future articles.</p>
-
-<!-- Article Dr Jessie X Message - Quote Bar -->
-	  <div class="quote-bar">
-        <strong>Question:</strong> What are your thoughts about this? Share through my X, ( <a href="https://qdls.io/jkndx" target="_blank" rel="noopener noreferrer" title="Jessie Keener N.D. On X.com">x.com/DrJessieKeener</a> ).
-      </div>
-
-<div style="clear: right;"><br /></div>
-<!-- Article Dr Jessie X Message - Quote Bar -->
-
-<!-- Back to Top r-aligned -->
-<div class="ki-article-backtop">
-  <a href="#top" class="ki-backtop-link" data-backtop aria-label="Back to top">
-    Back to Top ↑
-  </a>
-</div>
-<!-- Back to Top r-aligned -->
-
-    </div>
-  </article>
-</section>
-
-<hr class="sep" />
-			
-<div class="ki-banner center" role="presentation">
-  <img 
-	 class="ki-banner-img"
-     src="images/articles/01_drjessie_article_footer_1200x600.png"
-     srcset="images/articles/01_drjessie_article_footer_1200x600.png 1x,
-             images/articles/01_drjessie_article_footer_2400x1200.png 2x"
-     title="DrJessie.life The Mind-Body-Breath Connection You Are Looking For!"
-     alt="DrJessie.life The Mind-Body-Breath Connection You Are Looking For!"
-     loading="lazy" decoding="async"
-  />
-</div>
-
-		
-		</div>
-	</section>
-</main>
-
-      </div>
-      <!-- End PAGE CONTENT -->
-</section>
+        <!-- ==================== ARTICLE 1 ==================== -->
+        <article class="ki2-article" id="a-brief-history-of-human-intelligence">
+          <h2 class="ki2-article-title">A Brief History of Human Intelligence</h2>
+          <div class="ki2-article-body">
+            <p>In modern history, human Intelligence started to get ranked through the I.Q., or Intelligence Quotient, around the early 1900s. At that time, science was interested in how to measure/test for I.Q.s, what caused higher I.Q.s and could higher I.Q.s be stimulated in children and other test subjects.</p>
+            <p>Here is the early Merriam-Webster Dictionary definition of <a href="https://www.merriam-webster.com/dictionary/IQ" target="_blank" rel="noopener noreferrer"><strong>I.Q.</strong></a></p>
+            <hr class="ki2-divider">
+            <p>A great deal of heads were literally opened up back in those days (upon their demise!) to examine the brain to look for clues as to where higher intelligence could be found. Shockingly, the brains were not much different from people with "ordinary intelligence." They never found a clue!</p>
+            <p>Much research was conducted into how to stimulate the brain's development and lots of progress has been made. Too much to be listed, but everything from water births (significantly less compression on the brain!) to introducing multiple languages, music, swim and dance to very young babies are easy-to-see examples.</p>
+            <hr class="ki2-divider">
+            <p>Decades later, through Sociological, Psychological studies and general societal advancement, the E.Q. or Emotional Quotient evolved (<a href="https://en.wikipedia.org/wiki/Emotional_intelligence" target="_blank" rel="noopener noreferrer"><strong>Wikipedia</strong></a> refers to "the ability to perceive, control, and evaluate emotions. Some researchers suggest that emotional intelligence can be learned…") and was generally considered a breakthrough as it addressed the very need for emotional intelligence.</p>
+            <p>Out of the E.Q. Movement, lots of emotional connections were formed and the notion of following your bliss, listening to your heart became mainstream.</p>
+            <div class="ki2-quote"><strong>Fact:</strong> Your Brain works better when your cortisol is in the Normal Range for your activity.</div>
+            <p>Perhaps most importantly, though, was the emergence of teachers of E.Q. as this was a series of skills that could be taught, practiced and applied for more successful relationships. Couples counselors thrived, and communication skills were generally upgraded to acknowledge the other person's point of view, from business boardrooms to bedrooms.</p>
+            <hr class="ki2-divider">
+            <p>At the time that I am writing this, fall of 2022, we find our humanity in a level of devolution and self-destruction in spite of these so-called advancements in human intelligence. Logically, we must deduce that how we measure, test for, acknowledge and teach intelligence is way off-course!</p>
+            <p>Even coupling I.Q. with E.Q. (which we have been doing since the 1990s) is still generating a modern culture of chaos and destruction, from economies of entire countries to pandemics of chronic illnesses and obesity, etc.</p>
+            <p>So we have to question the very essence of what we think intelligence actually is and what it isn't. Because, as they say, something is very rotten in the state of Denmark (Hamlet quote) and we need to collectively decide that the jig is up.</p>
+            <hr class="ki2-divider">
+            <p>But first we must have a better filter for what is intelligence, what does it look like, feel like etc. and what IS A DECENT DEFINITION of intelligence, as I.Q. and E.Q. were simply building blocks along the way, not the final platform for advancing consciousness.</p>
+            <p>Here is the Merriam-Webster definition of <a href="https://www.merriam-webster.com/dictionary/intelligence" target="_blank" rel="noopener noreferrer"><strong>Intelligence</strong></a>.</p>
+            <div class="ki2-quote"><strong>Fact:</strong> Standard I.Q. tests are flawed. There are more precise ways to measure the Intelligence Quotient!</div>
+            <p>We buy into the cultural notion that "Under stress we regress," instead of the actual laws of Life which say, "Under stress you must progress or start to perish." Yes, it is true! Life has to evolve under stress.</p>
+            <p>In Nature, it is quite basic: either the being survives the challenge/crisis or is eaten, killed etc. If it survives, it has a new adaptability for its future.</p>
+            <hr class="ki2-divider">
+            <p>A Human being, however, particularly adults, can survive something and NOT grow from it, not actually <strong>manifest</strong> the lessons learned. If their perspective doesn't allow for a higher order interpretation, they will simply keep repeating patterns until death.</p>
+            <p>An example of this is how easily in this culture we place blame on others, and fail to see our part in how we manifest something or co-manifested something.</p>
+            <p>Here is a quick story of mine: years ago, I was part of a team launching a very large Holistic Health Clinic in Austin, Texas. At that time, I was a newly separated single doctor Mom, under enormous pressure on every imaginable level.</p>
+            <p>I was driving in my car to a meeting about our launch, and noticed that I was running 3–5 minutes late. I felt a little guilty and anxious about that, and as I approached an intersection where I had the right of way, a car approaching from the left slowed down to honor their Stop sign (I was not speeding!). What I didn't notice, because my mind was racing about being late and how stressed I was, was that he didn't actually stop; he slowed and accelerated right into me! It was a major collision.</p>
+            <p>After the wreck was cleared and I checked out OK by the paramedics, a cop drove me home as my SUV was totaled. On the way home, it all came to me: this happened because I was anxious and fearful, and I would have to forgive myself for that mindset. It was a lesson that would take years to complete!</p>
+            <p>Not that the other driver wasn't breaking a law, he was, and was found guilty of that in a court of law. However, his guilt did not alleviate me from my responsibility of my MIND SET.</p>
+            <p>This had been me, under stress and REGRESSED. A focused Jessie would have been able to avoid the incident or at least maneuver better than I had.</p>
+            <div class="ki2-quote"><strong>Key:</strong> The real challenge becomes APPLYING intelligence on-the-go, in each moment.</div>
+            <p>We know when our mind set is off. We know when we are in the Zone. We KNOW that drops in focus and/or energy will ruin our race or create potential injuries! The question is, how do we stay in the Zone?</p>
+            <hr class="ki2-divider">
+            <p>How many of you would have had the mental edge to see what I am talking about? You see, my story underlies how HIDDEN the Actualization Quotient might be.</p>
+            <p>The obvious I.Q./E.Q. interpretations would be very different from the one I walked away with. They would include, "Poor me," and "What a jerk that guy was," etc. But how would this foster more aliveness? It would not. It would simply reinforce "Victim consciousness," a real death sentence over time.</p>
+            <div class="ki2-quote"><strong>A.Q. interpretation:</strong> "This happened for a reason and that reason is for my personal growth, my character development."</div>
+            <p>In other words, I ACTUALIZED (manifested) that accident so I could wake up further, and take more responsibility for my state of mind.</p>
+            <p>Fortunately, a couple of years after that, I met a master of human potential and character development, which really helped.</p>
+          </div>
+          <footer class="ki2-article-footer">
+            <div class="ki2-share-note">
+              <strong>Question:</strong> What are your thoughts about this? Share on
+              <a href="https://qdls.io/jkndx" target="_blank" rel="noopener noreferrer" title="Jessie Keener N.D. On X.com">x.com/DrJessieKeener</a>
+            </div>
+            <a href="#top" class="ki2-back-top" aria-label="Back to top">Back to Top ↑</a>
+          </footer>
+        </article>
+
+        <!-- ==================== ARTICLE 2 ==================== -->
+        <article class="ki2-article" id="knowing-the-aq-initiative">
+          <h2 class="ki2-article-title">Keener Intelligence — Knowing the A.Q. Initiative &amp; Understanding the Actualization Quotient</h2>
+          <div class="ki2-article-body">
+            <p>The only way to continue to increase your brain power and consciousness is through a steady approach to life as ALWAYS IN DEVELOPMENT. In other words, when life presents a challenge or a so-called obstacle, <strong>we have to train ourselves to see it as an opportunity for growth and increased adaptability.</strong></p>
+            <p>Then we can have a different perspective with the so-called problem, and use brain training to come up with our perfect, custom solution.</p>
+            <p>The fuel for this process is Self-Love. There must be an abundant supply of this Love, which includes Compassion for Self and Forgiveness of Self. However, sometimes we can begin the developmental process through a love for humanity, and develop the self-love along the way. I think this is how I began, way back in the early 1980s.</p>
+            <hr class="ki2-divider">
+            <div class="ki2-quote"><strong>Key:</strong> The real challenge becomes APPLYING intelligence on-the-go, in each moment.</div>
+            <p>Keener Intelligence is based on a theory I developed that I call the <strong>Actualization Quotient</strong> of human intelligence.</p>
+            <p>From over decades of applied character development, I have determined that our standards of human intelligence are failing us in fundamental ways. In fact, our current measurements of intelligence, the I.Q. and even the E.Q., are flawed and cannot carry the day.</p>
+            <p><a href="ki_aq_initiative.html" target="_blank" rel="noopener noreferrer"><strong>Read More about the A.Q. Initiative →</strong></a></p>
+          </div>
+          <footer class="ki2-article-footer">
+            <div class="ki2-share-note">
+              <strong>Question:</strong> What are your thoughts about this? Share on
+              <a href="https://qdls.io/jkndx" target="_blank" rel="noopener noreferrer" title="Jessie Keener N.D. On X.com">x.com/DrJessieKeener</a>
+            </div>
+            <a href="#top" class="ki2-back-top" aria-label="Back to top">Back to Top ↑</a>
+          </footer>
+        </article>
+
+        <!-- ==================== ARTICLE 3 ==================== -->
+        <article class="ki2-article" id="how-to-stay-in-character-development">
+          <h2 class="ki2-article-title">How To Stay In Character Development</h2>
+          <div class="ki2-article-body">
+            <p>The only way to continue to increase your brain power and consciousness is through a steady approach to life as ALWAYS IN DEVELOPMENT. In other words, when life presents a challenge or a so-called obstacle, <strong>we have to train ourselves to see it as an opportunity for growth and increased adaptability.</strong></p>
+            <p>Then we can have a different perspective with the so-called problem, and use brain training to come up with our perfect, custom solution.</p>
+            <p>The fuel for this process is Self-Love. There must be an abundant supply of this Love, which includes Compassion for Self and Forgiveness of Self. However, sometimes we can begin the developmental process through a love for humanity, and develop the self-love along the way. I think this is how I began, way back in the early 1980s.</p>
+            <hr class="ki2-divider">
+            <p>I learned that we have to be willing to give up practically everything we think we know about ourselves in this process, as the bulk of our thoughts are products of a hive mind, or certainly products of our ego, which only traffics in duality and separation.</p>
+            <p>Hence, our belief systems will become suspect as we move ourselves along the continuum. "Why do I think this?" and "Who said so?" become more normal questions, as we discover that a great deal of who we think we are is simply trauma-based egoic constructs to keep the Status Quo.</p>
+            <div class="ki2-quote"><strong>Key:</strong> The real challenge becomes APPLYING intelligence on-the-go, in each moment.</div>
+            <p>Part of our evolution, then, is to identify old belief systems (note that Belief Systems is B.S.!) so we can move in a different direction, take a new action step.</p>
+            <p>This is how it works, simple and yet, not easy. Your Actualization Quotient depends on the discipline of Brain Training! The more you brain train, the higher your A.Q. becomes.</p>
+            <hr class="ki2-divider">
+            <p>That is why I suggest you start with a few simple steps, brain training being the first, along with simple clean-ups to your diet and personal care. As you increase your brain's neuroplasticity, other changes will be smoother and easier to stabilize.</p>
+          </div>
+          <footer class="ki2-article-footer">
+            <div class="ki2-share-note">
+              <strong>Question:</strong> What are your thoughts about this? Share on
+              <a href="https://qdls.io/jkndx" target="_blank" rel="noopener noreferrer" title="Jessie Keener N.D. On X.com">x.com/DrJessieKeener</a>
+            </div>
+            <a href="#top" class="ki2-back-top" aria-label="Back to top">Back to Top ↑</a>
+          </footer>
+        </article>
+
+        <!-- ==================== ARTICLE 4 ==================== -->
+        <article class="ki2-article" id="how-to-evaluate-your-personal-aq">
+          <h2 class="ki2-article-title">How To Evaluate Your Personal A.Q.</h2>
+          <div class="ki2-article-body">
+            <p>Keener Intelligence is based on a theory I developed that I call the <strong>Actualization Quotient</strong> of human intelligence.</p>
+            <p>From over decades of applied character development, I have determined that our standards of human intelligence are failing us in fundamental ways. In fact, our current measurements of intelligence, the I.Q. and even the E.Q., are flawed and cannot carry the day.</p>
+            <hr class="ki2-divider">
+            <p>To wit, have you ever considered that some of our highest I.Q. peers can be geniuses yet are completely self-destructive in their actual lives? They smoke and drink excessive alcohol, shoot drugs, etc. What they were actualizing just didn't work to sustain their life, to forward life. In other words, they took not very intelligent actions.</p>
+            <div class="ki2-quote"><strong>Standard:</strong> Intelligence always forwards life! Intelligence always says YES to more aliveness.</div>
+            <p>We progress to the more recent evolution of Intelligence, to the "E.Q." or emotional Intelligence, which has great merits, and yet, have you ever met a person who was highly "E.Q'd" in areas of their life, such as a psychotherapist or healer, who was codependent as all get-out in their personal life? They occur as drained to themselves, have chronic fatigue, etc. (I used to be one!) Again, this does not actualize intelligence, doesn't truly foster more aliveness for that person.</p>
+            <p>So we need something else frankly, something <strong>more intelligent as a way of defining intelligence, so we can train and develop our future generations toward that.</strong></p>
+            <hr class="ki2-divider">
+            <p>Enter the Actualization Quotient or "A.Q.," which relies on advanced brain training for constant integration, upgrading and renewal of the mind and consciousness.</p>
+            <p>How do we know it is the way to evaluate human intelligence? Because it measures what we are manifesting in any given moment: healthy, intelligent thoughts, or low energy, negative and draining thoughts.</p>
+            <p>Another way of looking at it is that since we create our reality through our consciousness, what level of consciousness are we in, from moment to moment? Fight or flight? Us versus Them? What are we actualizing — connection or separation?</p>
+            <hr class="ki2-divider">
+            <p>The body is the direct feedback loop for our A.Q., and can never NOT be that feedback loop. As Deepak Chopra so elegantly stated, "The body is always eavesdropping to our consciousness." Therefore, if we are struggling with health or mental health issues, there will be an element of consciousness that is incongruent with Vitality, Aliveness and Development and which can only be resolved through conscious growth. THE BODY CANNOT LIE!</p>
+            <div class="ki2-quote"><strong>Standard:</strong> Intelligence always forwards life! Intelligence always says YES to more aliveness.</div>
+            <p>We all want to have amazing bodies, without a doubt. Here you will find conscious choices to help your process.</p>
+            <p>This website is designed to be a place where Intelligence grows, yours and mine. The standard is clear: Fostering more Aliveness/Intelligence.</p>
+            <p>I will be adding audios and videos to keep us all engaged. Welcome!</p>
+          </div>
+          <footer class="ki2-article-footer">
+            <div class="ki2-share-note">
+              <strong>Question:</strong> What are your thoughts about this? Share on
+              <a href="https://qdls.io/jkndx" target="_blank" rel="noopener noreferrer" title="Jessie Keener N.D. On X.com">x.com/DrJessieKeener</a>
+            </div>
+            <a href="#top" class="ki2-back-top" aria-label="Back to top">Back to Top ↑</a>
+          </footer>
+        </article>
+
+        <!-- ==================== ARTICLE 5 ==================== -->
+        <article class="ki2-article" id="the-nature-of-applied-character-development">
+          <h2 class="ki2-article-title">The Nature of Applied Character Development</h2>
+          <div class="ki2-article-body">
+            <p>One of the things that has helped me tremendously along the way over the past 25 years is a particular way of addressing character development.</p>
+            <div class="ki2-quote"><strong>Applied character development:</strong> Know the traits required to accomplish the goal, not just the action steps.</div>
+            <p>I have learned that in order to fulfill something worthwhile, such as a life goal, we must know WHAT particular character trait or traits are necessary for its accomplishment. This is so overlooked in business coaching, life coaching, etc.</p>
+            <p>These systems focus on the action steps required, which to me, is only half of the equation. The other half is to investigate what personality traits are necessary to implement the action steps.</p>
+            <hr class="ki2-divider">
+            <p>For example, let's say you have a life goal to have a relationship. At the time, you are single, and feel out of shape. You decide to lose those 12 lbs you gained by working from home and being in lockdown in a pandemic — so you further decide you need to join a gym, get in shape so you can start dating.</p>
+            <p>Currently, you are not in shape. When you consider this goal, although it is real and important to you, it is also intimidating, and even overwhelming as far as how you are going to take those action steps. So here is where applied character development comes in.</p>
+            <p>(Remember this could be any important goal in any category, finances, health, etc.)</p>
+            <hr class="ki2-divider">
+            <p>We have to look at the reality of where we ACTUALLY are, and ask ourselves what kind of personality traits we are deficient in, <strong>that we need more of in order to start taking action steps.</strong></p>
+            <p>The most frequent one, surprisingly, is compassion for Self! Our culture trains us to be very critical and hard on ourselves, which creates a lot of unhealthy thinking which will undermine our productivity.</p>
+            <p>To grow beyond this type of thinking is not easy, yet it is required in order to develop and grow at all, in the first place.</p>
+            <hr class="ki2-divider">
+            <p>Notice that we are addressing this developmental aspect <strong>ahead of applying any other action steps.</strong></p>
+            <p>We have determined our goal, and the most powerful thing will be to determine what to be in development <strong>with while pursuing the goal/actions.</strong> That way we can stay out of overwhelm and create a clear pathway to achieve our goal.</p>
+            <div class="ki2-quote"><strong>Applied character development:</strong> Know the traits required to accomplish the goal, not just the action steps.</div>
+            <p>If we are in development with having more compassion for ourselves, then we can literally imagine that we are in a simulation, and everything happening IN the simulation is to assist us in generating more compassion for ourselves.</p>
+            <p>What this accomplishes is that it gives us a platform from which we can brain train and address any obstacles that arise.</p>
+            <hr class="ki2-divider">
+            <p>Of course obstacles are going to arise and when they do we can say, "Ah, let's have some more compassion for myself, this is disruptive, and a little scary. Let me do some brain training until I feel safe and secure within myself again."</p>
+            <p>We learn that we can be loving with ourselves, rather than harshly critical. As we continue to apply this exact character development exercise in our everyday lives, we start to become more capable and competent.</p>
+            <p>We make progress, accomplish milestones and then the next action step presents: Time to start dating. Oh boy! Does that bring up a lot!</p>
+            <p>Good thing we can brain train with Dr. Jessie. It is also a great thing that <strong>we had been developing more compassion for ourselves</strong>, so we actually do the brain work, and discover that the next character trait required is more courage.</p>
+            <p>So off we go into the next simulation, witnessing how we must keep having more courage in all of these everyday little things while continuing to brain train. This leads to being able to take the bigger action step, as we truly developed that courage through everyday living and the awareness of what we were developing.</p>
+            <hr class="ki2-divider">
+            <p>This is an infinite process, this applied character development; it never ends.</p>
+            <p>If faced with rejection, for instance more self-confidence is required developmentally in order not to take it personally.</p>
+            <p>The list of character developmental traits just goes on and on. As you fall in love, it might be learning how to receive your partner's love or learning how to pace yourself in the relationship and not go too fast.</p>
+            <p>Later, still, you discover that you need to be in development with setting boundaries, so the relationship stays healthy.</p>
+            <p>I find applied character development one of the most exciting things about being human. It has powerful ramifications for increasing one's A.Q. (Actualization Quotient), which will be discussed more in future articles.</p>
+          </div>
+          <footer class="ki2-article-footer">
+            <div class="ki2-share-note">
+              <strong>Question:</strong> What are your thoughts about this? Share on
+              <a href="https://qdls.io/jkndx" target="_blank" rel="noopener noreferrer" title="Jessie Keener N.D. On X.com">x.com/DrJessieKeener</a>
+            </div>
+            <a href="#top" class="ki2-back-top" aria-label="Back to top">Back to Top ↑</a>
+          </footer>
+        </article>
+
+        <!-- Page footer banner -->
+        <div class="ki2-page-banner" role="presentation">
+          <img
+            src="images/articles/01_drjessie_article_footer_1200x600.png"
+            srcset="images/articles/01_drjessie_article_footer_1200x600.png 1x,
+                    images/articles/01_drjessie_article_footer_2400x1200.png 2x"
+            alt="DrJessie.life — The Mind-Body-Breath Connection You Are Looking For!"
+            title="DrJessie.life — The Mind-Body-Breath Connection You Are Looking For!"
+            loading="lazy"
+            decoding="async">
+        </div>
+
+      </div><!-- /.ki2-content -->
+    </div><!-- /.ki2-page-wrapper -->
   </main>
 
   <footer>
     <div class="footer-inner">
       <div class="footer-copy">
-        Copyright &#169; <span id="year">2022 to 2036</span> Jessie Keener, N.D. • DrJessie.life - All Rights Reserved - Re-Designed to Perfection by the Very Cool Brilliant Humans at <a href="https://www.powerproweb.com/" target="_blank" rel="noopener noreferrer"><span class="fc-blue">Power</span><span class="fc-sky">Pro</span><span class="fc-white">Web.com</span></a>
+        Copyright &#169; <span id="year">2022 to 2036</span> Jessie Keener, N.D. &bull; DrJessie.life — All Rights Reserved — Re-Designed to Perfection by the Very Cool Brilliant Humans at
+        <a href="https://www.powerproweb.com/" target="_blank" rel="noopener noreferrer">
+          <span class="fc-blue">Power</span><span class="fc-sky">Pro</span><span class="fc-white">Web.com</span>
+        </a>
       </div>
       <nav class="footer-links" aria-label="Footer links">
         <a href="newsletter.html" target="_blank" rel="noopener noreferrer" title="Sign Up For Dr. Jessie's Newsletter">Sign Up</a>
-        <span class="footer-sep">•</span>
+        <span class="footer-sep">&bull;</span>
         <a href="terms.html" target="_blank" rel="noopener noreferrer" title="DrJessie.life Terms Of Service">Terms</a>
-        <span class="footer-sep">•</span>
+        <span class="footer-sep">&bull;</span>
         <a href="privacy.html" target="_blank" rel="noopener noreferrer" title="DrJessie.life Privacy Policy">Privacy</a>
       </nav>
     </div>
   </footer>
-  
-<script src="js/site-common.js"></script>
-  
-  <script src="js/article_back_to_top.js"></script>
-  
-  <script src="js/article_jump_links.js"></script>
+
+  <script src="js/site-common.js"></script>
+
+  <!-- KI Article Page — Unified JS v2 -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* --- Reading progress bar --- */
+      var bar = document.getElementById('ki2Progress');
+      if (bar) {
+        window.addEventListener('scroll', function () {
+          var scrolled = window.scrollY;
+          var total = document.documentElement.scrollHeight - window.innerHeight;
+          bar.style.width = (total > 0 ? (scrolled / total) * 100 : 0) + '%';
+        }, { passive: true });
+      }
+
+      /* -------------------------------------------------------
+         FLOAT-WITH-SCROLL SIDEBAR
+         Uses position:fixed so parent overflow:hidden can't
+         interfere. A spacer div holds the sidebar's width so
+         the content column doesn't collapse when it goes fixed.
+         ------------------------------------------------------- */
+      var sidebar  = document.querySelector('.ki2-sidebar');
+      var wrapper  = document.querySelector('.ki2-page-wrapper');
+      var HEADER_H = 96;   /* match --ki2-header-h token */
+      var GAP      = 24;   /* gap below header when floating */
+      var spacer   = null;
+
+      function sidebarFloat() {
+        if (!sidebar || !wrapper) return;
+
+        /* On mobile (sidebar stacked full-width) do nothing */
+        if (window.innerWidth <= 860) {
+          sidebar.classList.remove('is-fixed');
+          sidebar.style.cssText = '';
+          if (spacer) { spacer.style.display = 'none'; }
+          return;
+        }
+
+        var wrapRect    = wrapper.getBoundingClientRect();
+        var sidebarW    = sidebar.offsetWidth;
+        var triggerY    = wrapper.getBoundingClientRect().top + window.scrollY - HEADER_H - GAP;
+        var maxH        = window.innerHeight - HEADER_H - GAP * 2;
+        var scrolledPast = window.scrollY > triggerY;
+
+        /* Ensure spacer exists to hold layout width */
+        if (!spacer) {
+          spacer = document.createElement('div');
+          spacer.setAttribute('aria-hidden', 'true');
+          sidebar.parentNode.insertBefore(spacer, sidebar);
+        }
+
+        if (scrolledPast) {
+          spacer.style.width   = sidebarW + 'px';
+          spacer.style.flexShrink = '0';
+          spacer.style.display = 'block';
+
+          sidebar.classList.add('is-fixed');
+          sidebar.style.top    = (HEADER_H + GAP) + 'px';
+          sidebar.style.left   = (wrapRect.left + 20) + 'px';
+          sidebar.style.width  = sidebarW + 'px';
+          sidebar.style.maxHeight = maxH + 'px';
+          sidebar.style.zIndex = '100';
+        } else {
+          sidebar.classList.remove('is-fixed');
+          sidebar.style.cssText = '';
+          spacer.style.display  = 'none';
+        }
+      }
+
+      window.addEventListener('scroll', sidebarFloat, { passive: true });
+      window.addEventListener('resize', sidebarFloat, { passive: true });
+      /* Run once on load after layout settles */
+      window.addEventListener('load', sidebarFloat);
+
+      /* --- Active sidebar link on scroll --- */
+      var articles = document.querySelectorAll('.ki2-article[id]');
+      var navLinks = document.querySelectorAll('.ki2-sidebar-nav a');
+
+      if (articles.length && navLinks.length && 'IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              navLinks.forEach(function (l) { l.classList.remove('ki2-active'); });
+              var active = document.querySelector('.ki2-sidebar-nav a[href="#' + entry.target.id + '"]');
+              if (active) active.classList.add('ki2-active');
+            }
+          });
+        }, { rootMargin: '-15% 0px -65% 0px' });
+
+        articles.forEach(function (a) { io.observe(a); });
+      }
+    })();
+  </script>
 </body>
 </html>
