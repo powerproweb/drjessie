@@ -31,10 +31,26 @@ jobs:
           SFTP_KEY: ${{ secrets.SFTP_KEY }}
           SFTP_REMOTE_DIR: ${{ secrets.SFTP_REMOTE_DIR }}
         run: |
-          HOST="${BLUEHOST_HOST:-$SFTP_HOST}"
-          USER="${BLUEHOST_USER:-$SFTP_USER}"
+          trim() {
+            printf '%s' "$1" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'
+          }
+
+          HOST="$(trim "${BLUEHOST_HOST:-$SFTP_HOST}")"
+          USER="$(trim "${BLUEHOST_USER:-$SFTP_USER}")"
           KEY="${BLUEHOST_SSH_KEY:-$SFTP_KEY}"
-          REMOTE_DIR="${BLUEHOST_REMOTE_DIR:-$SFTP_REMOTE_DIR}"
+          REMOTE_DIR="$(trim "${BLUEHOST_REMOTE_DIR:-$SFTP_REMOTE_DIR}")"
+
+          # Keep USER and REMOTE_DIR coherent; this avoids silent auth mismatches.
+          case "$REMOTE_DIR" in
+            /home/*/*)
+              DIR_USER="${REMOTE_DIR#/home/}"
+              DIR_USER="${DIR_USER%%/*}"
+              if [ -n "$DIR_USER" ] && { [ -z "$USER" ] || [ "$USER" != "$DIR_USER" ]; }; then
+                echo "::warning::Deployment user adjusted from BLUEHOST_REMOTE_DIR to avoid credential mismatch."
+                USER="$DIR_USER"
+              fi
+              ;;
+          esac
 
           if [ -z "$REMOTE_DIR" ] && [ -n "$USER" ]; then
             REMOTE_DIR="/home/${USER}/public_html"
@@ -61,14 +77,40 @@ jobs:
           if printf '%s' "$KEY" | grep -q "BEGIN .*PRIVATE KEY"; then
             printf '%s' "$KEY" > ~/.ssh/deploy_key
           else
-            printf '%s' "$KEY" | base64 -d > ~/.ssh/deploy_key
+            if ! printf '%s' "$KEY" | base64 -d > ~/.ssh/deploy_key; then
+              echo "::error::BLUEHOST_SSH_KEY/SFTP_KEY is not valid raw private key text or base64-encoded key data."
+              exit 1
+            fi
           fi
           sed -i 's/\r$//' ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
+          if ! ssh-keygen -lf ~/.ssh/deploy_key >/dev/null 2>&1; then
+            echo "::error::Deployment private key is invalid. Re-save BLUEHOST_SSH_KEY with a valid private key."
+            exit 1
+          fi
           ssh-keyscan -p 22 "$HOST" >> ~/.ssh/known_hosts
 
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
+
+      - name: Verify SFTP authentication
+        env:
+          DEPLOY_HOST: ${{ steps.deploy_vars.outputs.host }}
+          DEPLOY_USER: ${{ steps.deploy_vars.outputs.user }}
+        run: |
+          if ! timeout 30s sftp \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile=~/.ssh/known_hosts \
+            -P 22 \
+            -i ~/.ssh/deploy_key \
+            "${DEPLOY_USER}@${DEPLOY_HOST}" <<'EOF'
+            bye
+          EOF
+          then
+            echo "::error::SFTP authentication failed. Verify BLUEHOST_HOST, BLUEHOST_USER, key import for this cPanel user, and that shell access is enabled."
+            exit 1
+          fi
 
       - name: Deploy via lftp SFTP mirror
         env:
