@@ -14,14 +14,10 @@ ErrorDocument 403 /404.html
 # ===========================================================================
 <IfModule mod_rewrite.c>
   RewriteEngine On
-
-  # Force HTTPS
-  RewriteCond %{HTTPS} off
-  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-  # Force www (non-www → www)
-  RewriteCond %{HTTP_HOST} ^drjessie\.life$ [NC]
-  RewriteRule ^(.*)$ https://www.drjessie.life/$1 [L,R=301]
+  # Force a single canonical redirect to HTTPS + www
+  RewriteCond %{HTTPS} !=on [OR]
+  RewriteCond %{HTTP_HOST} !^www\.drjessie\.life$ [NC]
+  RewriteRule ^ https://www.drjessie.life%{REQUEST_URI} [L,R=301,NE]
 
   # Clean URL: /books → /books.html (optional, only if you want extensionless URLs later)
   RewriteCond %{REQUEST_FILENAME} !-f
@@ -140,7 +136,7 @@ FileETag MTime Size
 
 # Block all dotfiles except .well-known (used by SSL cert renewals)
 <IfModule mod_rewrite.c>
-  RewriteRule ^(\.(?!well-known)) - [F,L]
+  RewriteRule (^|/)\.(?!well-known(?:/|$)) - [F,L]
 </IfModule>
 
 # Block backup and config files
@@ -152,7 +148,7 @@ FileETag MTime Size
 
 # Block access to hidden version control directories
 <IfModule mod_rewrite.c>
-  RewriteRule ^(\.|git|svn|hg) - [F,L]
+  RewriteRule (^|/)(?:\.git|\.svn|\.hg)(?:/|$) - [F,L]
 </IfModule>
 
 # ===========================================================================
