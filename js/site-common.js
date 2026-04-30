@@ -46,8 +46,9 @@ document.addEventListener("scroll", function () {
   buttons.forEach(function (btn) {
     var href = btn.getAttribute('href');
     var placeholder = isPlaceholderHref(href);
+    var forceDisabled = btn.getAttribute('data-force-disabled') === 'true';
 
-    if (placeholder) {
+    if (placeholder || forceDisabled) {
       btn.classList.add('is-disabled');
       btn.setAttribute('aria-disabled', 'true');
       btn.setAttribute('tabindex', '-1');

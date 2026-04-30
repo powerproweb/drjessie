@@ -1972,6 +1972,223 @@
   margin-left: .35rem;
 }
 
+.course-price .price-amount{
+  display: inline-block;
+}
+
+.course-price.is-inactive{
+  color: rgba(255, 223, 126, 0.72);
+  filter: grayscale(0.22);
+}
+
+.course-price.is-inactive .price-amount{
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgba(255, 255, 255, 0.58);
+}
+
+.course-price.is-inactive small{
+  color: var(--text-muted, #d8d4c8);
+  opacity: .94;
+}
+
+.course-card .course-graphic{
+  position: relative;
+  isolation: isolate;
+}
+
+.course-card .course-graphic::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.62) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.course-graphic-note{
+  position: absolute;
+  left: 1.1rem;
+  bottom: 1.1rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.36rem 0.62rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.26);
+  background: rgba(10, 8, 12, 0.75);
+  color: #ffdf7e;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
+
+@media (max-width: 860px){
+  .course-card{
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .course-card figure.course-graphic{
+    width: 210px;
+    flex: 0 0 210px;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: none;
+    padding: 0.95rem;
+  }
+}
+
+@media (max-width: 640px){
+  .course-card{
+    flex-direction: column;
+  }
+
+  .course-card figure.course-graphic{
+    width: 100%;
+    flex-basis: auto;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1.15rem;
+  }
+}
+
+.course-syllabus-hub{
+  margin-top: 1.5rem;
+  display: grid;
+  gap: 1.15rem;
+}
+
+.course-launch-policy{
+  margin-top: 1.2rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background:
+    radial-gradient(circle at top right, rgba(182, 25, 98, 0.16), transparent 65%),
+    radial-gradient(circle at bottom left, rgba(10, 148, 158, 0.14), transparent 65%),
+    rgba(0,0,0,0.34);
+  padding: 0.82rem 0.95rem;
+}
+
+#worldbuilding-hub .course-launch-policy p{
+  margin-bottom: 0.48rem;
+}
+
+#worldbuilding-hub .course-launch-policy p:last-child{
+  margin-bottom: 0;
+}
+
+.course-checkout-list{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.course-checkout-list span{
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.36);
+  color: rgba(255,255,255,0.86);
+  font-size: 0.76rem;
+}
+
+.syllabus-card{
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    radial-gradient(circle at top left, rgba(182, 25, 98, 0.16), transparent 62%),
+    radial-gradient(circle at bottom right, rgba(10, 148, 158, 0.16), transparent 62%),
+    linear-gradient(180deg, rgba(8, 7, 12, 0.92), rgba(5, 5, 8, 0.88));
+  box-shadow: 0 18px 46px rgba(0,0,0,0.88);
+  padding: 1.1rem 1.15rem 1.25rem;
+}
+
+#worldbuilding-hub .syllabus-card h3{
+  margin-top: 0.35rem;
+  margin-bottom: 0.65rem;
+}
+
+.syllabus-kicker{
+  display: inline-flex;
+  align-items: center;
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.36);
+  color: #ffdf7e;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.syllabus-grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 0.75rem;
+}
+
+.syllabus-block{
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  background: rgba(0,0,0,0.28);
+  padding: 0.72rem 0.82rem;
+}
+
+.syllabus-block h4{
+  margin: 0 0 0.38rem;
+  color: #fff2ae;
+  font-size: 1rem;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+.syllabus-block ul{
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+#worldbuilding-hub .syllabus-block li{
+  margin-bottom: 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+#worldbuilding-hub .syllabus-block li:last-child{
+  margin-bottom: 0;
+}
+
+.syllabus-alert{
+  margin-top: 0.82rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(0,0,0,0.42);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  padding: 0.68rem 0.78rem;
+}
+
+.syllabus-alert strong{
+  color: #fff2ae;
+}
+
+@media (max-width: 760px){
+  .syllabus-grid{
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .syllabus-card{
+    padding: 1rem 0.95rem 1.1rem;
+  }
+}
+
 /* Legacy spacing helper used in courses.html */
 .move_down_25{
   margin-top: 25px;
