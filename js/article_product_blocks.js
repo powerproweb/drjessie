@@ -70,7 +70,8 @@
     });
   }
 
-  function buildProductBlock(placeholder, baseConfig) {
+  function buildProductBlock(placeholder, baseConfig, productKey) {
+    var keyClass = toClassToken(productKey || clean(placeholder.getAttribute("data-product-key")));
     var title = clean(placeholder.getAttribute("data-product-title")) || baseConfig.vendorName;
     var description = clean(placeholder.getAttribute("data-product-description"));
     var ctaLabel = clean(placeholder.getAttribute("data-cta-label")) || baseConfig.ctaLabel || ("Open " + baseConfig.vendorName);
@@ -83,8 +84,10 @@
     var wrapper = el("aside", "ki-product-block");
     wrapper.setAttribute("role", "complementary");
     wrapper.setAttribute("aria-label", title);
+    if (keyClass) wrapper.className += " ki-product-block--" + keyClass;
     if (logoSrc) {
       var logoWrapClass = "ki-product-logo-wrap";
+      if (keyClass) logoWrapClass += " ki-product-logo-wrap--" + keyClass;
       if (logoVariant) logoWrapClass += " ki-product-logo-wrap--" + logoVariant;
       var logoWrap = el("div", logoWrapClass);
       var logoImg = el("img", "ki-product-logo");
@@ -144,7 +147,7 @@
       var baseConfig = PRODUCT_REGISTRY[key];
       if (!baseConfig || !baseConfig.url) return;
 
-      var block = buildProductBlock(placeholder, baseConfig);
+      var block = buildProductBlock(placeholder, baseConfig, key);
       placeholder.replaceWith(block);
     });
   }
