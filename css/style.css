@@ -2146,6 +2146,12 @@
   border-left-color: rgba(210, 202, 118, 0.3);
 }
 
+.course-side-nav a.course-active{
+  color: #d2ca76;
+  background: rgba(210, 202, 118, 0.07);
+  border-left-color: #d2ca76;
+}
+
 .course-page-content{
   flex: 1;
   min-width: 0;
@@ -2265,6 +2271,12 @@
   }
 
   .course-side-nav a:hover{
+    border-left: none;
+    background: rgba(210, 202, 118, 0.18);
+    color: #d2ca76;
+  }
+
+  .course-side-nav a.course-active{
     border-left: none;
     background: rgba(210, 202, 118, 0.18);
     color: #d2ca76;

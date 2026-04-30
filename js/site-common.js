@@ -27,14 +27,19 @@ document.addEventListener("scroll", function () {
   setHeaderOffset();
 })();
 
-// Courses page sidebar: fixed-on-scroll behavior (desktop)
+// Courses page sidebar: fixed-on-scroll behavior (desktop) + active section highlighting
 (function () {
   var sidebar = document.querySelector(".course-side-menu");
   var layout = document.querySelector(".course-page-layout");
   if (!sidebar || !layout) return;
 
   var GAP = 24;
+  var ACTIVE_CLASS = "course-active";
   var spacer = null;
+  var navLinks = Array.prototype.slice.call(
+    document.querySelectorAll(".course-side-nav a[href^='#']")
+  );
+  var sections = [];
 
   function getHeaderOffset() {
     var raw = getComputedStyle(document.documentElement).getPropertyValue("--header-offset").trim();
@@ -46,6 +51,17 @@ document.addEventListener("scroll", function () {
     sidebar.classList.remove("is-fixed");
     sidebar.style.cssText = "";
     if (spacer) spacer.style.display = "none";
+  }
+
+  function setActiveLink(id) {
+    if (!id) return;
+    navLinks.forEach(function (link) {
+      if (link.getAttribute("data-target-id") === id) {
+        link.classList.add(ACTIVE_CLASS);
+      } else {
+        link.classList.remove(ACTIVE_CLASS);
+      }
+    });
   }
 
   function updateSidebarPosition() {
@@ -89,6 +105,56 @@ document.addEventListener("scroll", function () {
   window.addEventListener("scroll", updateSidebarPosition, { passive: true });
   window.addEventListener("resize", updateSidebarPosition, { passive: true });
   window.addEventListener("load", updateSidebarPosition);
+
+  navLinks.forEach(function (link) {
+    var href = (link.getAttribute("href") || "").trim();
+    if (!href || href.charAt(0) !== "#" || href.length === 1) return;
+
+    var id = href.slice(1);
+    link.setAttribute("data-target-id", id);
+
+    var section = document.getElementById(id);
+    if (section) sections.push(section);
+
+    link.addEventListener("click", function () {
+      setActiveLink(id);
+    });
+  });
+
+  if (sections.length && navLinks.length) {
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) setActiveLink(entry.target.id);
+        });
+      }, { rootMargin: "-15% 0px -65% 0px" });
+      sections.forEach(function (section) { io.observe(section); });
+    } else {
+      function updateActiveByScroll() {
+        var headerOffset = getHeaderOffset() + 30;
+        var activeId = sections[0].id;
+
+        sections.forEach(function (section) {
+          if (window.scrollY >= section.offsetTop - headerOffset) {
+            activeId = section.id;
+          }
+        });
+
+        setActiveLink(activeId);
+      }
+
+      window.addEventListener("scroll", updateActiveByScroll, { passive: true });
+      window.addEventListener("resize", updateActiveByScroll, { passive: true });
+      window.addEventListener("load", updateActiveByScroll);
+      updateActiveByScroll();
+    }
+  }
+
+  if (window.location.hash && window.location.hash.length > 1) {
+    setActiveLink(window.location.hash.slice(1));
+  } else if (sections.length) {
+    setActiveLink(sections[0].id);
+  }
 
   if (document.readyState !== "loading") {
     updateSidebarPosition();
