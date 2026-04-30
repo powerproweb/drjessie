@@ -1957,6 +1957,84 @@
   margin-bottom: .75rem;
 }
 
+.course-page-layout{
+  display: flex;
+  align-items: flex-start;
+  gap: 2.5rem;
+}
+
+.course-side-menu{
+  width: 248px;
+  flex-shrink: 0;
+  position: sticky;
+  top: calc(var(--header-offset, 92px) + 24px);
+  max-height: calc(100vh - var(--header-offset, 92px) - 32px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(210, 202, 118, 0.2) transparent;
+}
+
+.course-side-menu::-webkit-scrollbar{
+  width: 4px;
+}
+
+.course-side-menu::-webkit-scrollbar-track{
+  background: transparent;
+}
+
+.course-side-menu::-webkit-scrollbar-thumb{
+  background: rgba(210, 202, 118, 0.2);
+  border-radius: 4px;
+}
+
+.course-side-label{
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #d2ca76;
+  margin-bottom: 0.85rem;
+  padding-left: 0.75rem;
+}
+
+.course-side-nav{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.course-side-nav a{
+  display: block;
+  font-size: 0.83rem;
+  line-height: 1.35;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  border-left: 2px solid transparent;
+  transition: color 140ms ease, background 140ms ease, border-color 140ms ease;
+}
+
+.course-side-nav a:hover{
+  color: #d2ca76;
+  background: rgba(210, 202, 118, 0.07);
+  border-left-color: rgba(210, 202, 118, 0.3);
+}
+
+.course-page-content{
+  flex: 1;
+  min-width: 0;
+}
+
+.course-card[id],
+.course-launch-policy[id],
+.syllabus-card[id]{
+  scroll-margin-top: calc(var(--header-offset, 92px) + 18px);
+}
+
 .course-price{
   font-weight: 800;
   font-size: 1.18rem;
@@ -2026,6 +2104,40 @@
 }
 
 @media (max-width: 860px){
+  .course-page-layout{
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .course-side-menu{
+    width: 100%;
+    position: static;
+    max-height: none;
+    margin-bottom: 1.35rem;
+    padding-bottom: 1.1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    overflow: visible;
+  }
+
+  .course-side-nav{
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .course-side-nav a{
+    border-left: none;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.05);
+    font-size: 0.78rem;
+    padding: 5px 11px;
+  }
+
+  .course-side-nav a:hover{
+    border-left: none;
+    background: rgba(210, 202, 118, 0.18);
+    color: #d2ca76;
+  }
   .course-card{
     flex-direction: row;
     align-items: stretch;
