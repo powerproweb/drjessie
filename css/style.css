@@ -2072,39 +2072,23 @@
   width: 248px;
   flex-shrink: 0;
   align-self: flex-start;
-  position: -webkit-sticky;
-  position: sticky;
-  top: calc(var(--header-offset, 92px) + 24px);
-  height: fit-content;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(210, 202, 118, 0.2) transparent;
-}
-
-.course-side-menu::-webkit-scrollbar{
-  width: 4px;
-}
-
-.course-side-menu::-webkit-scrollbar-track{
-  background: transparent;
-}
-
-.course-side-menu::-webkit-scrollbar-thumb{
-  background: rgba(210, 202, 118, 0.2);
-  border-radius: 4px;
-}
-
-/* Use an inner sticky wrapper for better browser compatibility than sticky on the flex item itself. */
-.course-side-menu{
   position: static;
   top: auto;
   height: auto;
 }
+/* Use an inner sticky wrapper for better browser compatibility than sticky on the flex item itself. */
 
 .course-side-menu-inner{
   position: -webkit-sticky;
   position: sticky;
   top: calc(var(--header-offset, 92px) + 24px);
   height: fit-content;
+}
+
+.course-side-menu.is-fixed .course-side-menu-inner{
+  position: static;
+  top: auto;
+  height: auto;
 }
 
 .course-side-label{

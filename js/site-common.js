@@ -27,6 +27,74 @@ document.addEventListener("scroll", function () {
   setHeaderOffset();
 })();
 
+// Courses page sidebar: fixed-on-scroll behavior (desktop)
+(function () {
+  var sidebar = document.querySelector(".course-side-menu");
+  var layout = document.querySelector(".course-page-layout");
+  if (!sidebar || !layout) return;
+
+  var GAP = 24;
+  var spacer = null;
+
+  function getHeaderOffset() {
+    var raw = getComputedStyle(document.documentElement).getPropertyValue("--header-offset").trim();
+    var parsed = parseInt(raw, 10);
+    return Number.isFinite(parsed) ? parsed : 92;
+  }
+
+  function resetSidebar() {
+    sidebar.classList.remove("is-fixed");
+    sidebar.style.cssText = "";
+    if (spacer) spacer.style.display = "none";
+  }
+
+  function updateSidebarPosition() {
+    if (!sidebar || !layout) return;
+
+    var headerOffset = getHeaderOffset();
+    if (window.innerWidth <= 860) {
+      resetSidebar();
+      return;
+    }
+
+    var layoutRect = layout.getBoundingClientRect();
+    var sidebarWidth = sidebar.offsetWidth;
+    var triggerY = layoutRect.top + window.scrollY - headerOffset - GAP;
+    var maxHeight = Math.max(160, window.innerHeight - headerOffset - (GAP * 2));
+
+    if (!spacer) {
+      spacer = document.createElement("div");
+      spacer.setAttribute("aria-hidden", "true");
+      sidebar.parentNode.insertBefore(spacer, sidebar);
+    }
+
+    if (window.scrollY > triggerY) {
+      spacer.style.width = sidebarWidth + "px";
+      spacer.style.flexShrink = "0";
+      spacer.style.display = "block";
+
+      sidebar.classList.add("is-fixed");
+      sidebar.style.position = "fixed";
+      sidebar.style.top = (headerOffset + GAP) + "px";
+      sidebar.style.left = layoutRect.left + "px";
+      sidebar.style.width = sidebarWidth + "px";
+      sidebar.style.maxHeight = maxHeight + "px";
+      sidebar.style.overflow = "visible";
+      sidebar.style.zIndex = "100";
+    } else {
+      resetSidebar();
+    }
+  }
+
+  window.addEventListener("scroll", updateSidebarPosition, { passive: true });
+  window.addEventListener("resize", updateSidebarPosition, { passive: true });
+  window.addEventListener("load", updateSidebarPosition);
+
+  if (document.readyState !== "loading") {
+    updateSidebarPosition();
+  }
+})();
+
 // Dynamic year in footer
 (function () {
   var el = document.getElementById("year");
