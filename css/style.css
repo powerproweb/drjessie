@@ -2075,8 +2075,7 @@
   position: -webkit-sticky;
   position: sticky;
   top: calc(var(--header-offset, 92px) + 24px);
-  max-height: calc(100vh - var(--header-offset, 92px) - 32px);
-  overflow-y: auto;
+  height: fit-content;
   scrollbar-width: thin;
   scrollbar-color: rgba(210, 202, 118, 0.2) transparent;
 }
@@ -2111,6 +2110,9 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  max-height: calc(100vh - var(--header-offset, 92px) - 32px);
+  overflow-y: auto;
+  padding-right: 2px;
 }
 
 .course-side-nav a{
@@ -2230,6 +2232,9 @@
     flex-direction: row;
     flex-wrap: wrap;
     gap: 6px;
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
   }
 
   .course-side-nav a{

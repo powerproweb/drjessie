@@ -36,7 +36,16 @@ document.addEventListener("scroll", function () {
 // Global dark/light theme toggle (persisted)
 (function () {
   var STORAGE_KEY = "drjessie-theme";
+  var THEME_TOGGLE_ENABLED = false; // Set to true to re-enable after light-mode styling is finalized.
   var root = document.documentElement;
+
+  if (!THEME_TOGGLE_ENABLED) {
+    root.setAttribute("data-theme", "dark");
+    try {
+      localStorage.setItem(STORAGE_KEY, "dark");
+    } catch (err) {}
+    return;
+  }
 
   function getStoredTheme() {
     try {
