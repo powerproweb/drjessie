@@ -33,6 +33,91 @@ document.addEventListener("scroll", function () {
   if (el) el.textContent = new Date().getFullYear();
 })();
 
+// Global dark/light theme toggle (persisted)
+(function () {
+  var STORAGE_KEY = "drjessie-theme";
+  var root = document.documentElement;
+
+  function getStoredTheme() {
+    try {
+      var saved = localStorage.getItem(STORAGE_KEY);
+      if (saved === "light" || saved === "dark") return saved;
+    } catch (err) {}
+    return null;
+  }
+
+  function saveTheme(theme) {
+    try {
+      localStorage.setItem(STORAGE_KEY, theme);
+    } catch (err) {}
+  }
+
+  function getPreferredTheme() {
+    return (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches)
+      ? "light"
+      : "dark";
+  }
+
+  function setToggleUI(theme) {
+    var btn = document.querySelector(".theme-toggle");
+    if (!btn) return;
+
+    var icon = btn.querySelector(".theme-toggle-icon");
+    var text = btn.querySelector(".theme-toggle-text");
+    var isLight = theme === "light";
+
+    if (icon) icon.textContent = isLight ? "☀" : "☾";
+    if (text) text.textContent = isLight ? "Light" : "Dark";
+
+    btn.setAttribute("aria-pressed", String(isLight));
+    btn.setAttribute("title", isLight ? "Switch to dark mode" : "Switch to light mode");
+  }
+
+  function applyTheme(theme) {
+    root.setAttribute("data-theme", theme);
+    setToggleUI(theme);
+  }
+
+  function installThemeToggle() {
+    var nav = document.querySelector(".main-nav");
+    if (!nav || nav.querySelector(".theme-toggle")) return;
+
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "theme-toggle";
+    btn.setAttribute("aria-label", "Toggle light and dark mode");
+
+    var icon = document.createElement("span");
+    icon.className = "theme-toggle-icon";
+    icon.setAttribute("aria-hidden", "true");
+
+    var text = document.createElement("span");
+    text.className = "theme-toggle-text";
+
+    btn.appendChild(icon);
+    btn.appendChild(text);
+    nav.appendChild(btn);
+
+    btn.addEventListener("click", function () {
+      var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
+      var next = current === "light" ? "dark" : "light";
+      applyTheme(next);
+      saveTheme(next);
+    });
+
+    setToggleUI(root.getAttribute("data-theme") || "dark");
+  }
+
+  var initialTheme = getStoredTheme() || getPreferredTheme();
+  applyTheme(initialTheme);
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", installThemeToggle, { once: true });
+  } else {
+    installThemeToggle();
+  }
+})();
+
 // Format buttons: auto-disable when href is missing/placeholder + block clicks when disabled
 (function () {
   function isPlaceholderHref(hrefRaw) {
