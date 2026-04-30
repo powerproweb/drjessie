@@ -2603,6 +2603,115 @@ div.number-block6 {background: url(images/typo/number-6.png) 0 0 no-repeat;}
   outline: 3px solid rgba(210, 202, 118, 0.35);
   outline-offset: 2px;
 }
+/* Reusable article product CTA blocks */
+.ki-product-block{
+  margin: 14px 0 20px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(210, 202, 118, 0.35);
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.ki-product-title{
+  margin: 0 0 6px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: rgba(255,255,255,0.95);
+  letter-spacing: 0.01em;
+}
+
+.ki-product-description{
+  margin: 0 0 10px;
+  color: rgba(255,255,255,0.78);
+}
+
+.ki-product-actions{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.ki-product-link{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.92rem;
+  line-height: 1;
+  color: rgba(255,255,255,0.92);
+  background: rgba(210, 202, 118, 0.18);
+  border: 1px solid rgba(210, 202, 118, 0.55);
+  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+}
+
+.ki-product-link:hover{
+  transform: translateY(-1px);
+  background: rgba(210, 202, 118, 0.24);
+  border-color: rgba(210, 202, 118, 0.75);
+}
+
+.ki-product-link:focus-visible{
+  outline: 3px solid rgba(210, 202, 118, 0.35);
+  outline-offset: 2px;
+}
+
+.ki-product-code-wrap{
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.20);
+  background: rgba(255,255,255,0.05);
+}
+
+.ki-product-code-label{
+  font-size: 0.84rem;
+  color: rgba(255,255,255,0.75);
+}
+
+.ki-product-code{
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.35);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.96);
+}
+
+.ki-product-copy-btn{
+  appearance: none;
+  border: 1px solid rgba(210, 202, 118, 0.45);
+  background: rgba(0,0,0,0.28);
+  color: rgba(255,255,255,0.90);
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+}
+
+.ki-product-copy-btn:hover{
+  transform: translateY(-1px);
+  background: rgba(0,0,0,0.36);
+  border-color: rgba(210, 202, 118, 0.65);
+}
+
+.ki-product-copy-btn:focus-visible{
+  outline: 3px solid rgba(210, 202, 118, 0.35);
+  outline-offset: 2px;
+}
 
 /* Article hero image: dull/soft → crisp on hover */
 .ki-article-hero{
