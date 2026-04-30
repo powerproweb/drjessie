@@ -2093,6 +2093,20 @@
   border-radius: 4px;
 }
 
+/* Use an inner sticky wrapper for better browser compatibility than sticky on the flex item itself. */
+.course-side-menu{
+  position: static;
+  top: auto;
+  height: auto;
+}
+
+.course-side-menu-inner{
+  position: -webkit-sticky;
+  position: sticky;
+  top: calc(var(--header-offset, 92px) + 24px);
+  height: fit-content;
+}
+
 .course-side-label{
   font-size: 0.68rem;
   font-weight: 700;
@@ -2113,6 +2127,21 @@
   max-height: calc(100vh - var(--header-offset, 92px) - 32px);
   overflow-y: auto;
   padding-right: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(210, 202, 118, 0.2) transparent;
+}
+
+.course-side-nav::-webkit-scrollbar{
+  width: 4px;
+}
+
+.course-side-nav::-webkit-scrollbar-track{
+  background: transparent;
+}
+
+.course-side-nav::-webkit-scrollbar-thumb{
+  background: rgba(210, 202, 118, 0.2);
+  border-radius: 4px;
 }
 
 .course-side-nav a{
@@ -2226,6 +2255,12 @@
     padding-bottom: 1.1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     overflow: visible;
+  }
+
+  .course-side-menu-inner{
+    position: static;
+    top: auto;
+    height: auto;
   }
 
   .course-side-nav{
