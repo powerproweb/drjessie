@@ -13,19 +13,27 @@
       url: "https://professionalformulas.com/patients/",
       ctaLabel: "Open Professional Formulas Portal",
       discountCode: "CRV697T",
-      discountLabel: "Use code at checkout"
+      discountLabel: "Use code at checkout",
+      logoSrc: "images/cta-logos/professional-formulas.png",
+      logoAlt: "Professional Formulas logo",
+      logoVariant: "inverse"
     },
     "systemic-formulas": {
       vendorName: "Systemic Formulas",
       url: "https://sfi-portal.com/",
       ctaLabel: "Open Systemic Formulas Portal",
       discountCode: "Txcl-01",
-      discountLabel: "Use code at checkout"
+      discountLabel: "Use code at checkout",
+      logoSrc: "images/cta-logos/systemic-formulas.png",
+      logoAlt: "Systemic Formulas logo"
     },
     "neora": {
       vendorName: "NEORA",
       url: "https://drjessie.neora.com/us/en/neoraconnect",
-      ctaLabel: "Open NEORA Link"
+      ctaLabel: "Open NEORA Link",
+      logoSrc: "images/cta-logos/neora-connect.png",
+      logoAlt: "NEORA logo",
+      logoVariant: "inverse"
     }
   };
 
@@ -38,6 +46,10 @@
     if (className) node.className = className;
     if (typeof text === "string") node.textContent = text;
     return node;
+  }
+
+  function toClassToken(value) {
+    return clean(value).toLowerCase().replace(/[^a-z0-9-]/g, "");
   }
 
   function updateCopyButtonState(button, text) {
@@ -64,10 +76,25 @@
     var ctaLabel = clean(placeholder.getAttribute("data-cta-label")) || baseConfig.ctaLabel || ("Open " + baseConfig.vendorName);
     var discountCode = clean(placeholder.getAttribute("data-discount-code")) || baseConfig.discountCode || "";
     var discountLabel = clean(placeholder.getAttribute("data-discount-label")) || baseConfig.discountLabel || "Use code";
+    var logoSrc = clean(placeholder.getAttribute("data-logo-src")) || baseConfig.logoSrc || "";
+    var logoAlt = clean(placeholder.getAttribute("data-logo-alt")) || baseConfig.logoAlt || (baseConfig.vendorName + " logo");
+    var logoVariant = toClassToken(clean(placeholder.getAttribute("data-logo-variant")) || baseConfig.logoVariant || "");
 
     var wrapper = el("aside", "ki-product-block");
     wrapper.setAttribute("role", "complementary");
     wrapper.setAttribute("aria-label", title);
+    if (logoSrc) {
+      var logoWrapClass = "ki-product-logo-wrap";
+      if (logoVariant) logoWrapClass += " ki-product-logo-wrap--" + logoVariant;
+      var logoWrap = el("div", logoWrapClass);
+      var logoImg = el("img", "ki-product-logo");
+      logoImg.setAttribute("src", logoSrc);
+      logoImg.setAttribute("alt", logoAlt);
+      logoImg.setAttribute("loading", "lazy");
+      logoImg.setAttribute("decoding", "async");
+      logoWrap.appendChild(logoImg);
+      wrapper.appendChild(logoWrap);
+    }
 
     wrapper.appendChild(el("p", "ki-product-title", title));
 
