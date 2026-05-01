@@ -161,6 +161,102 @@ document.addEventListener("scroll", function () {
   }
 })();
 
+// Courses page image popup: click any course card image to view an enlarged version.
+(function () {
+  var courseImages = Array.prototype.slice.call(
+    document.querySelectorAll(".course-card .course-graphic img")
+  );
+  if (!courseImages.length) return;
+
+  var lightbox = document.createElement("div");
+  lightbox.className = "course-image-lightbox";
+  lightbox.setAttribute("aria-hidden", "true");
+  lightbox.innerHTML =
+    '<div class="course-image-lightbox-backdrop" data-close-lightbox="true"></div>' +
+    '<div class="course-image-lightbox-dialog" role="dialog" aria-modal="true" aria-label="Course image preview">' +
+      '<button type="button" class="course-image-lightbox-close" aria-label="Close image preview">×</button>' +
+      '<img class="course-image-lightbox-image" src="" alt="">' +
+      '<p class="course-image-lightbox-caption" aria-live="polite"></p>' +
+    "</div>";
+
+  document.body.appendChild(lightbox);
+
+  var preview = lightbox.querySelector(".course-image-lightbox-image");
+  var caption = lightbox.querySelector(".course-image-lightbox-caption");
+  var closeBtn = lightbox.querySelector(".course-image-lightbox-close");
+  var lastFocused = null;
+  var isOpen = false;
+
+  function openLightbox(img) {
+    if (!img) return;
+    lastFocused = document.activeElement;
+
+    preview.src = img.currentSrc || img.src || "";
+    preview.alt = img.getAttribute("alt") || "Course image preview";
+    caption.textContent = img.getAttribute("alt") || "";
+
+    lightbox.classList.add("is-open");
+    lightbox.setAttribute("aria-hidden", "false");
+    document.body.classList.add("course-lightbox-open");
+    isOpen = true;
+
+    closeBtn.focus();
+  }
+
+  function closeLightbox() {
+    if (!isOpen) return;
+
+    isOpen = false;
+    lightbox.classList.remove("is-open");
+    lightbox.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("course-lightbox-open");
+
+    preview.src = "";
+    preview.alt = "";
+    caption.textContent = "";
+
+    if (lastFocused && typeof lastFocused.focus === "function") {
+      lastFocused.focus();
+    }
+  }
+
+  courseImages.forEach(function (img) {
+    if (!img) return;
+    img.classList.add("is-zoomable");
+    img.setAttribute("tabindex", "0");
+    img.setAttribute("role", "button");
+    img.setAttribute(
+      "aria-label",
+      ((img.getAttribute("alt") || "Course image") + " — open enlarged preview")
+    );
+
+    img.addEventListener("click", function () {
+      openLightbox(img);
+    });
+
+    img.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openLightbox(img);
+      }
+    });
+  });
+
+  closeBtn.addEventListener("click", closeLightbox);
+
+  lightbox.addEventListener("click", function (e) {
+    if (e.target && e.target.getAttribute("data-close-lightbox") === "true") {
+      closeLightbox();
+    }
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && isOpen) {
+      closeLightbox();
+    }
+  });
+})();
+
 // Dynamic year in footer
 (function () {
   var el = document.getElementById("year");

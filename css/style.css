@@ -2212,6 +2212,93 @@
   z-index: 1;
 }
 
+.course-card .course-graphic img.is-zoomable{
+  cursor: zoom-in;
+}
+
+.course-card .course-graphic img.is-zoomable:focus-visible{
+  outline: 3px solid rgba(210, 202, 118, 0.8);
+  outline-offset: 3px;
+}
+
+.course-image-lightbox{
+  position: fixed;
+  inset: 0;
+  z-index: 13000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.1rem;
+}
+
+.course-image-lightbox.is-open{
+  display: flex;
+}
+
+.course-image-lightbox-backdrop{
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 5, 16, 0.88);
+  backdrop-filter: blur(2px);
+}
+
+.course-image-lightbox-dialog{
+  position: relative;
+  z-index: 1;
+  width: min(96vw, 1020px);
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.course-image-lightbox-image{
+  width: auto;
+  max-width: 100%;
+  max-height: calc(92vh - 88px);
+  object-fit: contain;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 28px 76px rgba(0,0,0,0.9);
+}
+
+.course-image-lightbox-caption{
+  margin-top: 0.65rem;
+  text-align: center;
+  color: rgba(255,255,255,0.92);
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.course-image-lightbox-close{
+  position: absolute;
+  top: -44px;
+  right: -4px;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.42);
+  background: rgba(0,0,0,0.58);
+  color: #ffffff;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.course-image-lightbox-close:hover{
+  border-color: rgba(210, 202, 118, 0.92);
+  color: #d2ca76;
+}
+
+.course-image-lightbox-close:focus-visible{
+  outline: 2px solid rgba(210, 202, 118, 0.9);
+  outline-offset: 2px;
+}
+
+body.course-lightbox-open{
+  overflow: hidden;
+}
+
 .course-graphic-note{
   position: absolute;
   left: 1.1rem;
@@ -2292,6 +2379,22 @@
     border-right: 1px solid rgba(255, 255, 255, 0.08);
     border-bottom: none;
     padding: 0.95rem;
+  }
+}
+
+@media (max-width: 640px){
+  .course-image-lightbox{
+    padding: 0.75rem;
+  }
+
+  .course-image-lightbox-close{
+    top: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.74);
+  }
+
+  .course-image-lightbox-image{
+    max-height: calc(92vh - 68px);
   }
 }
 
