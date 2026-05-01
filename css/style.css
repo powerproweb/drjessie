@@ -3362,15 +3362,15 @@ div.number-block6 {background: url(images/typo/number-6.png) 0 0 no-repeat;}
   display: block;
   width: 100%;
   height: auto;
-  filter: saturate(0.75) contrast(0.90) brightness(0.92) blur(1.4px);
-  transform: scale(1.01);
+  filter: none;
+  transform: none;
   transition: filter 180ms ease, transform 180ms ease;
   will-change: filter, transform;
 }
 
 .ki-article-hero:hover img{
-  filter: saturate(1) contrast(1) brightness(1) blur(0);
-  transform: scale(1.00);
+  filter: none;
+  transform: none;
 }
 
 /* Mobile/touch: make it crisp (no hover) */
@@ -3399,18 +3399,17 @@ div.number-block6 {background: url(images/typo/number-6.png) 0 0 no-repeat;}
   height: 100%;
   object-fit: cover;      /* crops, never stretches */
   object-position: center;
-
-  /* dull/soft by default */
-  filter: saturate(0.75) contrast(0.90) brightness(0.92) blur(1.4px);
-  transform: scale(1.01);
+  /* no blur/softening */
+  filter: none;
+  transform: none;
   transition: filter 180ms ease, transform 180ms ease;
   will-change: filter, transform;
 }
 
 /* Crisp on hover */
 .ki-hero-800x200:hover img{
-  filter: saturate(1) contrast(1) brightness(1) blur(0);
-  transform: scale(1.00);
+  filter: none;
+  transform: none;
 }
 
 /* Touch devices: keep crisp (no hover) */
