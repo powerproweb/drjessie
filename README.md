@@ -37,3 +37,7 @@ PowerShell command to base64-encode an existing private key (if you store `BLUEH
 ```
 
 Manual upload is still possible, but the expected path is deployment by git push.
+
+## Queued Follow-Up
+
+- On next site work session, audit favicon implementation across all pages and make it consistent with the favicon setup used on `index`/home. Current state is inconsistent page-to-page.
