@@ -34,6 +34,23 @@
       logoSrc: "images/cta-logos/neora-connect.png",
       logoAlt: "NEORA logo",
       logoVariant: "inverse"
+    },
+    "green-compass": {
+      vendorName: "Green Compass",
+      url: "https://greencompassglobal.com/?pws=jessiekeener",
+      ctaLabel: "Open Green Compass Shop",
+      pricingLabel: "Best seller pricing",
+      pricingText: "One-time and subscribe pricing from the Green Compass shop.",
+      pricingItems: [
+        "Daily Nano Jellies: $124.95 one-time / $99.96 subscribe",
+        "Full Spectrum Tinctures 1000mg: $139.95 one-time / $111.96 subscribe",
+        "Broad Spectrum Daily Nano Jellies: $119.95 one-time / $95.96 subscribe",
+        "Mind Bloom Adaptogens: $87.45 one-time / $69.96 subscribe",
+        "Organic Immune Bloom Adaptogens: $62.45 one-time / $49.96 subscribe",
+        "Collagen CBG Recovery Energy: $99.95 one-time / $79.96 subscribe",
+        "SIX Sparkling Cherry Lime THC: $99.95 one-time / $79.96 subscribe",
+        "SIX Snaps Drink Drops (10-count): $49.99 one-time / $39.99 subscribe"
+      ]
     }
   };
 
@@ -75,11 +92,20 @@
     var title = clean(placeholder.getAttribute("data-product-title")) || baseConfig.vendorName;
     var description = clean(placeholder.getAttribute("data-product-description"));
     var ctaLabel = clean(placeholder.getAttribute("data-cta-label")) || baseConfig.ctaLabel || ("Open " + baseConfig.vendorName);
+    var ctaUrl = clean(placeholder.getAttribute("data-cta-url")) || baseConfig.url;
     var discountCode = clean(placeholder.getAttribute("data-discount-code")) || baseConfig.discountCode || "";
     var discountLabel = clean(placeholder.getAttribute("data-discount-label")) || baseConfig.discountLabel || "Use code";
+    var pricingLabel = clean(placeholder.getAttribute("data-pricing-label")) || baseConfig.pricingLabel || "Pricing";
+    var pricingText = clean(placeholder.getAttribute("data-pricing-text")) || baseConfig.pricingText || "";
+    var pricingItems = Array.isArray(baseConfig.pricingItems) ? baseConfig.pricingItems.slice() : [];
+    var pricingItemsAttr = clean(placeholder.getAttribute("data-pricing-items"));
     var logoSrc = clean(placeholder.getAttribute("data-logo-src")) || baseConfig.logoSrc || "";
     var logoAlt = clean(placeholder.getAttribute("data-logo-alt")) || baseConfig.logoAlt || (baseConfig.vendorName + " logo");
     var logoVariant = toClassToken(clean(placeholder.getAttribute("data-logo-variant")) || baseConfig.logoVariant || "");
+
+    if (pricingItemsAttr) {
+      pricingItems = pricingItemsAttr.split("|").map(clean).filter(Boolean);
+    }
 
     var wrapper = el("aside", "ki-product-block");
     wrapper.setAttribute("role", "complementary");
@@ -105,10 +131,36 @@
       wrapper.appendChild(el("p", "ki-product-description", description));
     }
 
+    if (pricingText || pricingItems.length) {
+      var pricingWrap = el("div", "ki-product-pricing");
+      if (pricingLabel) {
+        pricingWrap.appendChild(el("p", "ki-product-pricing-label", pricingLabel));
+      }
+
+      if (pricingText) {
+        pricingWrap.appendChild(el("p", "ki-product-pricing-text", pricingText));
+      }
+
+      if (pricingItems.length) {
+        var pricingList = el("ul", "ki-product-pricing-list");
+        pricingItems.forEach(function (item) {
+          var text = clean(item);
+          if (!text) return;
+          pricingList.appendChild(el("li", "ki-product-pricing-item", text));
+        });
+
+        if (pricingList.children.length) {
+          pricingWrap.appendChild(pricingList);
+        }
+      }
+
+      wrapper.appendChild(pricingWrap);
+    }
+
     var actions = el("div", "ki-product-actions");
 
     var link = el("a", "ki-product-link", ctaLabel);
-    link.setAttribute("href", baseConfig.url);
+    link.setAttribute("href", ctaUrl);
     link.setAttribute("target", "_blank");
     link.setAttribute("rel", "noopener noreferrer");
     actions.appendChild(link);
