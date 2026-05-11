@@ -1,0 +1,19 @@
+<?php
+declare(strict_types=1);
+
+return [
+    'db_host' => 'localhost',
+    'db_name' => 'your_database_name',
+    'db_user' => 'your_database_user',
+    'db_pass' => 'your_database_password',
+
+    'admin_user' => 'your_admin_username',
+    'admin_pass' => 'your_admin_password',
+
+    'notification_email' => 'info@drjessie.life',
+    'mail_from_email' => 'noreply@drjessie.life',
+    'mail_from_name' => 'DrJessie.life Contact',
+
+    // Keep this on the live canonical origin.
+    'allowed_origin' => 'https://www.drjessie.life',
+];

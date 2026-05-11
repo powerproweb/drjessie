@@ -34,3 +34,10 @@ desktop.ini
 # ============================================================
 *.log
 error_log
+
+# ============================================================
+# PROJECT LOCAL RUNTIME DATA AND LOCAL OVERRIDES
+# ============================================================
+api/_config.local.php
+uploads/
+!uploads/.gitkeep

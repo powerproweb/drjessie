@@ -49,19 +49,6 @@
 <link rel="preload" href="css/custom.css" as="style">
 <link rel="stylesheet" href="css/custom.css" type="text/css">
 
-<!-- Prefetch / Preload MailerLite -->
-<link rel="dns-prefetch" href="https://assets.mailerlite.com">
-
-<!-- MailerLite Universal -->
-<script>
-    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
-    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
-    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
-    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-    ml('account', '1914177');
-</script>
-<!-- End MailerLite Universal -->
-
 
   <style>
     /* Contact page helpers */
@@ -80,6 +67,104 @@
       margin-top: 14px;
     }
     .contact-links a { text-decoration: underline; }
+    .cf-form { display: grid; gap: 12px; margin-top: 4px; }
+    .cf-field-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .cf-label {
+      display: block;
+      margin: 0 0 6px;
+      font-size: 0.86rem;
+      letter-spacing: 0.02em;
+      color: var(--text-muted);
+    }
+    .cf-input,
+    .cf-textarea {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.24);
+      color: var(--text-main);
+      padding: 10px 12px;
+      font: inherit;
+    }
+    .cf-input:focus,
+    .cf-textarea:focus {
+      outline: none;
+      border-color: rgba(240,121,235,0.72);
+      box-shadow: 0 0 0 2px rgba(240,121,235,0.20);
+    }
+    .cf-textarea {
+      min-height: 160px;
+      resize: vertical;
+      line-height: 1.45;
+    }
+    .cf-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--text-main);
+      line-height: 1.45;
+    }
+    .cf-check input {
+      margin-top: 4px;
+      width: 16px;
+      height: 16px;
+      flex: 0 0 16px;
+    }
+    .cf-honeypot {
+      position: absolute !important;
+      left: -10000px !important;
+      width: 1px !important;
+      height: 1px !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+    .cf-human-check {
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.04);
+      padding: 10px 12px;
+    }
+    .cf-human-check label {
+      display: block;
+      margin: 0 0 6px;
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+    .cf-human-check input[type="range"] {
+      width: 100%;
+    }
+    .cf-human-row {
+      margin-top: 6px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .cf-form-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .cf-status {
+      margin: 0;
+      min-height: 20px;
+      font-size: 0.9rem;
+    }
+    .cf-status.pending { color: var(--text-muted); }
+    .cf-status.success { color: #a7f0ca; }
+    .cf-status.error { color: #ffb2b2; }
+    @media (max-width: 700px) {
+      .cf-field-row { grid-template-columns: 1fr; }
+      .cf-form-actions .btn-primary { width: 100%; }
+    }
   </style>
 
 </head>
@@ -211,6 +296,10 @@
         </li>
       </ul>
     </li>
+    <!-- Contact -->
+    <li class="nav-item">
+      <a href="contact.html" class="nav-link" title="Contact Dr. Jessie">Contact</a>
+    </li>
   </ul>
 </nav>
 <!-- End menu bar -->
@@ -244,18 +333,55 @@
         <h2>Contact Dr. Jessie</h2>
 
         <div class="ds-text-1-28rem">
-          Send a message using the form below. If you’re reaching out about clinical work, include a brief summary
-          and any time constraints so we can route you correctly.
+          Use the secure form below for general inquiries, collaboration requests, press, and patient-related questions.
+          Please include enough detail so your message can be routed quickly.
         </div>
 
         <div class="contact-card" aria-label="Contact form">
-          <!-- MailerLite embedded form -->
-          <!-- TODO: Replace CONTACT_FORM_ID with your real MailerLite form ID before launch -->
-          <div class="ml-embedded" data-form="CONTACT_FORM_ID"></div>
+          <form id="drjContactForm" class="cf-form" action="/api/contact-form.php" method="post" novalidate>
+            <div class="cf-field-row">
+              <div>
+                <label class="cf-label" for="cfFullName">Full Name *</label>
+                <input class="cf-input" id="cfFullName" name="full_name" type="text" required maxlength="120" autocomplete="name">
+              </div>
+              <div>
+                <label class="cf-label" for="cfEmail">Email *</label>
+                <input class="cf-input" id="cfEmail" name="email" type="email" required maxlength="160" autocomplete="email">
+              </div>
+            </div>
+
+            <div>
+              <label class="cf-label" for="cfSubject">Subject *</label>
+              <input class="cf-input" id="cfSubject" name="subject" type="text" required maxlength="180">
+            </div>
+
+            <div>
+              <label class="cf-label" for="cfMessage">Message *</label>
+              <textarea class="cf-textarea" id="cfMessage" name="message" required maxlength="6000"></textarea>
+            </div>
+
+            <label class="cf-check">
+              <input id="cfConsentContact" name="consent_contact" type="checkbox" required>
+              <span>I consent to being contacted about this inquiry. *</span>
+            </label>
+
+            <input class="cf-honeypot" type="text" name="company_website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+            <div class="cf-human-check">
+              <label for="cfHumanSlider">Quick human check, slide to 100% *</label>
+              <input id="cfHumanSlider" name="human_slider_value" type="range" min="0" max="100" step="1" value="0">
+              <div class="cf-human-row"><strong id="cfHumanValue">0%</strong><span>Slide until the meter reaches 100%.</span></div>
+            </div>
+
+            <div class="cf-form-actions">
+              <button id="cfSubmit" class="btn-primary" type="submit">Send Message</button>
+              <p id="cfStatus" class="cf-status" role="status" aria-live="polite"></p>
+            </div>
+          </form>
 
           <noscript>
             <p class="contact-note">
-              JavaScript is required to load the form. You can also email:
+              JavaScript is required to submit this form. You can also email:
               <a href="mailto:info@drjessie.life">info@drjessie.life</a>
             </p>
           </noscript>
@@ -292,6 +418,143 @@
   </footer>
 
   <script src="js/site-common.js"></script>
+  <script>
+    (() => {
+      const form = document.getElementById("drjContactForm");
+      if (!form) return;
+
+      const submitButton = document.getElementById("cfSubmit");
+      const statusEl = document.getElementById("cfStatus");
+      const humanSlider = document.getElementById("cfHumanSlider");
+      const humanValue = document.getElementById("cfHumanValue");
+
+      let formStartedAt = Date.now();
+      let humanTargetValue = 100;
+
+      function setStatus(message, type) {
+        if (!statusEl) return;
+        statusEl.className = "cf-status";
+        if (type) statusEl.classList.add(type);
+        statusEl.textContent = message || "";
+      }
+
+      function resetHumanCheck() {
+        formStartedAt = Date.now();
+        humanTargetValue = 60 + Math.floor(Math.random() * 33);
+        if (humanSlider) {
+          humanSlider.value = "0";
+        }
+        if (humanValue) {
+          humanValue.textContent = "0%";
+        }
+      }
+
+      function humanPercentFromSlider(sliderValue) {
+        if (humanTargetValue <= 0) return 0;
+        const percent = Math.round((sliderValue / humanTargetValue) * 100);
+        return Math.max(0, Math.min(100, percent));
+      }
+
+      function valueFor(name) {
+        const element = form.elements[name];
+        if (!element || typeof element.value !== "string") {
+          return "";
+        }
+        return element.value.trim();
+      }
+
+      function buildPayload() {
+        const sliderValue = humanSlider ? (parseInt(humanSlider.value, 10) || 0) : 0;
+        return {
+          full_name: valueFor("full_name"),
+          email: valueFor("email"),
+          subject: valueFor("subject"),
+          message: valueFor("message"),
+          company_website: valueFor("company_website"),
+          consent_contact: form.querySelector("input[name='consent_contact']").checked ? 1 : 0,
+          human_slider_value: sliderValue,
+          human_target_value: humanTargetValue,
+          human_elapsed_ms: Math.max(0, Date.now() - formStartedAt)
+        };
+      }
+
+      function validate(payload) {
+        const errors = [];
+        if (!payload.full_name) errors.push("Full name is required.");
+        if (!payload.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) errors.push("A valid email is required.");
+        if (!payload.subject) errors.push("Subject is required.");
+        if (!payload.message) errors.push("Message is required.");
+        if (!payload.consent_contact) errors.push("Consent is required before submitting.");
+        if ((payload.human_slider_value || 0) < (payload.human_target_value || 0)) errors.push("Slide until the meter reaches 100% before submitting.");
+        if ((payload.human_elapsed_ms || 0) < 1200) errors.push("Please wait a second and submit again.");
+        return errors;
+      }
+
+      if (humanSlider) {
+        humanSlider.addEventListener("input", () => {
+          if (!humanValue) return;
+          const sliderValue = parseInt(humanSlider.value, 10) || 0;
+          humanValue.textContent = `${humanPercentFromSlider(sliderValue)}%`;
+        });
+      }
+
+      resetHumanCheck();
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const payload = buildPayload();
+        const errors = validate(payload);
+        if (errors.length) {
+          setStatus(errors[0], "error");
+          return;
+        }
+
+        const originalButtonText = submitButton ? submitButton.textContent : "Send Message";
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.textContent = "Sending...";
+        }
+        setStatus("Sending your message...", "pending");
+
+        try {
+          const response = await fetch("/api/contact-form.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          let data = null;
+          try {
+            data = await response.json();
+          } catch (parseError) {
+            data = null;
+          }
+
+          if (!response.ok || !data || !data.success) {
+            if (data && Array.isArray(data.errors) && data.errors.length) {
+              setStatus(data.errors[0], "error");
+            } else if (data && typeof data.message === "string" && data.message.trim() !== "") {
+              setStatus(data.message, "error");
+            } else {
+              setStatus("Could not send your message right now. Please try again.", "error");
+            }
+            return;
+          }
+
+          setStatus(`Message sent successfully. Ticket reference: ${data.ticket_ref}.`, "success");
+          form.reset();
+          resetHumanCheck();
+        } catch (error) {
+          setStatus("Network error. Please check your connection and try again.", "error");
+        } finally {
+          if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = originalButtonText;
+          }
+        }
+      });
+    })();
+  </script>
   
   <script src="js/article_back_to_top.js"></script>
 </body>

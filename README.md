@@ -7,6 +7,7 @@ The site covers holistic naturopathic care, longevity, breathwork, detox, integr
 ## Tech Stack
 
 - Static HTML + CSS + vanilla JS (no framework, no build step)
+- PHP + MySQL for contact form API and admin inbox
 - MailerLite for newsletter signup
 - Hosted on Apache shared hosting (BlueHost/cPanel)
 

@@ -137,6 +137,7 @@ FileETag MTime Size
 # Block all dotfiles except .well-known (used by SSL cert renewals)
 <IfModule mod_rewrite.c>
   RewriteRule (^|/)\.(?!well-known(?:/|$)) - [F,L]
+  RewriteRule ^uploads/(contact_messages|rate_limit)(/|$) - [F,L,NC]
 </IfModule>
 
 # Block backup and config files

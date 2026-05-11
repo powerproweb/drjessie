@@ -14,6 +14,44 @@ document.addEventListener("scroll", function () {
   }
 });
 
+// Ensure every page has a direct Contact link in the top nav.
+(function () {
+  var navLists = document.querySelectorAll(".main-nav .nav-list");
+  if (!navLists.length) return;
+
+  var path = (window.location.pathname || "").toLowerCase();
+  var isContactPage = path === "/contact" || path.endsWith("/contact.html");
+
+  navLists.forEach(function (navList) {
+    if (!navList) return;
+
+    var existingContact = navList.querySelector(
+      'a[href="contact.html"], a[href="/contact.html"], a[href="https://drjessie.life/contact.html"], a[href="https://www.drjessie.life/contact.html"]'
+    );
+    if (existingContact) {
+      if (isContactPage) {
+        existingContact.setAttribute("aria-current", "page");
+      }
+      return;
+    }
+
+    var navItem = document.createElement("li");
+    navItem.className = "nav-item";
+
+    var navLink = document.createElement("a");
+    navLink.className = "nav-link";
+    navLink.href = "contact.html";
+    navLink.title = "Contact Dr. Jessie";
+    navLink.textContent = "Contact";
+    if (isContactPage) {
+      navLink.setAttribute("aria-current", "page");
+    }
+
+    navItem.appendChild(navLink);
+    navList.appendChild(navItem);
+  });
+})();
+
 // Auto-offset main content so the fixed header never overlaps the hero
 (function () {
   function setHeaderOffset() {
