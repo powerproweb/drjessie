@@ -139,6 +139,39 @@
     .ki2-sidebar-nav a:hover,
     .ki2-sidebar-nav a.ki2-active { background: var(--ki2-gold-dim); border-left: none; color: var(--ki2-gold); }
   }
+
+  .ki-gc-image-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin: 1rem 0 1.25rem;
+  }
+  .ki-gc-image-tile {
+    margin: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(0,0,0,0.25);
+  }
+  .ki-gc-image-tile img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+  }
+  .ki-gc-image-row img.is-zoomable {
+    cursor: zoom-in;
+  }
+  .ki-gc-image-row img.is-zoomable:focus-visible {
+    outline: 3px solid rgba(210, 202, 118, 0.8);
+    outline-offset: 3px;
+  }
+  @media (max-width: 860px) {
+    .ki-gc-image-row {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
 </head>
 
@@ -212,7 +245,7 @@
           <li><a href="#whats-really-eating-you">What's Really Eating You?</a></li>
           <li><a href="#the-pandemic-in-our-guts">The Pandemic in Our Guts!</a></li>
           <li><a href="#dr-jessie-my-skin-story">Dr. Jessie, My Skin Story</a></li>
-          <li><a href="#collagen-and-connective-tissue">Collagen and Connective Tissue</a></li>
+          <li><a href="#collagen-and-connective-tissue">Meet Your Endocannabinoid System</a></li>
           <li><a href="#in-the-kitchen">KI — In The Kitchen</a></li>
           <li><a href="#simple-food-combining">Simple Food Combining</a></li>
           <li><a href="#lets-talk-about-eating">Let's Talk About Eating…</a></li>
@@ -357,30 +390,33 @@
         <section id="collagen-and-connective-tissue" class="ki2-section move_down_15">
           <article class="info-card no-lift">
             <div class="ki-copy">
-              <h2 class="center"><strong><span class="fc-dkgold">Collagen and Connective Tissue</span></strong></h2>
+              <h2 class="center"><strong><span class="fc-dkgold">Meet Your Endocannabinoid System</span></strong></h2>
               <figure class="ki-article-hero ki-hero-800x200">
-                <img src="images/articles/ah/collagen_connective_tissue_en4.jpg" alt="Collagen and Connective Tissue" title="Collagen and Connective Tissue" loading="lazy" decoding="async">
+                <img src="images/articles/ah/collagen_connective_tissue_en4.jpg" alt="Meet Your Endocannabinoid System" title="Meet Your Endocannabinoid System" loading="lazy" decoding="async">
               </figure>
-              <p>The endocannabinoid system (ECS) helps regulate balance across the nervous, immune, digestive, and connective tissue systems. In this model, CB1 receptors are more concentrated in the brain and nervous system, while CB2 receptors are heavily represented in immune and tissue-repair pathways.</p>
-              <figure class="ki-article-hero">
-                <img src="images/articles/green_compass_endocannabinoid_system_888x688.jpg" alt="Green Compass endocannabinoid system overview with CB1 and CB2 pathways" title="Green Compass Endocannabinoid System Overview" loading="lazy" decoding="async">
-              </figure>
-              <figure class="ki-article-hero">
-                <img src="images/articles/green_compass_cbda_cinnamon_888x592.jpg" alt="Green Compass CBDA cinnamon flavor announcement" title="Green Compass CBDA Cinnamon Flavor" loading="lazy" decoding="async">
-              </figure>
-              <figure class="ki-article-hero">
-                <img src="images/articles/green_compass_cbda_natural_cinnamon_888x592.jpg" alt="Green Compass CBDA isolate natural and cinnamon flavors product details" title="Green Compass CBDA Isolate Natural and Cinnamon Flavors" loading="lazy" decoding="async">
-              </figure>
-              <p>Collagen CBG Recovery Energy bridges connective tissue support with cannabinoid wellness. It combines multi-source collagen peptides with nano-enhanced CBG to support skin, joints, and daily recovery.</p>
-              <p>For background reading on ECS function and homeostasis, review the Green Compass Hemp 101 guide, then compare it with the collagen formula details below.</p>
-              <p><a href="https://greencompassglobal.com/pages/hemp-101?pws=jessiekeener" target="_blank" rel="noopener noreferrer">Read Green Compass Hemp 101</a></p>
+              <p>During the 1980s, scientists discovered a brand new system within the human body, the <strong>Endocannabinoid System</strong>, or <strong>ECS</strong>. This system was made up of receptors for particular substances, cannabinoids, and was determined to be the master regulator for homeostasis, balance, in the body. The ECS acts as a chemical bridge between body and mind. It regulates blood sugar, immune function, muscle and fat tissues, hormones, pain centers, reward centers, and metabolic functions.</p>
+              <p>Whoa, that is a lot of therapeutic function from a very simple plant, hemp. Sadly, this wonderful plant that has so many valuable uses was ostracized in the early 1900s, in the US primarily, because it is related to marijuana. <strong>Hemp is not marijuana</strong>, although they look very similar. It creates no high, yet it does do amazing things for human health.</p>
+              <p>My theory is that before the US government outlawed the use of marijuana, both of those plants were abundant in the fields. The ruminators, bison, cattle, goats, sheep, and others, ate both and our ancestors ate plenty of those meats. In other words, we evolved eating these molecules. Otherwise, why would we have an entire system throughout the body designed for them?</p>
+              <p>Some of the more exciting properties of cannabinoids in the human body include pain resolution, more rapid healing from injuries and surgeries, better focus, less anxious and depressed feelings, more adaptability, and lower inflammation. Who does not need that these days?</p>
+              <p>I have been using CBD and other cannabinoids for years, there are 113 different ones, and finally found a company that has complete integrity with their science as well as growing and manufacturing of therapeutic hemp products. It is also <strong>USDA Certified Organic</strong>.</p>
+              <p>Use the Green Compass link below, click <strong>JOIN</strong> at the top of the page, then choose <strong>I'm New Here</strong> and create your account to continue.</p>
               <div class="ki-product-placeholder"
                    data-product-key="green-compass"
-                   data-product-title="Green Compass, Collagen CBG Recovery Energy"
-                   data-product-description="Open the collagen product page and current pricing through Dr. Jessie's Green Compass link."
-                   data-cta-url="https://greencompassglobal.com/products/collagen?pws=jessiekeener"
-                   data-cta-label="Open Green Compass Collagen"
-                   data-pricing-items="Collagen CBG Recovery Energy: $99.95 one-time / $79.96 subscribe"></div>
+                   data-product-title="Green Compass Organic CBD"
+                   data-product-description="Open Dr. Jessie's Green Compass portal and use JOIN to create your account."
+                   data-cta-url="https://greencompassglobal.com/?pws=jessiekeener"
+                   data-cta-label="Open Green Compass Organic CBD"></div>
+              <div class="ki-gc-image-row" aria-label="Green Compass supporting images">
+                <figure class="ki-gc-image-tile">
+                  <img src="images/articles/green_compass_endocannabinoid_system_888x688.jpg" alt="Green Compass endocannabinoid system chart with CB1 and CB2 regions" title="Green Compass Endocannabinoid System" loading="lazy" decoding="async">
+                </figure>
+                <figure class="ki-gc-image-tile">
+                  <img src="images/articles/green_compass_cbda_cinnamon_888x592.jpg" alt="Green Compass CBDA cinnamon flavor image" title="Green Compass CBDA Cinnamon Flavor" loading="lazy" decoding="async">
+                </figure>
+                <figure class="ki-gc-image-tile">
+                  <img src="images/articles/green_compass_cbda_natural_cinnamon_888x592.jpg" alt="Green Compass CBDA isolate natural and cinnamon flavors details" title="Green Compass CBDA Isolate Details" loading="lazy" decoding="async">
+                </figure>
+              </div>
               <hr class="sep">
               <div class="ki-article-backtop"><a href="#top" class="ki-backtop-link" data-backtop aria-label="Back to top">Back to Top ↑</a></div>
             </div>
