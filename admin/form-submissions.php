@@ -429,6 +429,96 @@ function drj_inbox_delete_submission(PDO $pdo, int $id, string $confirmation, st
         throw $e;
     }
 }
+function drj_inbox_parse_ids(mixed $rawIds, int $maxItems = 100): array
+{
+    if (!is_array($rawIds)) {
+        return [];
+    }
+
+    $ids = [];
+    foreach ($rawIds as $rawId) {
+        $id = (int) $rawId;
+        if ($id > 0) {
+            $ids[$id] = $id;
+        }
+        if (count($ids) >= $maxItems) {
+            break;
+        }
+    }
+
+    return array_values($ids);
+}
+
+function drj_inbox_ticket_ref_by_id(PDO $pdo, int $id): ?string
+{
+    $stmt = $pdo->prepare('SELECT ticket_ref FROM dj_contact_submissions WHERE id = :id LIMIT 1');
+    $stmt->execute([':id' => $id]);
+    $value = $stmt->fetchColumn();
+    if (!is_string($value) || trim($value) === '') {
+        return null;
+    }
+
+    return trim($value);
+}
+
+function drj_inbox_bulk_update_status(PDO $pdo, array $ids, string $status, string $note, string $actor): array
+{
+    $updated = [];
+    $failed = [];
+
+    foreach ($ids as $id) {
+        try {
+            $updated[] = drj_inbox_update_status($pdo, (int) $id, $status, $note, $actor);
+        } catch (Throwable $e) {
+            $failed[] = [
+                'id' => (int) $id,
+                'error' => $e instanceof RuntimeException ? $e->getMessage() : 'Update failed.',
+            ];
+        }
+    }
+
+    return [
+        'updated' => $updated,
+        'failed' => $failed,
+        'updated_count' => count($updated),
+        'failed_count' => count($failed),
+    ];
+}
+
+function drj_inbox_bulk_delete(PDO $pdo, array $ids, string $actor): array
+{
+    $deleted = [];
+    $failed = [];
+
+    foreach ($ids as $id) {
+        $id = (int) $id;
+        try {
+            $ticketRef = drj_inbox_ticket_ref_by_id($pdo, $id);
+            if ($ticketRef === null) {
+                throw new RuntimeException('Submission not found.');
+            }
+
+            $deletedRow = drj_inbox_delete_submission($pdo, $id, drj_inbox_expected_delete_confirmation($ticketRef), $actor);
+            $deleted[] = [
+                'id' => $id,
+                'ticket_ref' => (string) ($deletedRow['ticket_ref'] ?? $ticketRef),
+                'archive_id' => (int) ($deletedRow['archive_id'] ?? 0),
+            ];
+        } catch (Throwable $e) {
+            $failed[] = [
+                'id' => $id,
+                'error' => $e instanceof RuntimeException || $e instanceof InvalidArgumentException ? $e->getMessage() : 'Delete failed.',
+            ];
+        }
+    }
+
+    return [
+        'deleted' => $deleted,
+        'failed' => $failed,
+        'deleted_count' => count($deleted),
+        'failed_count' => count($failed),
+    ];
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = drj_inbox_parse_json_body();
@@ -555,6 +645,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             drj_inbox_json_response(200, ['ok' => true, 'delete' => $deleted]);
         }
 
+        if ($action === 'bulk_update_status') {
+            $ids = drj_inbox_parse_ids($input['ids'] ?? null, 200);
+            $status = drj_inbox_normalize_status($input['status'] ?? '');
+            $note = trim((string) ($input['note'] ?? ''));
+
+            if (empty($ids)) {
+                drj_inbox_json_response(400, ['ok' => false, 'error' => 'Select at least one submission.']);
+            }
+            if ($status === null) {
+                drj_inbox_json_response(400, ['ok' => false, 'error' => 'Invalid status value.']);
+            }
+            if (strlen($note) > 1500) {
+                drj_inbox_json_response(400, ['ok' => false, 'error' => 'Note is too long.']);
+            }
+
+            drj_inbox_try_ensure_events_table($pdo);
+            $bulk = drj_inbox_bulk_update_status($pdo, $ids, $status, $note, $adminActor);
+            drj_inbox_json_response(200, ['ok' => true, 'bulk' => $bulk]);
+        }
+
+        if ($action === 'bulk_delete') {
+            $ids = drj_inbox_parse_ids($input['ids'] ?? null, 200);
+            $confirmation = strtoupper(trim((string) ($input['confirmation'] ?? '')));
+
+            if (empty($ids)) {
+                drj_inbox_json_response(400, ['ok' => false, 'error' => 'Select at least one submission.']);
+            }
+            if ($confirmation !== 'DELETE SELECTED') {
+                drj_inbox_json_response(400, ['ok' => false, 'error' => 'Delete confirmation phrase is invalid.']);
+            }
+
+            drj_inbox_ensure_archive_table($pdo);
+            $bulk = drj_inbox_bulk_delete($pdo, $ids, $adminActor);
+            drj_inbox_json_response(200, ['ok' => true, 'bulk' => $bulk]);
+        }
+
         drj_inbox_json_response(400, ['ok' => false, 'error' => 'Unknown action.']);
     } catch (InvalidArgumentException $e) {
         drj_inbox_json_response(400, ['ok' => false, 'error' => $e->getMessage()]);
@@ -594,10 +720,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         button:disabled { opacity:.6; cursor:not-allowed; }
         .filters { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:0 0 10px; }
         .filters input { min-width:220px; flex:1; }
+        .bulk-actions { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:0 0 10px; }
+        .bulk-actions .spacer { flex:1; min-width:20px; }
+        .pager { display:flex; gap:8px; align-items:center; justify-content:flex-end; margin-top:10px; }
+        .pager .muted { margin-right:auto; }
         table { width:100%; border-collapse:collapse; }
         th,td { text-align:left; padding:8px; border-bottom:1px solid var(--line); vertical-align:top; }
         th { color:var(--muted); font-weight:600; }
         tr.sel { background:#161d2f; }
+        .row-check { width:16px; height:16px; accent-color:#315ca6; cursor:pointer; }
         .pill { border:1px solid var(--line); border-radius:999px; padding:2px 8px; display:inline-block; font-size:12px; text-transform:uppercase; letter-spacing:.02em; }
         .pill.new{color:#7ec8ff;border-color:#2f6f92;} .pill.reviewed{color:#ffe08a;border-color:#8a7330;} .pill.resolved{color:#9bffb7;border-color:#2b7d43;} .pill.spam{color:#ff9f9f;border-color:#7e3333;}
         .kvs { display:grid; grid-template-columns:150px 1fr; gap:8px 12px; margin:0 0 12px; }
@@ -640,12 +771,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <option value="resolved">resolved</option>
                         <option value="spam">spam</option>
                     </select>
+                    <select id="pageSizeSelect">
+                        <option value="25">25 / page</option>
+                        <option value="50">50 / page</option>
+                        <option value="100">100 / page</option>
+                    </select>
                     <button class="primary" id="refreshBtn">Refresh</button>
+                </div>
+                <div class="bulk-actions">
+                    <span id="bulkSelectedCount" class="muted">0 selected</span>
+                    <div class="spacer"></div>
+                    <select id="bulkStatusSelect">
+                        <option value="">Bulk status...</option>
+                        <option value="new">new</option>
+                        <option value="reviewed">reviewed</option>
+                        <option value="resolved">resolved</option>
+                        <option value="spam">spam</option>
+                    </select>
+                    <input id="bulkStatusNote" type="text" placeholder="Optional note" style="min-width:180px;">
+                    <button class="primary" id="bulkApplyBtn" disabled>Apply to Selected</button>
+                    <button class="danger" id="bulkDeleteBtn" disabled>Delete Selected</button>
                 </div>
                 <div style="overflow:auto;">
                     <table>
                         <thead>
                             <tr>
+                                <th><input id="selectAllRows" class="row-check" type="checkbox" aria-label="Select all rows"></th>
                                 <th>Ticket</th>
                                 <th>Name</th>
                                 <th>Email</th>
@@ -655,6 +806,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </thead>
                         <tbody id="rows"></tbody>
                     </table>
+                </div>
+                <div class="pager">
+                    <span id="pageInfo" class="muted">Page 1 of 1</span>
+                    <button id="prevPageBtn">Previous</button>
+                    <button id="nextPageBtn">Next</button>
                 </div>
             </div>
         </section>
@@ -670,10 +826,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 (() => {
     const STATE = {
         rows: [],
+        total: 0,
+        page: 1,
+        pageSize: 25,
+        selectedIds: new Set(),
         selectedId: null,
         detail: null,
         events: [],
         statuses: ['new', 'reviewed', 'resolved', 'spam']
+    };
+    const REPLY_TEMPLATES = {
+        acknowledgement: (record) => {
+            const name = String(record.full_name || 'there').trim() || 'there';
+            return `Hi ${name},\n\nThank you for reaching out. We received your message and will review it shortly.\n\nBest,\nDrJessie Team`;
+        },
+        follow_up: (record) => {
+            const name = String(record.full_name || 'there').trim() || 'there';
+            const ticket = String(record.ticket_ref || '').trim();
+            return `Hi ${name},\n\nThanks for your message${ticket ? ` (${ticket})` : ''}. To help you faster, please share any additional details, relevant dates, or context we should review.\n\nBest,\nDrJessie Team`;
+        },
+        resolved: (record) => {
+            const name = String(record.full_name || 'there').trim() || 'there';
+            return `Hi ${name},\n\nThank you again for contacting us. This thread is now marked as resolved, but you can reply any time if you need anything else.\n\nBest,\nDrJessie Team`;
+        }
     };
 
     const $ = (id) => document.getElementById(id);
@@ -694,6 +869,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         const t = new Date(d);
         return Number.isNaN(t.getTime()) ? d : t.toLocaleString();
     };
+    const pageCount = (total = STATE.total) => Math.max(1, Math.ceil((Number(total) || 0) / STATE.pageSize));
+    const currentPageIds = () => STATE.rows.map((row) => Number(row.id)).filter((id) => Number.isInteger(id) && id > 0);
 
     const req = async (body) => {
         const response = await fetch(location.pathname, {
@@ -707,16 +884,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         return data;
     };
+    function renderBulkState() {
+        const selectedCount = STATE.selectedIds.size;
+        $('bulkSelectedCount').textContent = `${selectedCount} selected`;
+        $('bulkApplyBtn').disabled = selectedCount === 0;
+        $('bulkDeleteBtn').disabled = selectedCount === 0;
+
+        const ids = currentPageIds();
+        const checkedOnPage = ids.filter((id) => STATE.selectedIds.has(id)).length;
+        const selectAll = $('selectAllRows');
+        selectAll.checked = ids.length > 0 && checkedOnPage === ids.length;
+        selectAll.indeterminate = checkedOnPage > 0 && checkedOnPage < ids.length;
+    }
+    function renderPagination() {
+        const pages = pageCount();
+        if (STATE.page > pages) {
+            STATE.page = pages;
+        }
+        $('pageInfo').textContent = `Page ${STATE.page} of ${pages} (${STATE.total} total)`;
+        $('prevPageBtn').disabled = STATE.page <= 1;
+        $('nextPageBtn').disabled = STATE.page >= pages;
+    }
 
     function renderList() {
         const tbody = $('rows');
         if (!STATE.rows.length) {
-            tbody.innerHTML = '<tr><td colspan="5" class="muted">No submissions found.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="muted">No submissions found.</td></tr>';
+            renderBulkState();
+            renderPagination();
             return;
         }
 
         tbody.innerHTML = STATE.rows.map((row) => `
             <tr data-id="${row.id}" class="${STATE.selectedId === Number(row.id) ? 'sel' : ''}">
+                <td><input type="checkbox" class="row-check js-row-check" data-id="${row.id}" ${STATE.selectedIds.has(Number(row.id)) ? 'checked' : ''} aria-label="Select ${safe(row.ticket_ref)}"></td>
                 <td>${safe(row.ticket_ref)}</td>
                 <td>${safe(row.full_name)}</td>
                 <td>${safe(row.email)}</td>
@@ -726,12 +927,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         `).join('');
 
         tbody.querySelectorAll('tr[data-id]').forEach((tr) => {
-            tr.addEventListener('click', () => {
+            tr.addEventListener('click', (event) => {
+                if (event.target && event.target.closest('.js-row-check')) {
+                    return;
+                }
                 STATE.selectedId = Number(tr.dataset.id);
                 renderList();
                 loadDetail();
             });
         });
+        tbody.querySelectorAll('.js-row-check').forEach((input) => {
+            input.addEventListener('click', (event) => event.stopPropagation());
+            input.addEventListener('change', () => {
+                const id = Number(input.dataset.id);
+                if (input.checked) {
+                    STATE.selectedIds.add(id);
+                } else {
+                    STATE.selectedIds.delete(id);
+                }
+                renderBulkState();
+            });
+        });
+        renderBulkState();
+        renderPagination();
     }
 
     function detailPairs(record) {
@@ -784,6 +1002,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ${renderEvents(STATE.events, eventsAvailable)}
             <div class="composer">
                 <h3>Reply to sender</h3>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+                    <select id="replyTemplate" style="min-width:220px;">
+                        <option value="">Quick template...</option>
+                        <option value="acknowledgement">Acknowledgement</option>
+                        <option value="follow_up">Need more context</option>
+                        <option value="resolved">Resolved follow-up</option>
+                    </select>
+                    <button id="insertTemplateBtn" type="button">Insert Template</button>
+                </div>
                 <input id="replySubject" type="text" value="${safe(replySubject)}" style="width:100%;">
                 <textarea id="replyMessage" placeholder="Write your reply message..."></textarea>
                 <button class="primary" id="sendReplyBtn">Send Reply</button>
@@ -795,6 +1022,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button class="danger" id="deleteBtn">Delete Submission</button>
             </div>
         `;
+        $('insertTemplateBtn').addEventListener('click', () => {
+            const key = $('replyTemplate').value;
+            if (!key || !REPLY_TEMPLATES[key]) {
+                flash('Choose a template first.', true);
+                return;
+            }
+            $('replyMessage').value = REPLY_TEMPLATES[key](record);
+            $('replyMessage').focus();
+            flash('Template inserted.');
+        });
 
         $('saveStatusBtn').addEventListener('click', async () => {
             const button = $('saveStatusBtn');
@@ -805,7 +1042,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 button.textContent = 'Saving...';
                 flash('Saving status...');
                 await req({ action:'update_status', id:STATE.selectedId, status, note });
-                await loadList();
+                await loadList({ preserveSelection: true, silent: true });
                 await loadDetail();
                 flash('Status updated.');
             } catch (error) {
@@ -860,14 +1097,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 button.textContent = 'Deleting...';
                 flash('Deleting submission...');
                 const out = await req({ action:'delete_submission', id:STATE.selectedId, confirmation:phrase });
-                const archiveId = out?.delete?.archive_id ? ` Archive #${out.delete.archive_id}.` : '';
+                const archiveId = out && out.delete && out.delete.archive_id ? ` Archive #${out.delete.archive_id}.` : '';
+                STATE.selectedIds.delete(Number(STATE.selectedId));
                 STATE.rows = STATE.rows.filter((row) => Number(row.id) !== Number(STATE.selectedId));
                 STATE.selectedId = null;
                 STATE.detail = null;
                 STATE.events = [];
                 renderList();
                 renderDetail();
-                await loadList();
+                await loadList({ preserveSelection: true, silent: true });
                 flash(`Archived and removed ${ticketRef}.${archiveId}`);
             } catch (error) {
                 flash(error.message, true);
@@ -878,21 +1116,125 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         });
     }
 
-    async function loadList() {
+    async function loadList(options = {}) {
+        const preserveSelection = options.preserveSelection === true;
+        const silent = options.silent === true;
         try {
-            flash('Loading submissions...');
-            const data = await req({
+            if (!silent) {
+                flash('Loading submissions...');
+            }
+            const payload = () => ({
                 action: 'list',
                 status: $('statusFilter').value || '',
                 query: $('qInput').value.trim(),
-                limit: 200,
-                offset: 0
+                limit: STATE.pageSize,
+                offset: (STATE.page - 1) * STATE.pageSize
             });
-            STATE.rows = data.rows || [];
+            let data = await req(payload());
+            if ((!Array.isArray(data.rows) || data.rows.length === 0) && STATE.page > 1 && Number(data.total || 0) > 0) {
+                STATE.page = pageCount(Number(data.total || 0));
+                data = await req(payload());
+            }
+            STATE.rows = Array.isArray(data.rows) ? data.rows : [];
+            STATE.total = Number(data.total || 0);
+            if (!preserveSelection) {
+                STATE.selectedIds.clear();
+            } else {
+                const pageSet = new Set(currentPageIds());
+                STATE.selectedIds = new Set([...STATE.selectedIds].filter((id) => pageSet.has(id)));
+            }
+            if (STATE.selectedId !== null && !STATE.rows.some((row) => Number(row.id) === Number(STATE.selectedId))) {
+                STATE.selectedId = null;
+                STATE.detail = null;
+                STATE.events = [];
+            }
             renderList();
-            flash(`Loaded ${STATE.rows.length} submission(s).`);
+            renderDetail();
+            if (!silent) {
+                flash(`Loaded ${STATE.rows.length} submission(s).`);
+            }
         } catch (error) {
             flash(error.message, true);
+        }
+    }
+    async function runBulkStatusUpdate() {
+        const ids = [...STATE.selectedIds];
+        const status = $('bulkStatusSelect').value;
+        const note = $('bulkStatusNote').value.trim();
+        if (!ids.length) {
+            flash('Select at least one submission.', true);
+            return;
+        }
+        if (!status) {
+            flash('Choose a bulk status first.', true);
+            return;
+        }
+
+        const button = $('bulkApplyBtn');
+        const originalText = button.textContent;
+        try {
+            button.disabled = true;
+            button.textContent = 'Applying...';
+            flash('Applying bulk status update...');
+            const out = await req({ action: 'bulk_update_status', ids, status, note });
+            const bulk = out && out.bulk ? out.bulk : {};
+            const updated = Number(bulk.updated_count || 0);
+            const failed = Number(bulk.failed_count || 0);
+            STATE.selectedIds.clear();
+            $('bulkStatusNote').value = '';
+            await loadList({ preserveSelection: false, silent: true });
+            if (STATE.selectedId !== null && ids.includes(Number(STATE.selectedId))) {
+                await loadDetail();
+            }
+            flash(failed > 0 ? `Updated ${updated} submissions, ${failed} failed.` : `Updated ${updated} submissions.`, failed > 0);
+        } catch (error) {
+            flash(error.message, true);
+        } finally {
+            button.textContent = originalText;
+            renderBulkState();
+        }
+    }
+    async function runBulkDelete() {
+        const ids = [...STATE.selectedIds];
+        if (!ids.length) {
+            flash('Select at least one submission.', true);
+            return;
+        }
+        const typed = (prompt('Type DELETE SELECTED to confirm bulk delete.', '') || '').trim().toUpperCase();
+        if (typed !== 'DELETE SELECTED') {
+            flash('Bulk delete canceled: confirmation phrase mismatch.', true);
+            return;
+        }
+        if (!confirm(`Delete ${ids.length} selected submission(s)? This cannot be undone.`)) {
+            return;
+        }
+
+        const button = $('bulkDeleteBtn');
+        const originalText = button.textContent;
+        try {
+            button.disabled = true;
+            button.textContent = 'Deleting...';
+            flash('Deleting selected submissions...');
+            const out = await req({ action: 'bulk_delete', ids, confirmation: 'DELETE SELECTED' });
+            const bulk = out && out.bulk ? out.bulk : {};
+            const deleted = Number(bulk.deleted_count || 0);
+            const failed = Number(bulk.failed_count || 0);
+            const deletedRows = Array.isArray(bulk.deleted) ? bulk.deleted : [];
+            const deletedIds = deletedRows.map((item) => Number(item.id)).filter((id) => Number.isInteger(id) && id > 0);
+            deletedIds.forEach((id) => STATE.selectedIds.delete(id));
+            if (STATE.selectedId !== null && deletedIds.includes(Number(STATE.selectedId))) {
+                STATE.selectedId = null;
+                STATE.detail = null;
+                STATE.events = [];
+            }
+            await loadList({ preserveSelection: true, silent: true });
+            renderDetail();
+            flash(failed > 0 ? `Deleted ${deleted} submissions, ${failed} failed.` : `Deleted ${deleted} submissions.`, failed > 0);
+        } catch (error) {
+            flash(error.message, true);
+        } finally {
+            button.textContent = originalText;
+            renderBulkState();
         }
     }
 
@@ -917,11 +1259,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $('refreshBtn').addEventListener('click', () => loadList());
     $('qInput').addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
+            STATE.page = 1;
             loadList();
         }
     });
-    $('statusFilter').addEventListener('change', () => loadList());
+    $('statusFilter').addEventListener('change', () => {
+        STATE.page = 1;
+        loadList();
+    });
+    $('pageSizeSelect').value = String(STATE.pageSize);
+    $('pageSizeSelect').addEventListener('change', () => {
+        const nextSize = Number.parseInt($('pageSizeSelect').value, 10);
+        STATE.pageSize = Number.isInteger(nextSize) && nextSize > 0 ? nextSize : 25;
+        STATE.page = 1;
+        loadList();
+    });
+    $('prevPageBtn').addEventListener('click', () => {
+        if (STATE.page > 1) {
+            STATE.page -= 1;
+            loadList();
+        }
+    });
+    $('nextPageBtn').addEventListener('click', () => {
+        if (STATE.page < pageCount()) {
+            STATE.page += 1;
+            loadList();
+        }
+    });
+    $('selectAllRows').addEventListener('change', () => {
+        const ids = currentPageIds();
+        if ($('selectAllRows').checked) {
+            ids.forEach((id) => STATE.selectedIds.add(id));
+        } else {
+            ids.forEach((id) => STATE.selectedIds.delete(id));
+        }
+        renderList();
+    });
+    $('bulkApplyBtn').addEventListener('click', () => runBulkStatusUpdate());
+    $('bulkDeleteBtn').addEventListener('click', () => runBulkDelete());
 
+    renderBulkState();
+    renderPagination();
     loadList();
 })();
 </script>
