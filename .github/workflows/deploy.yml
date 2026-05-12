@@ -214,3 +214,28 @@ jobs:
               ./ ${DEPLOY_REMOTE_DIR}/
             bye
           "
+
+      - name: Verify live admin credentials
+        env:
+          DRJ_ADMIN_USER: ${{ secrets.DRJ_ADMIN_USER }}
+          DRJ_ADMIN_PASS: ${{ secrets.DRJ_ADMIN_PASS }}
+        run: |
+          check_status() {
+            curl -sS -o /dev/null -w "%{http_code}" \
+              --location \
+              --user "${DRJ_ADMIN_USER}:${DRJ_ADMIN_PASS}" \
+              "https://www.drjessie.life/admin/index.php"
+          }
+
+          status=""
+          for attempt in 1 2 3; do
+            status="$(check_status || true)"
+            if [ "$status" = "200" ]; then
+              echo "Live admin auth verified."
+              exit 0
+            fi
+            sleep 3
+          done
+
+          echo "::error::Live admin auth verification failed. Expected HTTP 200, got ${status:-unknown}."
+          exit 1

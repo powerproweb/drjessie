@@ -14,6 +14,9 @@ ErrorDocument 403 /404.html
 # ===========================================================================
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  # Preserve Authorization header for PHP under CGI/FastCGI
+  RewriteCond %{HTTP:Authorization} .+
+  RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
   # Force a single canonical redirect to HTTPS + www
   RewriteCond %{HTTPS} !=on [OR]
   RewriteCond %{HTTP_HOST} !^www\.drjessie\.life$ [NC]

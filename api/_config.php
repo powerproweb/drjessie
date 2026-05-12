@@ -48,23 +48,93 @@ function drj_looks_unconfigured(string $value): bool
     $value = trim($value);
     return $value === '' || str_starts_with($value, 'change_this_');
 }
+function drj_authorization_header(): string
+{
+    $serverCandidates = [
+        $_SERVER['HTTP_AUTHORIZATION'] ?? null,
+        $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? null,
+        $_SERVER['Authorization'] ?? null,
+        $_SERVER['REDIRECT_Authorization'] ?? null,
+        $_SERVER['HTTP_X_HTTP_AUTHORIZATION'] ?? null,
+        $_SERVER['X-HTTP_AUTHORIZATION'] ?? null,
+    ];
+
+    foreach ($serverCandidates as $value) {
+        if (is_string($value) && trim($value) !== '') {
+            return trim($value);
+        }
+    }
+
+    $headerMaps = [];
+    if (function_exists('getallheaders')) {
+        $allHeaders = getallheaders();
+        if (is_array($allHeaders)) {
+            $headerMaps[] = $allHeaders;
+        }
+    }
+    if (function_exists('apache_request_headers')) {
+        $apacheHeaders = apache_request_headers();
+        if (is_array($apacheHeaders)) {
+            $headerMaps[] = $apacheHeaders;
+        }
+    }
+
+    foreach ($headerMaps as $headers) {
+        foreach ($headers as $name => $value) {
+            if (strcasecmp((string) $name, 'Authorization') === 0 && is_string($value) && trim($value) !== '') {
+                return trim($value);
+            }
+        }
+    }
+
+    return '';
+}
+
+function drj_parse_basic_auth(string $authHeader): array
+{
+    if ($authHeader === '' || stripos($authHeader, 'basic ') !== 0) {
+        return ['', ''];
+    }
+
+    $encoded = trim(substr($authHeader, 6));
+    if ($encoded === '') {
+        return ['', ''];
+    }
+
+    $decoded = base64_decode($encoded, true);
+    if (!is_string($decoded) || strpos($decoded, ':') === false) {
+        return ['', ''];
+    }
+
+    [$user, $pass] = explode(':', $decoded, 2);
+    return [trim($user), $pass];
+}
 
 function drj_admin_auth_credentials(): array
 {
     $user = (string) ($_SERVER['PHP_AUTH_USER'] ?? '');
     $pass = (string) ($_SERVER['PHP_AUTH_PW'] ?? '');
-    $auth = (string) ($_SERVER['HTTP_AUTHORIZATION'] ?? ($_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? ''));
 
-    if (($user === '' || $pass === '') && $auth !== '' && stripos($auth, 'basic ') === 0) {
-        $decoded = base64_decode(substr($auth, 6), true);
-        if (is_string($decoded) && strpos($decoded, ':') !== false) {
-            [$user, $pass] = explode(':', $decoded, 2);
+    if ($user === '' || $pass === '') {
+        [$parsedUser, $parsedPass] = drj_parse_basic_auth(drj_authorization_header());
+        if ($parsedUser !== '' || $parsedPass !== '') {
+            $user = $parsedUser;
+            $pass = $parsedPass;
         }
     }
 
     return [$user, $pass];
 }
 
+function drj_secret_matches(string $expected, string $provided): bool
+{
+    if (hash_equals($expected, $provided)) {
+        return true;
+    }
+
+    $trimmedProvided = trim($provided);
+    return $trimmedProvided !== $provided && hash_equals($expected, $trimmedProvided);
+}
 function drj_require_admin_auth(string $realm): string
 {
     $expectedUser = (string) drj_config('admin_user', '');
@@ -76,7 +146,10 @@ function drj_require_admin_auth(string $realm): string
     }
 
     [$providedUser, $providedPass] = drj_admin_auth_credentials();
-    if ($providedUser !== $expectedUser || $providedPass !== $expectedPass) {
+    $userMatches = hash_equals(strtolower(trim($expectedUser)), strtolower(trim((string) $providedUser)));
+    $passMatches = drj_secret_matches($expectedPass, (string) $providedPass);
+
+    if (!$userMatches || !$passMatches) {
         header('WWW-Authenticate: Basic realm="' . str_replace(chr(34), '', $realm) . '"');
         http_response_code(401);
         exit('Unauthorized');
