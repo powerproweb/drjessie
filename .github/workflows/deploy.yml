@@ -19,6 +19,81 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
+      - name: Generate runtime contact config from repository secrets
+        env:
+          DRJ_DB_HOST: ${{ secrets.DRJ_DB_HOST }}
+          DRJ_DB_NAME: ${{ secrets.DRJ_DB_NAME }}
+          DRJ_DB_USER: ${{ secrets.DRJ_DB_USER }}
+          DRJ_DB_PASS: ${{ secrets.DRJ_DB_PASS }}
+          DRJ_ADMIN_USER: ${{ secrets.DRJ_ADMIN_USER }}
+          DRJ_ADMIN_PASS: ${{ secrets.DRJ_ADMIN_PASS }}
+          DRJ_NOTIFICATION_EMAIL: ${{ secrets.DRJ_NOTIFICATION_EMAIL }}
+          DRJ_MAIL_FROM_EMAIL: ${{ secrets.DRJ_MAIL_FROM_EMAIL }}
+          DRJ_MAIL_FROM_NAME: ${{ secrets.DRJ_MAIL_FROM_NAME }}
+        run: |
+          trim() {
+            printf '%s' "$1" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'
+          }
+
+          missing=0
+          for name in DRJ_DB_HOST DRJ_DB_NAME DRJ_DB_USER DRJ_DB_PASS DRJ_ADMIN_USER DRJ_ADMIN_PASS DRJ_NOTIFICATION_EMAIL; do
+            value="$(eval "printf '%s' \"\$$name\"")"
+            value="$(trim "$value")"
+            if [ -z "$value" ]; then
+              echo "::error::Missing required app secret: $name"
+              missing=1
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            echo "::error::Define required DRJ_* secrets in repository settings before deploy."
+            exit 1
+          fi
+
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+
+          def trim_env(name: str, default: str = "") -> str:
+              return (os.getenv(name) or default).strip()
+
+          cfg = {
+              "db_host": trim_env("DRJ_DB_HOST"),
+              "db_name": trim_env("DRJ_DB_NAME"),
+              "db_user": trim_env("DRJ_DB_USER"),
+              "db_pass": trim_env("DRJ_DB_PASS"),
+              "admin_user": trim_env("DRJ_ADMIN_USER"),
+              "admin_pass": trim_env("DRJ_ADMIN_PASS"),
+              "notification_email": trim_env("DRJ_NOTIFICATION_EMAIL"),
+              "mail_from_email": trim_env("DRJ_MAIL_FROM_EMAIL", "noreply@drjessie.life"),
+              "mail_from_name": trim_env("DRJ_MAIL_FROM_NAME", "DrJessie.life Contact"),
+              "allowed_origin": "https://www.drjessie.life",
+          }
+
+          required = ["db_host", "db_name", "db_user", "db_pass", "admin_user", "admin_pass", "notification_email"]
+          missing = [k for k in required if not cfg[k]]
+          if missing:
+              raise SystemExit("Missing required runtime config keys: " + ", ".join(missing))
+
+          def esc(value: str) -> str:
+              return value.replace("\\", "\\\\").replace("'", "\\'")
+
+          lines = [
+              "<?php",
+              "declare(strict_types=1);",
+              "",
+              "return [",
+          ]
+          for key, value in cfg.items():
+              lines.append(f"    '{key}' => '{esc(value)}',")
+          lines.append("];")
+          lines.append("")
+
+          out_path = Path("api/_config.local.php")
+          out_path.parent.mkdir(parents=True, exist_ok=True)
+          out_path.write_text("\n".join(lines), encoding="utf-8", newline="\n")
+          print(f"Wrote {out_path} from repository secrets.")
+          PY
+
       - name: Resolve deployment settings and prepare SSH key
         id: deploy_vars
         env:
