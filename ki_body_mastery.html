@@ -146,6 +146,12 @@
     gap: 12px;
     margin: 1rem 0 1.25rem;
   }
+  .ki-gc-image-card {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
   .ki-gc-image-tile {
     margin: 0;
     border-radius: 12px;
@@ -160,12 +166,7 @@
     object-fit: cover;
     aspect-ratio: 4 / 3;
   }
-  .ki-gc-image-cta {
-    margin: 0;
-    padding: 10px 12px 12px;
-    display: flex;
-    justify-content: center;
-  }
+  .ki-gc-image-cta { margin: 0; }
   .ki-gc-image-cta .ki-product-link {
     width: 100%;
     justify-content: center;
@@ -436,24 +437,30 @@
                    data-cta-url="https://greencompassglobal.com/?pws=jessiekeener"
                    data-cta-label="Open Green Compass Organic CBD"></div>
               <div class="ki-gc-image-row" aria-label="Green Compass supporting images">
-                <figure class="ki-gc-image-tile">
-                  <img src="images/articles/3_btm_imgs_sleep_b-r.jpg" alt="Green Compass Sleep - Balance & Restore" title="Green Compass Sleep - Balance & Restore" loading="lazy" decoding="async">
-                  <figcaption class="ki-gc-image-cta">
+                <div class="ki-gc-image-card">
+                  <figure class="ki-gc-image-tile">
+                    <img src="images/articles/3_btm_imgs_sleep_b-r.jpg" alt="Green Compass Sleep - Balance & Restore" title="Green Compass Sleep - Balance & Restore" loading="lazy" decoding="async">
+                  </figure>
+                  <p class="ki-gc-image-cta">
                     <a class="ki-product-link" href="https://greencompassglobal.com/products/immune-balance-restore-copy?_pos=8&_sid=9eb08cbe4&_ss=r&pws=jessiekeener" target="_blank" rel="noopener noreferrer">Sleep - Balance & Restore</a>
-                  </figcaption>
-                </figure>
-                <figure class="ki-gc-image-tile">
-                  <img src="images/articles/3_btm_imgs_immune_b-r.jpg" alt="Green Compass Immune - Balance & Restore" title="Green Compass Immune - Balance & Restore" loading="lazy" decoding="async">
-                  <figcaption class="ki-gc-image-cta">
+                  </p>
+                </div>
+                <div class="ki-gc-image-card">
+                  <figure class="ki-gc-image-tile">
+                    <img src="images/articles/3_btm_imgs_immune_b-r.jpg" alt="Green Compass Immune - Balance & Restore" title="Green Compass Immune - Balance & Restore" loading="lazy" decoding="async">
+                  </figure>
+                  <p class="ki-gc-image-cta">
                     <a class="ki-product-link" href="https://greencompassglobal.com/products/cognitive-balance-restore-copy?_pos=7&_sid=9eb08cbe4&_ss=r&pws=jessiekeener" target="_blank" rel="noopener noreferrer">Immune - Balance & Restore</a>
-                  </figcaption>
-                </figure>
-                <figure class="ki-gc-image-tile">
-                  <img src="images/articles/3_btm_imgs_cognitive_b-r.jpg" alt="Green Compass Cognitive - Balance & Restore" title="Green Compass Cognitive - Balance & Restore" loading="lazy" decoding="async">
-                  <figcaption class="ki-gc-image-cta">
+                  </p>
+                </div>
+                <div class="ki-gc-image-card">
+                  <figure class="ki-gc-image-tile">
+                    <img src="images/articles/3_btm_imgs_cognitive_b-r.jpg" alt="Green Compass Cognitive - Balance & Restore" title="Green Compass Cognitive - Balance & Restore" loading="lazy" decoding="async">
+                  </figure>
+                  <p class="ki-gc-image-cta">
                     <a class="ki-product-link" href="https://greencompassglobal.com/products/cognitive-balance-restore?_pos=6&_sid=9eb08cbe4&_ss=r&pws=jessiekeener" target="_blank" rel="noopener noreferrer">Cognitive - Balance & Restore</a>
-                  </figcaption>
-                </figure>
+                  </p>
+                </div>
               </div>
               <hr class="sep">
               <div class="ki-article-backtop"><a href="#top" class="ki-backtop-link" data-backtop aria-label="Back to top">Back to Top ↑</a></div>
