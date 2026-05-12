@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#4f65bd">
+<title>Thank You | DrJessie.life</title>
+<meta name="description" content="Thank you for contacting DrJessie.life.">
+<link rel="canonical" href="https://www.drjessie.life/contact-thank-you.html">
+<link rel="icon" href="images/favicon.png" sizes="any">
+<link rel="stylesheet" href="css/style.css" type="text/css">
+<link rel="stylesheet" href="css/custom.css" type="text/css">
+<style>
+  .thankyou-wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 14px;
+  }
+  .thankyou-card {
+    margin-top: 24px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: linear-gradient(145deg, rgba(34, 74, 96, 0.44), rgba(91, 56, 112, 0.42));
+    box-shadow: 0 20px 34px rgba(0,0,0,0.30);
+    padding: 22px 20px;
+  }
+  .thankyou-kicker {
+    margin: 0 0 10px;
+    font-size: 0.92rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #b9e9ff;
+  }
+  .thankyou-title {
+    margin: 0 0 10px;
+    color: #f4fcff;
+  }
+  .thankyou-copy {
+    margin: 0 0 14px;
+    font-size: 1.03rem;
+    line-height: 1.5;
+    color: #edf6ff;
+  }
+  .thankyou-ref {
+    margin: 0 0 16px;
+    color: #dbf0ff;
+  }
+  .thankyou-cta {
+    border-top: 1px solid rgba(255,255,255,0.18);
+    padding-top: 14px;
+  }
+  .thankyou-cta h2 {
+    margin: 0 0 8px;
+    font-size: 1.08rem;
+    color: #e8fcff;
+  }
+  .thankyou-cta p {
+    margin: 0 0 10px;
+    color: #d4ecff;
+    line-height: 1.45;
+  }
+  .thankyou-links {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .thankyou-links .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    min-height: 42px;
+    padding: 0 16px;
+  }
+  @media (max-width: 700px) {
+    .thankyou-card {
+      padding: 18px 16px;
+    }
+    .thankyou-links .btn-primary {
+      width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="shell top-bar">
+      <a href="https://drjessie.life/" class="brand" aria-label="Back to home">
+        <div class="brand-icon brand-favicon" aria-hidden="true"></div>
+        <div class="brand-text">
+          <div class="brand-name">Jessie Keener, N.D.</div>
+          <div class="brand-sub">Human Design Specialist</div>
+        </div>
+      </a>
+      <nav class="footer-links" aria-label="Header links">
+        <a href="contact.html" title="Back to contact form">Contact</a>
+        <span class="footer-sep">•</span>
+        <a href="newsletter.html" target="_blank" rel="noopener noreferrer" title="Newsletter">Sign Up</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="top" class="move_down_15">
+      <div class="thankyou-wrap">
+        <div class="thankyou-card">
+          <div class="thankyou-kicker">Message Received</div>
+          <h1 class="thankyou-title">Thank you for reaching out.</h1>
+          <p class="thankyou-copy" id="thankYouCopy">
+            This page is ready for your final thank-you copy. For now, your message has been received and routed to Dr. Jessie’s inbox.
+          </p>
+          <p class="thankyou-ref">Ticket reference: <strong id="thankYouTicketRef">Pending</strong></p>
+
+          <div class="thankyou-cta">
+            <h2>CTA Area</h2>
+            <p>This section sits directly below the thank-you copy and is ready for your final CTA text and destination.</p>
+            <div class="thankyou-links">
+              <a class="btn-primary" href="newsletter.html" target="_blank" rel="noopener noreferrer">Join Dr. Jessie's Newsletter</a>
+              <a class="btn-primary" href="https://drjessie.life/">Back to Home</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-copy">
+        Copyright &#169; <span id="year">2022 to 2036</span> Jessie Keener, N.D. • DrJessie.life - All Rights Reserved
+      </div>
+      <nav class="footer-links" aria-label="Footer links">
+        <a href="newsletter.html" target="_blank" rel="noopener noreferrer">Sign Up</a>
+        <span class="footer-sep">•</span>
+        <a href="terms.html" target="_blank" rel="noopener noreferrer">Terms</a>
+        <span class="footer-sep">•</span>
+        <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="js/site-common.js"></script>
+  <script>
+    (() => {
+      const ticketEl = document.getElementById("thankYouTicketRef");
+      if (!ticketEl) return;
+      const params = new URLSearchParams(window.location.search || "");
+      const ticket = (params.get("ticket") || "").trim();
+      if (ticket !== "") {
+        ticketEl.textContent = ticket;
+      }
+    })();
+  </script>
+</body>
+</html>

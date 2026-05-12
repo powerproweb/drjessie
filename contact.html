@@ -161,53 +161,6 @@
     .cf-status.pending { color: var(--text-muted); }
     .cf-status.success { color: #a7f0ca; }
     .cf-status.error { color: #ffb2b2; }
-    .cf-thankyou {
-      margin-top: 14px;
-      padding: 18px 16px;
-      border: 1px solid rgba(164, 244, 217, 0.45);
-      border-radius: 14px;
-      background: linear-gradient(140deg, rgba(37, 94, 93, 0.48), rgba(104, 62, 122, 0.48));
-      box-shadow: 0 16px 28px rgba(0, 0, 0, 0.28);
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 220ms ease, transform 220ms ease;
-    }
-    .cf-thankyou.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .cf-thankyou h3 {
-      margin: 0 0 8px;
-      font-size: 1.15rem;
-      color: #dfffee;
-    }
-    .cf-thankyou p {
-      margin: 0 0 8px;
-      color: #f2f7ff;
-      line-height: 1.45;
-    }
-    .cf-thankyou-meta {
-      margin: 0 0 10px;
-      font-size: 0.9rem;
-      color: #e9fbff;
-    }
-    .cf-thankyou-cta {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 9px 14px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.32);
-      background: rgba(255,255,255,0.10);
-      color: #ffffff;
-      font-weight: 600;
-      text-decoration: none;
-      transition: background-color 180ms ease, transform 180ms ease;
-    }
-    .cf-thankyou-cta:hover {
-      background: rgba(255,255,255,0.18);
-      transform: translateY(-1px);
-    }
     @media (max-width: 700px) {
       .cf-field-row { grid-template-columns: 1fr; }
       .cf-form-actions .btn-primary { width: 100%; }
@@ -425,12 +378,6 @@
               <p id="cfStatus" class="cf-status" role="status" aria-live="polite"></p>
             </div>
           </form>
-          <div id="cfThankYouPanel" class="cf-thankyou" hidden>
-            <h3>Thank you for your message.</h3>
-            <p>Your inquiry has been received and routed to the inbox. We will follow up as soon as possible.</p>
-            <div class="cf-thankyou-meta">Ticket reference: <strong id="cfThankYouTicket">Pending</strong></div>
-            <a class="cf-thankyou-cta" href="newsletter.html" target="_blank" rel="noopener noreferrer">Join Dr. Jessie's Newsletter</a>
-          </div>
 
           <noscript>
             <p class="contact-note">
@@ -480,8 +427,6 @@
       const statusEl = document.getElementById("cfStatus");
       const humanSlider = document.getElementById("cfHumanSlider");
       const humanValue = document.getElementById("cfHumanValue");
-      const thankYouPanel = document.getElementById("cfThankYouPanel");
-      const thankYouTicket = document.getElementById("cfThankYouTicket");
 
       let formStartedAt = Date.now();
       let humanTargetValue = 100;
@@ -502,21 +447,6 @@
         if (humanValue) {
           humanValue.textContent = "0%";
         }
-      }
-      function hideThankYou() {
-        if (!thankYouPanel) return;
-        thankYouPanel.classList.remove("show");
-        thankYouPanel.hidden = true;
-      }
-      function showThankYou(ticketRef) {
-        if (!thankYouPanel) return;
-        if (thankYouTicket) {
-          thankYouTicket.textContent = ticketRef && ticketRef.trim() !== "" ? ticketRef.trim() : "Pending";
-        }
-        thankYouPanel.hidden = false;
-        requestAnimationFrame(() => {
-          thankYouPanel.classList.add("show");
-        });
       }
 
       function humanPercentFromSlider(sliderValue) {
@@ -569,11 +499,9 @@
       }
 
       resetHumanCheck();
-      hideThankYou();
 
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
-        hideThankYou();
         const payload = buildPayload();
         const errors = validate(payload);
         if (errors.length) {
@@ -612,14 +540,14 @@
             }
             return;
           }
-
-          setStatus(`Message sent successfully. Ticket reference: ${data.ticket_ref}.`, "success");
-          showThankYou(String(data.ticket_ref || ""));
-          form.reset();
-          resetHumanCheck();
+          const ticketRef = typeof data.ticket_ref === "string" ? data.ticket_ref.trim() : "";
+          const redirectUrl = ticketRef !== ""
+            ? `/contact-thank-you.html?ticket=${encodeURIComponent(ticketRef)}`
+            : "/contact-thank-you.html";
+          window.location.assign(redirectUrl);
+          return;
         } catch (error) {
           setStatus("Network error. Please check your connection and try again.", "error");
-          hideThankYou();
         } finally {
           if (submitButton) {
             submitButton.disabled = false;
