@@ -35,6 +35,11 @@
       logoAlt: "NEORA logo",
       logoVariant: "inverse"
     },
+    "counter": {
+      vendorName: "Counter",
+      url: "https://www.counter.com/?aff=JESSIEKEENER",
+      ctaLabel: "Open Counter Shop"
+    },
     "green-compass": {
       vendorName: "Green Compass",
       url: "https://greencompassglobal.com/?pws=jessiekeener",
