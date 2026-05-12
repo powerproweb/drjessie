@@ -38,19 +38,7 @@
     "green-compass": {
       vendorName: "Green Compass",
       url: "https://greencompassglobal.com/?pws=jessiekeener",
-      ctaLabel: "Open Green Compass Shop",
-      pricingLabel: "Best seller pricing",
-      pricingText: "One-time and subscribe pricing from the Green Compass shop.",
-      pricingItems: [
-        "Daily Nano Jellies: $124.95 one-time / $99.96 subscribe",
-        "Full Spectrum Tinctures 1000mg: $139.95 one-time / $111.96 subscribe",
-        "Broad Spectrum Daily Nano Jellies: $119.95 one-time / $95.96 subscribe",
-        "Mind Bloom Adaptogens: $87.45 one-time / $69.96 subscribe",
-        "Organic Immune Bloom Adaptogens: $62.45 one-time / $49.96 subscribe",
-        "Collagen CBG Recovery Energy: $99.95 one-time / $79.96 subscribe",
-        "SIX Sparkling Cherry Lime THC: $99.95 one-time / $79.96 subscribe",
-        "SIX Snaps Drink Drops (10-count): $49.99 one-time / $39.99 subscribe"
-      ]
+      ctaLabel: "Open Green Compass Shop"
     }
   };
 

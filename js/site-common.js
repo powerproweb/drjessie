@@ -202,7 +202,7 @@ document.addEventListener("scroll", function () {
 // Courses page image popup: click any course card image to view an enlarged version.
 (function () {
   var courseImages = Array.prototype.slice.call(
-    document.querySelectorAll(".course-card .course-graphic img, .ki-gc-image-row img")
+    document.querySelectorAll(".course-card .course-graphic img, .ki-gc-image-row img, .ki-inline-popup-image")
   );
   if (!courseImages.length) return;
 
