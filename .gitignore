@@ -41,3 +41,8 @@ error_log
 api/_config.local.php
 uploads/
 !uploads/.gitkeep
+
+# ============================================================
+# LOCAL BUILD / PROMPT CONTEXT FILES (DO NOT COMMIT / INDEX)
+# ============================================================
+z.build_files_do_not_index/

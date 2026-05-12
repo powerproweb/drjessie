@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="css/custom.css" type="text/css">
 <style>
   .thankyou-wrap {
-    max-width: 980px;
+    max-width: 1080px;
     margin: 0 auto;
     padding: 0 14px;
   }
@@ -24,62 +24,168 @@
     border: 1px solid rgba(255,255,255,0.14);
     background: linear-gradient(145deg, rgba(34, 74, 96, 0.44), rgba(91, 56, 112, 0.42));
     box-shadow: 0 20px 34px rgba(0,0,0,0.30);
-    padding: 22px 20px;
+    padding: 26px 24px;
   }
-  .thankyou-kicker {
-    margin: 0 0 10px;
-    font-size: 0.92rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: #b9e9ff;
-  }
-  .thankyou-title {
-    margin: 0 0 10px;
+  .hero-line {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.05;
     color: #f4fcff;
   }
-  .thankyou-copy {
-    margin: 0 0 14px;
-    font-size: 1.03rem;
-    line-height: 1.5;
-    color: #edf6ff;
+  .hero-sub {
+    margin: 6px 0 0;
+    color: #cde8ff;
+    font-size: 1.05rem;
+    font-style: italic;
   }
-  .thankyou-ref {
-    margin: 0 0 16px;
-    color: #dbf0ff;
+  .ticket-row {
+    margin-top: 12px;
+    color: #d9edff;
+    font-size: 0.95rem;
   }
-  .thankyou-cta {
-    border-top: 1px solid rgba(255,255,255,0.18);
-    padding-top: 14px;
+  .block {
+    margin-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.14);
+    padding-top: 16px;
   }
-  .thankyou-cta h2 {
-    margin: 0 0 8px;
-    font-size: 1.08rem;
-    color: #e8fcff;
+  .welcome-block::after {
+    content: "";
+    display: block;
+    clear: both;
   }
-  .thankyou-cta p {
+  .welcome-float-photo {
+    float: right;
+    width: 300px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.22);
+    margin: 4px 0 12px 16px;
+    box-shadow: 0 12px 22px rgba(0,0,0,0.30);
+  }
+  .block h2 {
     margin: 0 0 10px;
-    color: #d4ecff;
+    color: #e8fcff;
+    font-size: 1.2rem;
+  }
+  .block p {
+    margin: 0 0 12px;
+    color: #e6f3ff;
+    line-height: 1.58;
+  }
+  .breath-block {
+    border: 1px solid rgba(189, 247, 235, 0.28);
+    border-radius: 16px;
+    background: rgba(185, 245, 237, 0.07);
+    padding: 14px 14px 2px;
+  }
+  .next-grid {
+    margin-top: 8px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .next-card {
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.04);
+    padding: 12px;
+  }
+  .next-card h3 {
+    margin: 0 0 8px;
+    color: #f0fbff;
+    font-size: 1rem;
+  }
+  .next-card p {
+    margin: 0 0 8px;
+    color: #d9efff;
     line-height: 1.45;
   }
-  .thankyou-links {
+  .next-card ul {
+    margin: 0 0 0 18px;
+    padding: 0;
+  }
+  .next-card li {
+    margin: 0 0 6px;
+  }
+  .next-card a {
+    color: #c5eaff;
+    text-decoration: underline;
+  }
+  .next-card .card-actions {
+    margin-top: 10px;
     display: flex;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
   }
-  .thankyou-links .btn-primary {
+  .next-card .card-action {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    min-height: 34px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.28);
+    background: rgba(255,255,255,0.10);
+    color: #ffffff;
     text-decoration: none;
-    min-height: 42px;
-    padding: 0 16px;
+    font-size: 0.86rem;
+    font-weight: 600;
+    transition: background-color 180ms ease, transform 180ms ease;
+  }
+  .next-card .card-action:hover {
+    background: rgba(255,255,255,0.18);
+    transform: translateY(-1px);
+  }
+  .signature {
+    margin-top: 8px;
+    color: #eaf8ff;
+    line-height: 1.5;
+  }
+  .footer-quote {
+    margin-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.16);
+    padding-top: 14px;
+    color: #d2ecff;
+    font-style: italic;
+  }
+  .design-notes {
+    margin-top: 16px;
+    border: 1px dashed rgba(255,255,255,0.22);
+    border-radius: 12px;
+    padding: 12px;
+    background: rgba(255,255,255,0.03);
+  }
+  .design-notes h2 {
+    margin: 0 0 8px;
+    font-size: 1rem;
+    color: #d6efff;
+  }
+  .design-notes ul {
+    margin: 0;
+    padding-left: 18px;
+    color: #d2e7f7;
+    line-height: 1.45;
+  }
+  .design-notes li {
+    margin-bottom: 6px;
+  }
+  @media (max-width: 900px) {
+    .next-grid {
+      grid-template-columns: 1fr;
+    }
   }
   @media (max-width: 700px) {
     .thankyou-card {
       padding: 18px 16px;
     }
-    .thankyou-links .btn-primary {
+    .welcome-float-photo {
+      float: none;
       width: 100%;
+      max-width: 300px;
+      height: auto;
+      margin: 0 auto 12px;
+      display: block;
     }
   }
 </style>
@@ -106,25 +212,113 @@
     <section id="top" class="move_down_15">
       <div class="thankyou-wrap">
         <div class="thankyou-card">
-          <div class="thankyou-kicker">Message Received</div>
-          <h1 class="thankyou-title">Thank you for reaching out.</h1>
-          <p class="thankyou-copy" id="thankYouCopy">
-            This page is ready for your final thank-you copy. For now, your message has been received and routed to Dr. Jessie’s inbox.
-          </p>
-          <p class="thankyou-ref">Ticket reference: <strong id="thankYouTicketRef">Pending</strong></p>
+          <h1 class="hero-line"><span class="fc-dkgold">Your Healing Journey Continues...</span></h1>
+          <p class="ds-text-1-28rem">You’re Confirmed, And Your Request Has Been Received</p>
+          <p id="ticketRow" class="ticket-row">Ticket reference: <strong id="thankYouTicketRef">Pending</strong></p>
 
-          <div class="thankyou-cta">
-            <h2>CTA Area</h2>
-            <p>This section sits directly below the thank-you copy and is ready for your final CTA text and destination.</p>
-            <div class="thankyou-links">
-              <a class="btn-primary" href="newsletter.html" target="_blank" rel="noopener noreferrer">Join Dr. Jessie's Newsletter</a>
-              <a class="btn-primary" href="https://drjessie.life/">Back to Home</a>
+          <div class="block welcome-block">
+            <h2>WELCOME, FROM DR. JESSIE</h2>
+            <p>Hi, I'm Dr. Jessie Keener.</p>
+            <img
+              src="images/01_drjessie_headshot.png"
+              alt="Dr. Jessie Keener"
+              class="welcome-float-photo"
+              width="300"
+              height="400">
+            <p>Naturopathic Physician, breath worker, Human Intelligence Specialist, occasional channel for the Two Marys, and, full disclosure, someone who's been doing this work since 1987 from a small corner of Central Texas.</p>
+            <p>I came to this path the hard way: I lost my own health in my early twenties (full-blown menopause at 26, fainting spells, pain syndromes, the works), found my way back through real natural medicine and a brilliant mentor named Dr. Theresa Dale, and then spent the next three-plus decades figuring out what actually works for the body, brain, breath, and the spirit running the whole show.</p>
+            <p>Thousands of patients, hundreds of interviews, a TV health show, a book, and a lot of laughing later, here we are.</p>
+            <p>You're now in a small, surprisingly wonderful corner of the internet where we take healing seriously, ourselves a little less so, and the connection between mind and body very, very seriously.</p>
+            <p>Welcome.</p>
+          </div>
+
+          <div class="block breath-block">
+            <h2>A QUICK BREATH (BECAUSE THAT'S WHAT WE DO HERE)</h2>
+            <p>Before you click anything else, try this:</p>
+            <p>Long inhale through your nose. All the way down to your belly.</p>
+            <p>Slow exhale through your mouth. Longer than the inhale.</p>
+            <p>One more time.</p>
+            <p>There. That is the first tool we'll use together. It's free, it works, and it's been quietly running the show for 38 years.</p>
+          </div>
+
+          <div class="block">
+            <h2>WHERE TO GO NEXT</h2>
+            <p>Pick whichever door is calling.</p>
+            <div class="next-grid">
+              <div class="next-card">
+                <h3>📖 Read the Book</h3>
+                <p><strong>The Ascension Handbook: A Guide To Your Ecstatic Union With God</strong></p>
+                <p>Co-authored with Joel D. Anastasi. The teachings inside were channeled through me from the combined energies of Mother Mary and Mary Magdalene, known together as the Two Marys.</p>
+                <p><strong>Buy from:</strong></p>
+                <ul>
+                  <li><a href="https://www.amazon.com/Ascension-Handbook-Guide-Ecstatic-Union/dp/1466388145" target="_blank" rel="noopener noreferrer">Amazon, Paperback</a></li>
+                  <li><a href="https://www.amazon.com/Ascension-Handbook-Guide-Ecstatic-Union-ebook/dp/B00B8AZTRK" target="_blank" rel="noopener noreferrer">Amazon, Kindle</a></li>
+                </ul>
+                <div class="card-actions">
+                  <a class="card-action" href="https://www.amazon.com/Ascension-Handbook-Guide-Ecstatic-Union/dp/1466388145" target="_blank" rel="noopener noreferrer">Get Paperback</a>
+                  <a class="card-action" href="https://www.amazon.com/Ascension-Handbook-Guide-Ecstatic-Union-ebook/dp/B00B8AZTRK" target="_blank" rel="noopener noreferrer">Get Kindle</a>
+                </div>
+              </div>
+
+              <div class="next-card">
+                <h3>🎙️ Watch the Interviews</h3>
+                <p>Decades of conversations on naturopathic medicine, conscious breath, the mind-body connection, and practical mechanics of being a clearer, calmer human.</p>
+                <p><a href="https://www.drjessie.life/ki_drjk_interviews.html">Visit the Interviews Page</a></p>
+                <div class="card-actions">
+                  <a class="card-action" href="ki_drjk_interviews.html">Open Interviews</a>
+                </div>
+              </div>
+
+              <div class="next-card">
+                <h3>✏️ Read the Articles</h3>
+                <p>Body Mastery. Brain Training. In the Kitchen. Clean Skincare. The honest, slightly funnier side of trying to feel good in a body.</p>
+				 <p><strong>Buy from:</strong></p>
+                <ul>
+                  <li><a href="https://professionalformulas.com/patients/" target="_blank" rel="noopener noreferrer">Professional Formulas, Botanifuge + PURGE Formula</a></li>
+                  <li><a href="https://sfi-portal.com/" target="_blank" rel="noopener noreferrer">Systemic Formulas, ABC + LGUT (checkout code: Txcl-01)</a></li>
+                  <li><a href="https://greencompassglobal.com/?pws=jessiekeener" target="_blank" rel="noopener noreferrer">Green Compass</a></li>
+                </ul>
+                <p><a href="https://drjessie.life/ki_mind_spirit.html">Visit the Blogosphere</a></p>
+                <div class="card-actions">
+                  <a class="card-action" href="ki_mind_spirit.html">Read Articles</a>
+                </div>
+              </div>
+
+              <!-- <div class="next-card">
+                <h3>💎 The QuantumDrive Project</h3>
+                <p>A wealth-building experiment on the Cardano blockchain. Patrons of courses and classes receive 8 crypto coins per dollar spent.</p>
+                <p><a href="https://drjessie.life/ki_my_crypto_currency.html">Learn About QuantumDrive</a></p>
+              </div> -->
+
+              <div class="next-card">
+                <h3>📬 Stay in the Loop</h3>
+                <p>Get updates, event notices, and new articles in your inbox.</p>
+                <p><a href="newsletter.html">Go to Newsletter Signup</a></p>
+                <div class="card-actions">
+                  <a class="card-action" href="newsletter.html">Join the Newsletter</a>
+                </div>
+              </div>
             </div>
           </div>
+
+          <div class="block">
+            <h2>A NOTE BEFORE YOU GO</h2>
+            <p>Some people find this work after a long, exhausted search.</p>
+            <p>Some show up because a friend kept dropping the name and would not let it go.</p>
+            <p>Some land here at 11:47 pm holding cold tea, twelve open browser tabs, and that quiet little “huh” feeling that says, something here might matter.</p>
+            <p>Whichever door you walked through, I'm genuinely glad you're in.</p>
+            <p>Take care of yourself this week. Drink real water. Breathe on purpose at least once a day. And remember, your body has been trying to talk to you the whole time. We're just going to start listening.</p>
+            <p class="signature">With heart and life,<br><strong>Dr. Jessie</strong><br><em>Central Texas</em></p>
+          </div>
+
+          <p class="footer-quote">“Thank you for being here. May this be one of those small clicks that opens a very large door.”</p>
+			<div style="clear: left;"><br /></div>
+			
         </div>
       </div>
     </section>
   </main>
+  <div style="clear: left;"><br /><br /></div>
 
   <footer>
     <div class="footer-inner">
@@ -144,12 +338,15 @@
   <script src="js/site-common.js"></script>
   <script>
     (() => {
+      const ticketRow = document.getElementById("ticketRow");
       const ticketEl = document.getElementById("thankYouTicketRef");
       if (!ticketEl) return;
       const params = new URLSearchParams(window.location.search || "");
       const ticket = (params.get("ticket") || "").trim();
       if (ticket !== "") {
         ticketEl.textContent = ticket;
+      } else if (ticketRow) {
+        ticketRow.style.display = "none";
       }
     })();
   </script>
