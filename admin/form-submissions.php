@@ -184,7 +184,6 @@ function drj_inbox_ensure_archive_table(PDO $pdo): void
 function drj_inbox_log_event(PDO $pdo, string $ticketRef, string $eventType, ?string $fromStatus, ?string $toStatus, string $note, string $actor): bool
 {
     try {
-        drj_inbox_ensure_events_table($pdo);
         $stmt = $pdo->prepare(
             'INSERT INTO ' . DRJ_FORM_EVENTS_TABLE . ' (ticket_ref, event_type, from_status, to_status, note, actor)
              VALUES (:ticket_ref, :event_type, :from_status, :to_status, :note, :actor)'
@@ -199,8 +198,19 @@ function drj_inbox_log_event(PDO $pdo, string $ticketRef, string $eventType, ?st
         ]);
         return true;
     } catch (Throwable $e) {
-        error_log('[drj form inbox] event log failed: ' . $e->getMessage());
+        if (!drj_inbox_is_missing_table_error($e, DRJ_FORM_EVENTS_TABLE)) {
+            error_log('[drj form inbox] event log failed: ' . $e->getMessage());
+        }
         return false;
+    }
+}
+
+function drj_inbox_try_ensure_events_table(PDO $pdo): void
+{
+    try {
+        drj_inbox_ensure_events_table($pdo);
+    } catch (Throwable $e) {
+        error_log('[drj form inbox] events table ensure failed: ' . $e->getMessage());
     }
 }
 
@@ -362,7 +372,6 @@ function drj_inbox_delete_submission(PDO $pdo, int $id, string $confirmation, st
         $eventRows = [];
         $eventsDeleted = false;
         try {
-            drj_inbox_ensure_events_table($pdo);
             $evtRows = $pdo->prepare(
                 'SELECT id, ticket_ref, event_type, from_status, to_status, note, actor, created_at
                  FROM ' . DRJ_FORM_EVENTS_TABLE . '
@@ -378,7 +387,6 @@ function drj_inbox_delete_submission(PDO $pdo, int $id, string $confirmation, st
             }
         }
 
-        drj_inbox_ensure_archive_table($pdo);
         $archiveStmt = $pdo->prepare(
             'INSERT INTO ' . DRJ_FORM_ARCHIVE_TABLE . ' (
                 submission_id, ticket_ref, payload_json, related_events_json, deleted_by
@@ -492,6 +500,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (strlen($note) > 1500) {
                 drj_inbox_json_response(400, ['ok' => false, 'error' => 'Note is too long.']);
             }
+            drj_inbox_try_ensure_events_table($pdo);
 
             $update = drj_inbox_update_status($pdo, $id, $status, $note, $adminActor);
             $fresh = drj_inbox_fetch_detail($pdo, $id);
@@ -518,6 +527,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($message === '' || strlen($message) > 6000) {
                 drj_inbox_json_response(400, ['ok' => false, 'error' => 'Reply message is required and must be 6000 characters or less.']);
             }
+            drj_inbox_try_ensure_events_table($pdo);
 
             $reply = drj_inbox_send_reply($pdo, $id, $subject, $message, $adminActor);
             $fresh = drj_inbox_fetch_detail($pdo, $id);
@@ -539,6 +549,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($confirmation === '' || strlen($confirmation) > 120) {
                 drj_inbox_json_response(400, ['ok' => false, 'error' => 'Delete confirmation phrase is required.']);
             }
+            drj_inbox_ensure_archive_table($pdo);
 
             $deleted = drj_inbox_delete_submission($pdo, $id, $confirmation, $adminActor);
             drj_inbox_json_response(200, ['ok' => true, 'delete' => $deleted]);
@@ -673,13 +684,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!msg) el.className = 'muted';
     };
 
-    const safe = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({
-        '&':'&amp;',
-        '<':'&lt;',
-        '>':'&gt;',
-        '"':'&quot;',
-        '\'':'&#39;'
-    }[c]));
+    const safe = (v) => {
+        const escMap = { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' };
+        return String(v ?? '').replace(/[&<>"']/g, (c) => escMap[c]);
+    };
 
     const fmt = (d) => {
         if (!d) return 'N/A';
@@ -789,16 +797,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         `;
 
         $('saveStatusBtn').addEventListener('click', async () => {
+            const button = $('saveStatusBtn');
             const status = $('statusSelect').value;
             const note = $('statusNote').value.trim();
             try {
+                button.disabled = true;
+                button.textContent = 'Saving...';
                 flash('Saving status...');
                 await req({ action:'update_status', id:STATE.selectedId, status, note });
-                flash('Status updated.');
                 await loadList();
                 await loadDetail();
+                flash('Status updated.');
             } catch (error) {
                 flash(error.message, true);
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Save Status';
             }
         });
 
@@ -847,13 +861,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 flash('Deleting submission...');
                 const out = await req({ action:'delete_submission', id:STATE.selectedId, confirmation:phrase });
                 const archiveId = out?.delete?.archive_id ? ` Archive #${out.delete.archive_id}.` : '';
-                flash(`Archived and removed ${ticketRef}.${archiveId}`);
                 STATE.rows = STATE.rows.filter((row) => Number(row.id) !== Number(STATE.selectedId));
                 STATE.selectedId = null;
                 STATE.detail = null;
                 STATE.events = [];
                 renderList();
                 renderDetail();
+                await loadList();
+                flash(`Archived and removed ${ticketRef}.${archiveId}`);
             } catch (error) {
                 flash(error.message, true);
             } finally {
