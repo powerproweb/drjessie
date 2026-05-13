@@ -14,41 +14,84 @@ document.addEventListener("scroll", function () {
   }
 });
 
-// Ensure every page has a direct Contact link in the top nav.
+// Standardize top navigation structure across pages.
 (function () {
   var navLists = document.querySelectorAll(".main-nav .nav-list");
   if (!navLists.length) return;
 
-  var path = (window.location.pathname || "").toLowerCase();
-  var isContactPage = path === "/contact" || path.endsWith("/contact.html");
+  function normalizePath(pathname) {
+    var path = (pathname || "/").toLowerCase();
+    if (!path) path = "/";
+    if (path.endsWith("/index.html")) {
+      path = path.slice(0, -11) || "/";
+    }
+    if (path.length > 1 && path.endsWith("/")) {
+      path = path.slice(0, -1);
+    }
+    return path;
+  }
+
+  var currentPath = normalizePath(window.location.pathname || "/");
+  var navMarkup = [
+    '<li class="nav-item"><a href="index.html" class="nav-link" title="Home">Home</a></li>',
+    '<li class="nav-item dropdown">',
+      '<a href="#" class="nav-link" title="Media">Media <span class="caret">▾</span></a>',
+      '<ul class="dropdown-menu">',
+        '<li class="dropdown-group">',
+          '<span class="dropdown-group-label">Interviews</span>',
+          '<ul class="dropdown-submenu">',
+            '<li><a href="ki_drjk_interviews.html#top" title="Who Is Behind the Chemtrails?">Who Is Behind the Chemtrails?</a></li>',
+            '<li><a href="ki_drjk_interviews.html#top" title="The Jabs, Your Health, and Much More">The Jabs, Your Health...</a></li>',
+          '</ul>',
+        '</li>',
+        '<li class="dropdown-group">',
+          '<span class="dropdown-group-label">Articles</span>',
+          '<ul class="dropdown-submenu">',
+            '<li><a href="brain_energy.html#top" title="Brain Energy">Brain Energy</a></li>',
+            '<li><a href="ki_mind_spirit.html#top" title="Keener Intelligence - Mind Spirit">Keener Intelligence - Mind Spirit</a></li>',
+            '<li><a href="ki_body_mastery.html#top" title="Keener Intelligence - Body Mastery">Keener Intelligence - Body Mastery</a></li>',
+          '</ul>',
+        '</li>',
+      '</ul>',
+    '</li>',
+    '<li class="nav-item dropdown">',
+      '<a href="#" class="nav-link" title="Resources">Resources <span class="caret">▾</span></a>',
+      '<ul class="dropdown-menu">',
+        '<li><a href="books.html#top" title="Books">Books</a></li>',
+        '<li><a href="courses.html#top" title="Courses">Courses</a></li>',
+        '<li><a href="downloads.html#top" title="Downloads">Downloads</a></li>',
+        '<li><a href="newsletter.html#top" title="Newsletter">Newsletter</a></li>',
+      '</ul>',
+    '</li>',
+    '<li class="nav-item"><a href="contact.html" class="nav-link" title="Contact Dr. Jessie">Contact</a></li>'
+  ].join("");
 
   navLists.forEach(function (navList) {
     if (!navList) return;
 
-    var existingContact = navList.querySelector(
-      'a[href="contact.html"], a[href="/contact.html"], a[href="https://drjessie.life/contact.html"], a[href="https://www.drjessie.life/contact.html"]'
-    );
-    if (existingContact) {
-      if (isContactPage) {
-        existingContact.setAttribute("aria-current", "page");
-      }
-      return;
+    var nav = navList.closest(".main-nav");
+    var navToggle = nav ? nav.querySelector(".nav-toggle") : null;
+    if (!navToggle) return;
+
+    navList.innerHTML = navMarkup;
+
+    var matchedLink = null;
+    navList.querySelectorAll("a[href]").forEach(function (link) {
+      if (matchedLink) return;
+      var href = (link.getAttribute("href") || "").trim();
+      if (!href || href === "#") return;
+
+      try {
+        var parsed = new URL(href, window.location.origin);
+        if (normalizePath(parsed.pathname) === currentPath) {
+          matchedLink = link;
+        }
+      } catch (err) {}
+    });
+
+    if (matchedLink) {
+      matchedLink.setAttribute("aria-current", "page");
     }
-
-    var navItem = document.createElement("li");
-    navItem.className = "nav-item";
-
-    var navLink = document.createElement("a");
-    navLink.className = "nav-link";
-    navLink.href = "contact.html";
-    navLink.title = "Contact Dr. Jessie";
-    navLink.textContent = "Contact";
-    if (isContactPage) {
-      navLink.setAttribute("aria-current", "page");
-    }
-
-    navItem.appendChild(navLink);
-    navList.appendChild(navItem);
   });
 })();
 
