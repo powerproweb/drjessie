@@ -60,9 +60,9 @@ document.addEventListener("scroll", function () {
         '<li><a href="books.html#top" title="Books">Books</a></li>',
         '<li><a href="courses.html#top" title="Courses">Courses</a></li>',
         '<li><a href="downloads.html#top" title="Downloads">Downloads</a></li>',
-        '<li><a href="newsletter.html#top" title="Newsletter">Newsletter</a></li>',
       '</ul>',
     '</li>',
+    '<li class="nav-item"><a href="newsletter.html#top" class="nav-link" title="Newsletter">Newsletter</a></li>',
     '<li class="nav-item"><a href="contact.html" class="nav-link" title="Contact Dr. Jessie">Contact</a></li>'
   ].join("");
 
