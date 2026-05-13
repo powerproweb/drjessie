@@ -56,6 +56,12 @@
 		-webkit-font-smoothing: antialiased;
 		animation: bodyFadeIn 0.7s ease-out;
 }
+
+html.mobile-menu-open,
+body.mobile-menu-open {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
 	
 
     @keyframes bodyFadeIn {
@@ -907,8 +913,11 @@
         padding: 0.75rem 1rem;
         box-shadow: 0 20px 46px rgba(0, 0, 0, 0.95);
         max-height: calc(100vh - (var(--header-offset, 92px) + 2rem));
+        max-height: calc(100dvh - (var(--header-offset, 92px) + 2rem));
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        touch-action: pan-y;
       }
 
       html[data-theme="light"] .nav-list {

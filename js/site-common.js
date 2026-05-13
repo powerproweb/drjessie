@@ -65,6 +65,64 @@ document.addEventListener("scroll", function () {
   setHeaderOffset();
 })();
 
+// Mobile nav: keep scrolling confined to menu panel while open.
+(function () {
+  var nav = document.querySelector(".main-nav");
+  if (!nav) return;
+
+  var navToggle = nav.querySelector(".nav-toggle");
+  var navList = nav.querySelector(".nav-list");
+  if (!navToggle || !navList) return;
+
+  var mobileQuery = window.matchMedia("(max-width: 768px)");
+
+  function setMenuOpenState() {
+    var isOpen = mobileQuery.matches && navToggle.checked;
+    document.documentElement.classList.toggle("mobile-menu-open", isOpen);
+    document.body.classList.toggle("mobile-menu-open", isOpen);
+  }
+
+  function closeMenu() {
+    if (!navToggle.checked) return;
+    navToggle.checked = false;
+    setMenuOpenState();
+  }
+
+  navToggle.addEventListener("change", setMenuOpenState);
+
+  navList.addEventListener("click", function (e) {
+    if (!e.target.closest("a")) return;
+    closeMenu();
+  });
+
+  document.addEventListener("click", function (e) {
+    if (!mobileQuery.matches || !navToggle.checked) return;
+    if (nav.contains(e.target)) return;
+    closeMenu();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape" || !navToggle.checked) return;
+    closeMenu();
+  });
+
+  function handleViewportChange() {
+    if (!mobileQuery.matches) {
+      navToggle.checked = false;
+    }
+    setMenuOpenState();
+  }
+
+  if (typeof mobileQuery.addEventListener === "function") {
+    mobileQuery.addEventListener("change", handleViewportChange);
+  } else if (typeof mobileQuery.addListener === "function") {
+    mobileQuery.addListener(handleViewportChange);
+  }
+
+  window.addEventListener("pageshow", setMenuOpenState);
+  setMenuOpenState();
+})();
+
 // Courses page sidebar: fixed-on-scroll behavior (desktop) + active section highlighting
 (function () {
   var sidebar = document.querySelector(".course-side-menu");
