@@ -149,7 +149,7 @@ body.mobile-menu-open {
     /* Use the site's favicon as the header logo icon */
     .brand-icon.brand-favicon{
       background: none;
-      background-image: url("../images/favicon.png");
+      background-image: url("../images/favicon.png?v=202605161430");
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
@@ -2766,52 +2766,52 @@ span.attention, span.notice, span.alert, span.download, span.approved, span.medi
 span.attention {
 	color: #B79000;
 	border: 1px solid #E7BD72;
-	background: #FFF3A3 url(images/typo/attention.png) 10px 50% no-repeat; }
+	background: #FFF3A3 url(images/typo/attention.png?v=202605161430) 10px 50% no-repeat; }
 	
 span.notice {
 	color: #648434;
 	border: 1px solid #9BCC54;
-	background: #CDEFA6 url(images/typo/notice.png) 10px 50% no-repeat; }
+	background: #CDEFA6 url(images/typo/notice.png?v=202605161430) 10px 50% no-repeat; }
 	
 span.alert {
 	color: #CF3738;
 	border: 1px solid #FFACAD;
-	background: #FFD5D5 url(images/typo/alert.png) 10px 50% no-repeat; }
+	background: #FFD5D5 url(images/typo/alert.png?v=202605161430) 10px 50% no-repeat; }
 	
 span.download {
 	color: #1C6B8B;
 	border: 1px solid #6ABCE2;
-	background: #A8CDE3 url(images/typo/download.png) 10px 50% no-repeat; }
+	background: #A8CDE3 url(images/typo/download.png?v=202605161430) 10px 50% no-repeat; }
 	
 span.approved {
 	color: #666;
 	border: 1px solid #a8a8a8;
-	background: #c2dbfe url(images/typo/approved.png) 10px 50% no-repeat; }
+	background: #c2dbfe url(images/typo/approved.png?v=202605161430) 10px 50% no-repeat; }
 	
 span.media {
 	color: #C76E34;
 	border: 1px solid #FFBB65;
-	background: #FFE0B6 url(images/typo/media.png) 10px 50% no-repeat; }
+	background: #FFE0B6 url(images/typo/media.png?v=202605161430) 10px 50% no-repeat; }
 	
 span.note {
 	color: #B79000;
 	border: 1px solid #E7BD72;
-	background: #FFF3A3 url(images/typo/note.png) 10px 50% no-repeat; }
+	background: #FFF3A3 url(images/typo/note.png?v=202605161430) 10px 50% no-repeat; }
 	
 span.cart {
 	color: #666;
 	border: 1px solid #C5C5C5;
-	background: #E6E6E6 url(images/typo/cart.png) 10px 50% no-repeat; }
+	background: #E6E6E6 url(images/typo/cart.png?v=202605161430) 10px 50% no-repeat; }
 	
 span.camera {
 	color: #666;
 	border: 1px solid #C5C5C5;
-	background: #E6E6E6 url(images/typo/camera.png) 10px 50% no-repeat; }
+	background: #E6E6E6 url(images/typo/camera.png?v=202605161430) 10px 50% no-repeat; }
 	
 span.doc {
 	color: #C76E34;
 	border: 1px solid #FFBB65;
-	background: #FFE0B6 url(images/typo/doc.png) 10px 50% no-repeat; }
+	background: #FFE0B6 url(images/typo/doc.png?v=202605161430) 10px 50% no-repeat; }
 	
 span.number, span.number-blue, span.number-red, span.number-green, span.number-purple, span.number-orange, span.number-brown, span.number-grey {display: block;font-size: 170%;float: left;margin: 2px 10px 0 15px; }
 
@@ -2838,12 +2838,12 @@ div.number-block1, div.number-block2, div.number-block3, div.number-block4, div.
 	padding-left: 50px;
 	width:80%;
 	margin:0 auto; }
-div.number-block1 {background: url(images/typo/number-1.png) 0 0 no-repeat;}
-div.number-block2 {background: url(images/typo/number-2.png) 0 0 no-repeat;}
-div.number-block3 {background: url(images/typo/number-3.png) 0 0 no-repeat;}
-div.number-block4 {background: url(images/typo/number-4.png) 0 0 no-repeat;}
-div.number-block5 {background: url(images/typo/number-5.png) 0 0 no-repeat;}
-div.number-block6 {background: url(images/typo/number-6.png) 0 0 no-repeat;}
+div.number-block1 {background: url(images/typo/number-1.png?v=202605161430) 0 0 no-repeat;}
+div.number-block2 {background: url(images/typo/number-2.png?v=202605161430) 0 0 no-repeat;}
+div.number-block3 {background: url(images/typo/number-3.png?v=202605161430) 0 0 no-repeat;}
+div.number-block4 {background: url(images/typo/number-4.png?v=202605161430) 0 0 no-repeat;}
+div.number-block5 {background: url(images/typo/number-5.png?v=202605161430) 0 0 no-repeat;}
+div.number-block6 {background: url(images/typo/number-6.png?v=202605161430) 0 0 no-repeat;}
 
 .who-we-are-single img { width:90%;
 	margin:0 auto; }
@@ -2899,7 +2899,7 @@ div.number-block6 {background: url(images/typo/number-6.png) 0 0 no-repeat;}
 
 .blockquote_quotes {
 	display: block;
-	background: url(images/typo/quote-start.png) 0 5px no-repeat;
+	background: url(images/typo/quote-start.png?v=202605161430) 0 5px no-repeat;
 	padding: 0px 20px 0 38px;
 	margin: 20px 0;
 	font-size: 120%;
@@ -2911,7 +2911,7 @@ div.number-block6 {background: url(images/typo/number-6.png) 0 0 no-repeat;}
 .blockquote_quotes p {
 	padding: 0 38px 0 0;
 	margin-top: 0;
-	background: url(images/typo/quote-end.png) 100% 100% no-repeat; }
+	background: url(images/typo/quote-end.png?v=202605161430) 100% 100% no-repeat; }
 	
 	/* Rounded banner image divider */
 .ki-banner{
