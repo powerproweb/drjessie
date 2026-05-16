@@ -39,3 +39,21 @@ PowerShell command to base64-encode an existing private key (if you store `BLUEH
 
 Manual upload is still possible, but the expected path is deployment by git push.
 
+### Final deployment workflow (cache-safe)
+
+Use this sequence for every production release so browser caches do not serve stale assets.
+
+1. Pick a release version token in UTC format: `YYYYMMDDHHMM`
+2. Run the cache-bust updater from project root:
+   - `python bump_asset_version.py --version YYYYMMDDHHMM`
+3. Review file changes and verify only intended asset URL bumps were updated.
+4. Commit and push to `master` (or `main`) to trigger GitHub Actions deploy.
+5. Verify live headers:
+   - HTML should return `Cache-Control: no-store, no-cache, must-revalidate, max-age=0`
+   - Versioned assets should return `Cache-Control: public, max-age=31536000, immutable`
+6. Smoke test on high-risk clients first:
+   - iPad Safari
+   - iPhone Safari
+   - iOS in-app browsers
+   - Android WebView / Samsung Internet
+
