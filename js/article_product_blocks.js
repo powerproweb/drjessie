@@ -40,6 +40,11 @@
       url: "https://www.counter.com/?aff=JESSIEKEENER",
       ctaLabel: "Open Counter Shop"
     },
+    "atmosphera-beauty": {
+      vendorName: "Atmosphera Beauty",
+      url: "https://atmospherabeauty.us/?ref=jessiekeener",
+      ctaLabel: "Shop Atmosphera Sun Veil"
+    },
     "green-compass": {
       vendorName: "Green Compass",
       url: "https://greencompassglobal.com/?pws=jessiekeener",
