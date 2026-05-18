@@ -195,7 +195,7 @@ function drj_contact_send_admin_email(array $record): array
     $replyToName = drj_contact_safe_header_value((string) ($record['full_name'] ?? 'Contact Form Sender'));
 
     $subjectTail = drj_contact_safe_header_value((string) ($record['subject'] ?? 'New Message'));
-    $subject = '[DrJessie Contact] ' . (string) ($record['ticket_ref'] ?? 'N/A') . ' - ' . $subjectTail;
+    $subject = '📩✨ [DrJessie Contact] ' . (string) ($record['ticket_ref'] ?? 'N/A') . ' - ' . $subjectTail;
     if (strlen($subject) > 180) {
         $subject = substr($subject, 0, 180);
     }
@@ -233,7 +233,7 @@ function drj_contact_send_admin_email(array $record): array
         } else {
             $flagHeaders = $headers;
             $flagHeaders[] = 'X-DrJessie-Flag: true';
-            $flagSubject = '[FLAG] ' . $subject;
+            $flagSubject = '🚩 [FLAG] ' . $subject;
             if (strlen($flagSubject) > 180) {
                 $flagSubject = substr($flagSubject, 0, 180);
             }
