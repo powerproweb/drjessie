@@ -14,9 +14,11 @@ $drjConfig = [
     'admin_user' => 'change_this_admin_user',
     'admin_pass' => 'change_this_admin_pass',
     'notification_email' => 'change_this_notification_email@example.com',
+    'notification_flag_email' => 'jkideal@hotmail.com',
     'mail_from_email' => 'change_this_mail_from_email@example.com',
     'mail_from_name' => 'DrJessie.life Contact',
     'allowed_origin' => 'change_this_allowed_origin',
+    'admin_inbox_url' => 'https://www.drjessie.life/admin/form-submissions.php',
 ];
 
 $localConfigPath = __DIR__ . '/_config.local.php';

@@ -157,9 +157,19 @@ function drj_contact_mailbox(string $name, string $email): string
     $escapedName = addcslashes($name, "\\\"");
     return '"' . $escapedName . '" <' . $email . '>';
 }
+function drj_contact_inbox_url(): string
+{
+    $fallback = 'https://www.drjessie.life/admin/form-submissions.php';
+    $url = trim((string) drj_config('admin_inbox_url', $fallback));
+    if ($url === '' || !preg_match('/^https?:\\/\\//i', $url)) {
+        return $fallback;
+    }
+
+    return $url;
+}
 
 /**
- * @return array{sent: bool, reason: string}
+ * @return array{sent: bool, reason: string, flag_sent: bool, flag_reason: string}
  */
 function drj_contact_send_admin_email(array $record): array
 {
@@ -176,6 +186,7 @@ function drj_contact_send_admin_email(array $record): array
     if ($fromName === '') {
         $fromName = 'DrJessie.life Contact';
     }
+    $flagRecipient = drj_contact_safe_email(drj_config('notification_flag_email', 'jkideal@hotmail.com'));
 
     $replyToEmail = drj_contact_safe_email((string) ($record['email'] ?? ''));
     if ($replyToEmail === null) {
@@ -198,6 +209,7 @@ function drj_contact_send_admin_email(array $record): array
         'Email: ' . (string) ($record['email'] ?? 'N/A'),
         'Subject: ' . (string) ($record['subject'] ?? 'N/A'),
         'IP: ' . (string) ($record['ip_address'] ?? 'N/A'),
+        'Admin Inbox: ' . drj_contact_inbox_url(),
         '',
         'Message:',
         (string) ($record['message'] ?? ''),
@@ -213,7 +225,33 @@ function drj_contact_send_admin_email(array $record): array
     ];
 
     $sent = @mail($to, $subject, implode("\n", $bodyLines), implode("\r\n", $headers));
-    return ['sent' => (bool) $sent, 'reason' => $sent ? 'sent' : 'mail_failed'];
+    $flagSent = false;
+    $flagReason = 'not_configured';
+    if ($flagRecipient !== null) {
+        if (strcasecmp($flagRecipient, $to) === 0) {
+            $flagReason = 'same_as_primary';
+        } else {
+            $flagHeaders = $headers;
+            $flagHeaders[] = 'X-DrJessie-Flag: true';
+            $flagSubject = '[FLAG] ' . $subject;
+            if (strlen($flagSubject) > 180) {
+                $flagSubject = substr($flagSubject, 0, 180);
+            }
+            $flagBody = array_merge(
+                ['Flag copy for priority monitoring (jkideal mailbox).', ''],
+                $bodyLines
+            );
+            $flagSent = @mail($flagRecipient, $flagSubject, implode("\n", $flagBody), implode("\r\n", $flagHeaders));
+            $flagReason = $flagSent ? 'sent' : 'mail_failed';
+        }
+    }
+
+    return [
+        'sent' => (bool) $sent,
+        'reason' => $sent ? 'sent' : 'mail_failed',
+        'flag_sent' => $flagSent,
+        'flag_reason' => $flagReason,
+    ];
 }
 
 $payload = drj_contact_payload();
