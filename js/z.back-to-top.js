@@ -44,22 +44,9 @@
   // Create the link
   var link = document.createElement("a");
   link.id = "backToTop";
-  link.href = "#top";
+  link.href = (window.location.pathname || "/") + (window.location.search || "");
   link.setAttribute("aria-label", "Back to top");
   link.innerHTML = '<span aria-hidden="true">↑</span><span>Back to top</span>';
-
-  // Ensure there is a #top target (optional but nice)
-  if (!document.getElementById("top")) {
-    var topAnchor = document.createElement("div");
-    topAnchor.id = "top";
-    topAnchor.style.position = "absolute";
-    topAnchor.style.top = "0";
-    topAnchor.style.left = "0";
-    topAnchor.style.width = "1px";
-    topAnchor.style.height = "1px";
-    topAnchor.style.overflow = "hidden";
-    document.body.insertBefore(topAnchor, document.body.firstChild);
-  }
 
   document.body.appendChild(link);
 

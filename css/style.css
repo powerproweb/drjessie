@@ -3624,3 +3624,72 @@ div.number-block6 {background: url(images/typo/number-6.png?v=202605161430) 0 0 
   }
 }
 
+/* Reusable 4-up card layout for non-books pages that use .book-list/.book-card */
+.cards-4up #worldbuilding-hub .book-list{
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.1rem;
+}
+
+.cards-4up #worldbuilding-hub .book-card{
+  flex-direction: column;
+  gap: 0;
+}
+
+.cards-4up #worldbuilding-hub .book-card figure{
+  width: 100%;
+  flex-basis: auto;
+  border-right: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  padding: 0.95rem;
+}
+
+.cards-4up #worldbuilding-hub .book-meta{
+  padding: 0.95rem 0.95rem 1.05rem;
+  gap: 0.5rem;
+}
+
+.cards-4up #worldbuilding-hub .book-meta h3{
+  font-size: 1.05rem;
+  line-height: 1.22;
+}
+
+.cards-4up #worldbuilding-hub .book-meta .desc{
+  font-size: 0.9rem;
+  line-height: 1.42;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cards-4up #worldbuilding-hub .book-card .kdp-links{
+  gap: 0.5rem;
+  margin-top: 0.72rem;
+}
+
+.cards-4up #worldbuilding-hub .book-card .kdp-links a.buy-btn{
+  width: 100%;
+  min-width: 0;
+  justify-content: center;
+  padding-left: 0.7rem;
+  padding-right: 0.7rem;
+}
+
+@media (max-width: 1280px){
+  .cards-4up #worldbuilding-hub .book-list{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 980px){
+  .cards-4up #worldbuilding-hub .book-list{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px){
+  .cards-4up #worldbuilding-hub .book-list{
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
