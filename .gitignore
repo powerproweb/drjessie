@@ -46,3 +46,12 @@ uploads/
 # LOCAL BUILD / PROMPT CONTEXT FILES (DO NOT COMMIT / INDEX)
 # ============================================================
 z.build_files_do_not_index/
+
+# ============================================================
+# AUTH SOURCE FILES  -- never commit workspace auth artifacts
+# ============================================================
+auth_for_*_in_dev.md
+auth_for_z.warp.sovereign.projects.template.md
+auth_for_sites_in_dev.md*
+04_auth_for_sites_in_dev/
+**/04_auth_for_sites_in_dev/

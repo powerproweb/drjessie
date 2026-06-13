@@ -32,24 +32,73 @@ document.addEventListener("scroll", function () {
   }
 
   var currentPath = normalizePath(window.location.pathname || "/");
+
+  function stripTopFragments() {
+    var currentUrl = (window.location.pathname || "/") + (window.location.search || "");
+    document.querySelectorAll("a[href]").forEach(function (link) {
+      var href = (link.getAttribute("href") || "").trim();
+      if (!href) return;
+      var isBackTopLink = link.hasAttribute("data-backtop") || link.classList.contains("ki-backtop-link");
+      if (isBackTopLink) return;
+
+      if (href === "#top") {
+        link.setAttribute("href", currentUrl || "/");
+        return;
+      }
+
+      if (/#top$/i.test(href)) {
+        link.setAttribute("href", href.replace(/#top$/i, ""));
+      }
+    });
+  }
+  function normalizeTopNavLinks() {
+    var navLinks = document.querySelectorAll(".main-nav a[href]");
+    navLinks.forEach(function (link) {
+      var rawHref = (link.getAttribute("href") || "").trim();
+      if (!rawHref || rawHref === "#" || rawHref.startsWith("mailto:") || rawHref.startsWith("tel:") || rawHref.startsWith("javascript:")) {
+        return;
+      }
+
+      var normalized = rawHref;
+      try {
+        var parsed = new URL(rawHref, window.location.origin);
+        if (parsed.origin !== window.location.origin) return;
+
+        var path = parsed.pathname || "/";
+        path = path.replace(/\/index\.html$/i, "/").replace(/\.html$/i, "");
+        if (!path) path = "/";
+        if (path.length > 1 && path.endsWith("/")) path = path.slice(0, -1);
+
+        var hash = parsed.hash || "";
+        if (/^#top$/i.test(hash)) hash = "";
+
+        normalized = path + (parsed.search || "") + hash;
+      } catch (err) {
+        normalized = normalized.replace(/#top$/i, "").replace(/\/index\.html$/i, "/").replace(/\.html$/i, "");
+      }
+
+      if (!normalized) normalized = "/";
+      link.setAttribute("href", normalized);
+    });
+  }
   var navMarkup = [
-    '<li class="nav-item"><a href="index.html" class="nav-link" title="Home">Home</a></li>',
+    '<li class="nav-item"><a href="/" class="nav-link" title="Home">Home</a></li>',
     '<li class="nav-item dropdown">',
       '<a href="#" class="nav-link" title="Media">Media <span class="caret">▾</span></a>',
       '<ul class="dropdown-menu">',
         '<li class="dropdown-group">',
           '<span class="dropdown-group-label">Interviews</span>',
           '<ul class="dropdown-submenu">',
-            '<li><a href="ki_drjk_interviews.html#top" title="Who Is Behind the Chemtrails?">Who Is Behind the Chemtrails?</a></li>',
-            '<li><a href="ki_drjk_interviews.html#top" title="The Jabs, Your Health, and Much More">The Jabs, Your Health...</a></li>',
+            '<li><a href="/ki_drjk_interviews" title="Who Is Behind the Chemtrails?">Who Is Behind the Chemtrails?</a></li>',
+            '<li><a href="/ki_drjk_interviews" title="The Jabs, Your Health, and Much More">The Jabs, Your Health...</a></li>',
           '</ul>',
         '</li>',
         '<li class="dropdown-group">',
           '<span class="dropdown-group-label">Articles</span>',
           '<ul class="dropdown-submenu">',
-            '<li><a href="brain_energy.html#top" title="Brain Energy">Brain Energy</a></li>',
-            '<li><a href="ki_mind_spirit.html#top" title="Keener Intelligence - Mind Spirit">Keener Intelligence - Mind Spirit</a></li>',
-            '<li><a href="ki_body_mastery.html#top" title="Keener Intelligence - Body Mastery">Keener Intelligence - Body Mastery</a></li>',
+            '<li><a href="/brain_energy" title="Brain Energy">Brain Energy</a></li>',
+            '<li><a href="/ki_mind_spirit" title="Keener Intelligence - Mind Spirit">Keener Intelligence - Mind Spirit</a></li>',
+            '<li><a href="/ki_body_mastery" title="Keener Intelligence - Body Mastery">Keener Intelligence - Body Mastery</a></li>',
           '</ul>',
         '</li>',
       '</ul>',
@@ -57,13 +106,13 @@ document.addEventListener("scroll", function () {
     '<li class="nav-item dropdown">',
       '<a href="#" class="nav-link" title="Resources">Resources <span class="caret">▾</span></a>',
       '<ul class="dropdown-menu">',
-        '<li><a href="books.html#top" title="Books">Books</a></li>',
-        '<li><a href="courses.html#top" title="Courses">Courses</a></li>',
-        '<li><a href="downloads.html#top" title="Downloads">Downloads</a></li>',
+        '<li><a href="/books" title="Books">Books</a></li>',
+        '<li><a href="/courses" title="Courses">Courses</a></li>',
+        '<li><a href="/downloads" title="Downloads">Downloads</a></li>',
       '</ul>',
     '</li>',
-    '<li class="nav-item"><a href="newsletter.html#top" class="nav-link" title="Newsletter">Newsletter</a></li>',
-    '<li class="nav-item"><a href="contact.html" class="nav-link" title="Contact Dr. Jessie">Contact</a></li>'
+    '<li class="nav-item"><a href="/newsletter" class="nav-link" title="Newsletter">Newsletter</a></li>',
+    '<li class="nav-item"><a href="/contact" class="nav-link" title="Contact Dr. Jessie">Contact</a></li>'
   ].join("");
 
   navLists.forEach(function (navList) {
@@ -92,6 +141,42 @@ document.addEventListener("scroll", function () {
     if (matchedLink) {
       matchedLink.setAttribute("aria-current", "page");
     }
+  });
+
+  stripTopFragments();
+  normalizeTopNavLinks();
+})();
+// Unified back-to-top behavior on every page.
+(function () {
+  if (window.__drjBackTopBound) return;
+  window.__drjBackTopBound = true;
+
+  function getHeaderOffset() {
+    var raw = getComputedStyle(document.documentElement).getPropertyValue("--header-offset").trim();
+    var parsed = parseInt(raw, 10);
+    return Number.isFinite(parsed) ? parsed : 92;
+  }
+
+  function getTopTarget() {
+    return document.querySelector('a[name="top"]') || document.getElementById("top") || document.documentElement;
+  }
+
+  document.addEventListener("click", function (e) {
+    var link = e.target.closest("[data-backtop], a[href=\"#top\"]");
+    if (!link) return;
+
+    e.preventDefault();
+
+    var target = getTopTarget();
+    var offset = getHeaderOffset();
+    var y = (target === document.documentElement)
+      ? 0
+      : (target.getBoundingClientRect().top + window.scrollY);
+
+    window.scrollTo({
+      top: Math.max(0, y - offset - 10),
+      behavior: "smooth",
+    });
   });
 })();
 
